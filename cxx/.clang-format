@@ -1,0 +1,79 @@
+# https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+
+BasedOnStyle: LLVM
+IndentWidth: 4
+
+Language: Cpp
+Standard: c++20
+
+BreakBeforeBraces: Allman
+
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+ColumnLimit: 120
+# ColumnLimit: 130
+# TODONT: It would be nice if function signatures past ~ 80 characters would be converted into having one line per parameter
+
+EmptyLineAfterAccessModifier: Always
+FixNamespaceComments: true
+ReflowComments: false
+
+PackConstructorInitializers: Never
+
+# InsertTrailingCommas: Wrapped # Only works on javascript, cannot be used with BinPackArguments
+BinPackArguments: false
+
+# ExperimentalAutoDetectBinPacking: true
+# Cpp11BracedListStyle: false
+
+IndentPPDirectives: BeforeHash
+
+AlignConsecutiveMacros: Consecutive
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignEscapedNewlines: Left
+AlignOperands: Align
+AlignTrailingComments: true
+
+AlignAfterOpenBracket: BlockIndent
+
+AllowShortLambdasOnASingleLine: Empty
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+
+CompactNamespaces: false
+SortUsingDeclarations: true
+Cpp11BracedListStyle: true
+
+SpaceBeforeCpp11BracedList: true
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceAfterCStyleCast: true
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeParens: Always
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 1
+SpacesInAngles: Always
+SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: true
+SpacesInContainerLiterals: true
+SpacesInParentheses: true
+SpacesInSquareBrackets: false
+
+AlwaysBreakTemplateDeclarations: Yes
+
+AccessModifierOffset: -4
+
+WhitespaceSensitiveMacros: ['STRINGIZE']
