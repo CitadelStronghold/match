@@ -13,10 +13,10 @@ runs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
-        ./build/Release/TeekValidator.exe ${{ inputs.log_file }} ${{ inputs.regex_file }}
+        ./build/Release/TeekValidator.exe ${{ inputs.log_file }} ${{ inputs.regex_file }} > result.log
     - name: Test
       if: runner.os == 'Linux'
       shell: bash
       run: |
         sudo chmod +x ./build/TeekValidator
-        ./build/TeekValidator ${{ inputs.log_file }} ${{ inputs.regex_file }}
+        ./build/TeekValidator ${{ inputs.log_file }} ${{ inputs.regex_file }} > result.log

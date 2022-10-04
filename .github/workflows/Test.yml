@@ -23,3 +23,6 @@ jobs:
         with:
           log_file: tests/pass.log
           regex_file: tests/pass.regex
+      - name: Cat
+        run: |
+          cat result.log
