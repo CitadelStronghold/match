@@ -171,7 +171,7 @@ void Validator::instantiateCurrentLine ( const size_t i )
     const auto distance    = getDistanceI ( i );
     const bool hasDistance = distance > 0;
     if ( hasDistance || !isSkippedCharacter ( ( *splitString )[i] ) )
-        instantiateParsedLine ( getCurStartAddress (), distance); //getOffsetCount ( distance, i ) );
+        instantiateParsedLine ( getCurStartAddress (), getOffsetCount ( distance, i ) );
 
     if ( !hasDistance )
         isPastYes = true; // ** We are done with Yes matches, switch to No
