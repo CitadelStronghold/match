@@ -17,5 +17,19 @@
                 "clear": true
             }
         },
+        {
+            "label": "build_debug",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--config",
+                "Debug"
+            ],
+            "type": "shell",
+            "presentation": {
+                "reveal": "always"
+            },
+        },
     ]
 }

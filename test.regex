@@ -1,3 +1,15 @@
 ^1234
+\d\d\d\d
+\d{4}
+.*
+^1$
+# Lines starting with # are skipped
 
+#
 ^4321
+abcdef
+
+#
+
+^42
+^5$

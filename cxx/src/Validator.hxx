@@ -1,8 +1,12 @@
 #pragma once
 
+#include <array>
 #include <regex>
 #include <string>
 #include <vector>
+
+#include "RegexType.hxx"
+#include "RegexHolder.hxx"
 
 class Validator final
 {
@@ -20,11 +24,14 @@ private:
     int result { 0 };
 
     using StoredString = std::unique_ptr< char[] >;
-    StoredString log_ {};
-    StoredString regexes_ {};
 
-    std::string_view log {};
-    std::string_view regexes {};
+    StoredString logBuffer {};
+    StoredString regexesBuffer {};
+
+    std::string_view logString {};
+    std::string_view regexesString {};
+
+    RegexHolder<std::vector< std::string_view >> regexes{};
 
 public:
 
@@ -34,11 +41,15 @@ private:
 
     void checkArgumentsValid () const;
 
-    void loadArguments ();
+    void        loadArguments ();
+    void        splitAndParseRegexes ();
+
+    [[nodiscard]] static bool isSplitCharacter ( const char c );
+    [[nodiscard]] static bool isFilteredCharacter ( const char c );
 
 private:
 
-    [[nodiscard]] static StoredString  makeBuffer ( const size_t bytes );
+    [[nodiscard]] static StoredString  makeBufferTerminated ( const size_t bytes );
     [[nodiscard]] static std::ifstream createStream ( const char* path );
     [[nodiscard]] static StoredString  loadText ( const char* path );
 
