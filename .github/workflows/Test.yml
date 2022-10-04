@@ -26,4 +26,4 @@ jobs:
       - name: A
         uses: ./.github/workflows/match
         with:
-          matches: ^Matches Passed
+          match: ^Matches Passed
