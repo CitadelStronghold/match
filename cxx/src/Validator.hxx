@@ -126,9 +126,12 @@ private:
 
 private:
 
-    void               performMatches ();
-    void               performMatches_ ( const RegexType type, const int failCode, auto&& functor );
-    [[nodiscard]] bool checkRegexes ( const RegexType type, auto&& functor );
+    void                 performMatches ();
+    void                 performMatches_ ( const RegexType type, const int failCode, auto&& functor );
+    [[nodiscard]] bool   checkRegexes ( const RegexType type, auto&& functor );
+    [[nodiscard]] size_t iteratePatternsForMatches ( const auto& patterns, const RegexType type, auto&& functor );
+    [[nodiscard]] void
+    findMatches ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type, auto&& functor );
 
     [[nodiscard]] auto makeTestFunctor ( auto&& memberFunctor );
 

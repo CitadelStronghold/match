@@ -240,53 +240,62 @@ Validator::StoredString Validator::loadText ( const char* path )
     return buffer;
 }
 
-bool Validator::checkRegexes ( const RegexType type, auto&& functor )
+void Validator::findMatches (
+    size_t& matches, const size_t i, const std::regex& pattern, const RegexType type, auto&& functor
+)
 {
-    const auto&  patterns     = hold[type].regexes;
-    const size_t patternCount = patterns.size ();
+    const auto startMatches = matches;
+    lastLineOfInterest      = nullptr;
 
-    size_t matches {};
-
-    for ( size_t i {}; i < patternCount; i++ )
-    {
-        const auto startMatches = matches;
-        lastLineOfInterest      = nullptr;
-
-        for ( const auto& line : logLines )
-            if ( type == RegexType::Yes )
-            {
-                if ( functor ( line, patterns[i] ) )
-                {
-                    matches++;
-                    break;
-                }
-            }
-            else if ( type == RegexType::No )
-            {
-                if ( functor ( line, patterns[i] ) )
-                {
-                    matches++;
-                }
-                else
-                {
-                    lastLineOfInterest = &line;
-                }
-            }
-
-        // ? Did we fail to find a match or exclusion?
+    for ( const auto& line : logLines )
         if ( type == RegexType::Yes )
         {
-            if ( matches == startMatches )
-                hold[type].failures.emplace_back ( &AnyLineView, &hold[type].regexStrings[i] );
+            if ( functor ( line, pattern ) )
+            {
+                matches++;
+                break;
+            }
         }
         else if ( type == RegexType::No )
         {
-            if ( matches < ( startMatches + logLines.size () ) )
-                hold[type].failures.emplace_back ( lastLineOfInterest, &hold[type].regexStrings[i] );
+            if ( functor ( line, pattern ) )
+            {
+                matches++;
+            }
+            else
+            {
+                lastLineOfInterest = &line;
+            }
         }
-    }
 
-    return type == RegexType::Yes ? matches == patternCount : matches == ( patternCount * logLines.size () );
+    // ? Did we fail to find a match or exclusion?
+    if ( type == RegexType::Yes )
+    {
+        if ( matches == startMatches )
+            hold[type].failures.emplace_back ( &AnyLineView, &hold[type].regexStrings[i] );
+    }
+    else if ( type == RegexType::No )
+    {
+        if ( matches < ( startMatches + logLines.size () ) )
+            hold[type].failures.emplace_back ( lastLineOfInterest, &hold[type].regexStrings[i] );
+    }
+}
+size_t Validator::iteratePatternsForMatches ( const auto& patterns, const RegexType type, auto&& functor )
+{
+    size_t matches {};
+
+    const size_t patternCount = patterns.size ();
+    for ( size_t i {}; i < patternCount; i++ )
+        findMatches ( matches, i, patterns[i], type, functor );
+
+    return matches;
+}
+bool Validator::checkRegexes ( const RegexType type, auto&& functor )
+{
+    const auto& patterns = hold[type].regexes;
+    const auto  matches  = iteratePatternsForMatches ( patterns, type, functor );
+
+    return type == RegexType::Yes ? matches == patterns.size () : matches == ( patterns.size () * logLines.size () );
 }
 auto Validator::makeTestFunctor ( auto&& memberFunctor )
 {
