@@ -110,6 +110,7 @@ private:
     void  splitLogToLines ();
     void  splitAndParseString ( const std::string_view& source );
     void  splitAndParseCharacter ( size_t& i );
+    void  setSplitTarget ( const std::string_view& source );
     void  finishCurrentLine ( size_t& i );
     auto  getDistanceI ( const size_t i ) const;
     auto* getCurStartAddress () const;

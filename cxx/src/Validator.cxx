@@ -81,6 +81,11 @@ void Validator::resetSplitVariables ()
 
     // ** The other variables are set throughout the matching process
 }
+void Validator::setSplitTarget ( const std::string_view& source )
+{
+    endIndex    = source.size () - 1;
+    splitString = &source;
+}
 void Validator::setLogInstantiator ()
 {
     instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
@@ -98,12 +103,10 @@ void Validator::setRegexInstantiator ()
 }
 void Validator::splitAndParseString ( const std::string_view& source )
 {
-    const size_t count = source.size ();
-    endIndex           = source.size () - 1;
-    splitString        = &source;
-
     resetSplitVariables ();
+    setSplitTarget ( source );
 
+    const size_t count = source.size ();
     for ( size_t i {}; i < count; ++i )
         splitAndParseCharacter ( i );
 }
