@@ -30,8 +30,10 @@ private:
     std::string_view logString {};
     std::string_view regexesString {};
 
-    RegexHolder< int >                       results {};
-    RegexHolder< std::vector< std::regex > > regexes {};
+    RegexHolder< int >                                    results {};
+    RegexHolder< std::vector< std::string_view > >        regexStrings {};
+    RegexHolder< std::vector< std::regex > >              regexes {};
+    RegexHolder< std::vector< const std::string_view* > > failures {};
 
     const uint64_t startTime { getCurrentNanoseconds () };
     uint64_t       readStartTime {};
@@ -85,6 +87,8 @@ private:
     void skipPastSplitCharacters ( size_t& i );
     void skipForward ( size_t& i, size_t& loops );
 
+    [[nodiscard]] RegexType   getTargetType () const;
+    [[nodiscard]] auto&       getTargetRegexStringsVector ();
     [[nodiscard]] auto&       getTargetRegexVector ();
     [[nodiscard]] bool        isAtEndOfParsedRegex ( const size_t i ) const;
     [[nodiscard]] bool        shouldSplitRegexHere ( const size_t i ) const;
@@ -93,11 +97,11 @@ private:
 
 private:
 
-    void performMatches ();
+    void               performMatches ();
     void               performMatches_ ( const RegexType type, const int failCode, auto&& functor );
-    [[nodiscard]] bool iterateRegexes ( const RegexType type, auto&& functor ) const;
+    [[nodiscard]] bool checkRegexes ( const RegexType type, auto&& functor );
 
-    [[nodiscard]] auto makeTestFunctor ( auto&& memberFunctor ) const;
+    [[nodiscard]] auto makeTestFunctor ( auto&& memberFunctor );
 
     [[nodiscard]] bool checkYesRegex ( const std::regex& regex ) const;
     [[nodiscard]] bool checkNoRegex ( const std::regex& regex ) const;
@@ -115,5 +119,6 @@ private:
 
     void printResults () const;
     void printResult ( const char* name, const RegexType type ) const;
+    void printFailures ( const RegexType type ) const;
 
 }; // class Validator

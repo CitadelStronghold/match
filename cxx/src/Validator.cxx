@@ -100,9 +100,17 @@ void Validator::finishCurrentRegex ( size_t& i )
     // ** Ignore separating characters and empty lines
     skipPastSplitCharacters ( i );
 }
+RegexType Validator::getTargetType () const
+{
+    return isPastSplit ? RegexType::No : RegexType::Yes;
+}
+auto& Validator::getTargetRegexStringsVector ()
+{
+    return regexStrings[getTargetType ()];
+}
 auto& Validator::getTargetRegexVector ()
 {
-    return isPastSplit ? regexes[RegexType::No] : regexes[RegexType::Yes];
+    return regexes[getTargetType ()];
 }
 auto Validator::getDistanceI ( const size_t i ) const
 {
@@ -125,6 +133,7 @@ void Validator::instantiateCurrentRegex ( const size_t i )
 }
 void Validator::emplaceNewRegex ( const char* startIt, const size_t count )
 {
+    getTargetRegexStringsVector ().emplace_back ( startIt, count );
     getTargetRegexVector ().emplace_back ( startIt, count );
 }
 void Validator::startNewRegex ( const size_t i )
@@ -193,18 +202,21 @@ Validator::StoredString Validator::loadText ( const char* path )
     return buffer;
 }
 
-bool Validator::iterateRegexes ( const RegexType type, auto&& functor ) const
+bool Validator::checkRegexes ( const RegexType type, auto&& functor )
 {
-    const auto&  vec   = regexes[type];
-    const size_t count = vec.size ();
+    const auto&  source = regexes[type];
+    const size_t count  = source.size ();
 
     for ( size_t i {}; i < count; i++ )
-        if ( !functor ( vec[i] ) )
+        if ( !functor ( source[i] ) )
+        {
+            failures[type].push_back ( &regexStrings[type][i] );
             return false;
+        }
 
     return true;
 }
-auto Validator::makeTestFunctor ( auto&& memberFunctor ) const
+auto Validator::makeTestFunctor ( auto&& memberFunctor )
 {
     return [this, &memberFunctor] ( const std::regex& regex ) -> bool
     {
@@ -213,8 +225,10 @@ auto Validator::makeTestFunctor ( auto&& memberFunctor ) const
 }
 void Validator::performMatches_ ( const RegexType type, const int failCode, auto&& memberFunctor )
 {
-    if ( !iterateRegexes ( type, makeTestFunctor ( memberFunctor ) ) )
+    if ( !checkRegexes ( type, makeTestFunctor ( memberFunctor ) ) )
         results[type] = failCode;
+
+    return;
 }
 void Validator::performMatches ()
 {
@@ -228,13 +242,11 @@ void Validator::performMatches ()
 
 bool Validator::checkYesRegex ( const std::regex& regex ) const
 {
-    const auto search = std::regex_search ( logString.begin (), logString.end (), regex );
-
-    return true;
+    return std::regex_search ( logString.begin (), logString.end (), regex );
 }
 bool Validator::checkNoRegex ( const std::regex& regex ) const
 {
-    return true;
+    return !std::regex_search ( logString.begin (), logString.end (), regex );
 }
 
 uint64_t Validator::getCurrentNanoseconds ()
@@ -293,4 +305,11 @@ void Validator::printResult ( const char* name, const RegexType type ) const
     const std::string resultString = result == 0 ? "\033[1mPassed" : "\033[1mFailed";
 
     std::cout << color << name << " " << resultString << "\033[0m\n";
+
+    printFailures ( type );
+}
+void Validator::printFailures ( const RegexType type ) const
+{
+    for ( const auto* failure : failures[type] )
+        std::cout << "\033[31m" << *failure << "\033[0m\n";
 }
