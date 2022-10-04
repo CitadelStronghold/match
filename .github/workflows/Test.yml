@@ -229,15 +229,15 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: '1[^\n\|]+\|[^\n]+1[^\w]'
+          pattern: '1234[^\n\|]+\|[^\n]+1[^\w]'
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: '21_12[^\n\|]+\|[^\n]+2[^\w]'
+          pattern: '1234[^\n\|]+\|[^\n]+2[^\w]'
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: '321_123[^\n\|]+\|[^\n]+3[^\w]'
+          pattern: '1234[^\n\|]+\|[^\n]+3[^\w]'
       - name: Validate
         uses: ./.github/workflows/match
         with:
