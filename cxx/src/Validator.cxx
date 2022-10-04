@@ -154,18 +154,18 @@ auto* Validator::getCurStartAddress () const
 {
     return splitString->data () + curStartIndex;
 }
-auto Validator::getOffsetEndIndex ( const auto distance ) const
+auto Validator::getOffsetEndIndex ( const auto distance, const char nextChar ) const
 {
     // ** The last character is not a newline, so it needs to be included
-    return isAtEnd ? distance + 1 : distance;
+    return isAtEnd && !isSkipCharacter ( nextChar ) ? distance + 1 : distance;
 }
 void Validator::instantiateCurrentLine ( const size_t i )
 {
     // ** How many characters were in this line?
-    const auto distance = getDistanceI ( i );
+    const auto distance    = getDistanceI ( i );
     const bool hasDistance = distance > 0;
     if ( hasDistance || !isSkipCharacter ( ( *splitString )[i] ) )
-        instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance ) );
+        instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance, ( *splitString )[i + 1] ) );
 
     if ( !hasDistance )
         isPastYes = true; // ** We are done with Yes matches, switch to No
