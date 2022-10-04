@@ -158,6 +158,7 @@ auto* Validator::getCurStartAddress () const
 auto Validator::getOffsetCount ( const auto distance, const auto i ) const
 {
     assert ( getCurStartAddress () + distance < &*splitString->end () );
+    assert(false);
 
     const bool addExtraCharacter = isAtEnd && //
                                    !isSkippedCharacter ( ( *splitString )[i] );
