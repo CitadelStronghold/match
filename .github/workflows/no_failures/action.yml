@@ -3,6 +3,6 @@ runs:
   using: 'composite'
   steps:
     - name: Validate
-      uses: ./.github/workflows/no_failures
+      uses: ./.github/workflows/match
       with:
         pattern: '[^\|]'
