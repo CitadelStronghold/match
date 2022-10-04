@@ -82,6 +82,13 @@ void Validator::resetSplitVariables ()
 
     // ** The other variables are set throughout the matching process
 }
+void Validator::prepareToMatch ( const auto memberFunctor, const auto findingFunctor )
+{
+    matchCheckPatternFunctor = memberFunctor;
+    matchFindingFunctor      = findingFunctor;
+
+    firstLineOfInterest = nullptr;
+}
 void Validator::setSplitTarget ( const std::string_view& source )
 {
     endIndex    = source.size () - 1;
@@ -286,7 +293,7 @@ void Validator::checkNoFailure ( const size_t i, const size_t matches )
     if ( matches == ( startMatches + logLines.size () ) )
         return;
 
-    addFailure ( lastLineOfInterest, &hold[curType].regexStrings[i] );
+    addFailure ( firstLineOfInterest, &hold[curType].regexStrings[i] );
 }
 bool Validator::findMatchYes (
     size_t&                 matches, //
@@ -308,8 +315,8 @@ void Validator::findMatchNo (
 {
     if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
         matches++;
-    else
-        lastLineOfInterest = &line;
+    else if ( firstLineOfInterest == nullptr )
+        firstLineOfInterest = &line;
 }
 void Validator::findMatchesYes (
     size_t&           matches, //
@@ -359,13 +366,6 @@ size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns )
         iterateLinesForPattern ( matches, i, patterns[i] );
 
     return matches;
-}
-void Validator::prepareToMatch ( const auto memberFunctor, const auto findingFunctor )
-{
-    matchCheckPatternFunctor = memberFunctor;
-    matchFindingFunctor      = findingFunctor;
-
-    lastLineOfInterest = nullptr;
 }
 bool Validator::checkMatchesCountValid ( const auto& patterns, const auto matches )
 {

@@ -69,7 +69,7 @@ private:
     // ** Reduces parameter throughput
     RegexType curType;
     // ** Exclusion error reporting utility
-    const std::string_view* lastLineOfInterest;
+    const std::string_view* firstLineOfInterest;
     // ** Utilitized inside matching loop
     size_t startMatches;
 
