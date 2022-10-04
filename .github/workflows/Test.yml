@@ -38,6 +38,11 @@ jobs:
         with:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_matches_pass.regex
+      - name: Pass E Edge Case
+        uses: ./.github/workflows/test_pass_no_failures
+        with:
+          log_file: tests/edge_cases/eof.log
+          regex_file: tests/edge_cases/eof.regex
 
       - name: Fail A
         uses: ./.github/workflows/test_fail_fail
