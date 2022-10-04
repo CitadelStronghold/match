@@ -250,9 +250,7 @@ bool Validator::checkRegexes ( const RegexType type, auto&& functor )
     for ( size_t i {}; i < patternCount; i++ )
     {
         const auto startMatches = matches;
-
-        // TODO ONLY ON ::No
-        const std::string_view* lastLineOfInterest {};
+        lastLineOfInterest      = nullptr;
 
         for ( const auto& line : logLines )
             if ( type == RegexType::Yes )

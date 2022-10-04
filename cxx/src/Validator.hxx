@@ -71,6 +71,8 @@ private:
     bool   isAtEnd;
     size_t endIndex;
     size_t curStartIndex;
+    // ** Exclusion error reporting utility
+    const std::string_view* lastLineOfInterest;
 
     void resetSplit ();
 
