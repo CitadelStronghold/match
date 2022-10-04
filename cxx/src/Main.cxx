@@ -2,26 +2,24 @@
 
 #include "Validator.hxx"
 
-bool checkArgs ( const int argc )
+bool validArgCount ( const int argc )
 {
-    if ( argc != 3 )
-    {
-        std::cout << "Usage: TeekValidator log.txt regexes.txt"
-                  << "\n";
-        return false;
-    }
+    if ( argc == 3 )
+        return true;
 
-    return true;
+    std::cout << "Usage: TeekValidator LOG_FILE REGEXES_FILE"
+              << "\n";
+    return false;
 }
 
 int main ( const int argc, const char* const* const argv )
 {
-    if ( !checkArgs ( argc ) )
+    if ( !validArgCount ( argc ) )
         return -1;
 
     try
     {
-        Validator validator { argc, argv };
+        Validator validator { uint8_t ( argc ), argv };
         return validator.getResult ();
     }
     catch ( std::exception& e )
