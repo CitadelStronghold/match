@@ -167,6 +167,7 @@ void Validator::instantiateCurrentLine ( const size_t i )
 {
     // ** How many characters were in this line?
     const auto distance = getDistanceI ( i );
+    std::cout << i << ": " << distance << "\n";
     if ( distance > 0 )
         instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance ) );
     else
