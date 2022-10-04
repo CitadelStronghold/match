@@ -1,0 +1,15 @@
+inputs:
+  pattern:
+    type: string
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Match Not
+      shell: bash
+      run: |
+        ls result.log || exit -1
+        cat result.log
+
+        result="$(cat result.log)"
+        (![[ "$result" =~ (${{ inputs.pattern }}) ]] && echo "!Matched: ${{ inputs.pattern }}") || (echo "Matched: ${{ inputs.pattern }}" && exit -1)
