@@ -71,13 +71,18 @@ private:
     bool   isAtEnd;
     size_t endIndex;
     size_t curStartIndex;
+    // ** Reduces parameter throughput
+    RegexType curType;
     // ** Exclusion error reporting utility
     const std::string_view* lastLineOfInterest;
+    // ** Utilitized inside matching loop
+    size_t startMatches;
 
     void resetSplit ();
 
     std::function< void ( const char*, const size_t ) > instantiateParsedLine {};
     bool ( Validator::*matchCheckPatternFunctor ) ( const std::string_view&, const std::regex& ) const;
+    void ( Validator::*matchFindingFunctor ) ( size_t& matches, size_t i, const std::regex& pattern );
 
 public:
 
@@ -129,24 +134,35 @@ private:
 
     void                 performMatches ();
     void                 performMatches_ ( const RegexType type, const int failCode, const auto memberFunctor );
-    [[nodiscard]] bool   checkRegexes ( const RegexType type, const auto functor );
-    [[nodiscard]] size_t iteratePatternsForMatches (
-        const auto&     patterns,           //
-        const RegexType type,               //
-        const auto      matchFindingFunctor //
-    );
-    [[nodiscard]] auto getMatchFindingFunctor ( const RegexType type ) const;
+    [[nodiscard]] bool   checkRegexes ( const auto memberFunctor );
+    [[nodiscard]] bool   checkMatchesCountValid ( const auto& patterns, const auto matches );
+    void                 prepareToMatch ( const auto memberFunctor, const auto findingFunctor );
+    [[nodiscard]] size_t iteratePatternsAndLinesForMatches ( const auto& patterns );
+    void                 iterateLinesForPattern (
+                        size_t&           matches, //
+                        const size_t      i,       //
+                        const std::regex& pattern  //
+                    );
+    [[nodiscard]] auto getMatchFindingFunctor () const;
     [[nodiscard]] void findMatchesYes (
         size_t&           matches, //
         const size_t      i,       //
-        const std::regex& pattern, //
-        const RegexType   type     //
+        const std::regex& pattern  //
     );
     [[nodiscard]] void findMatchesNo (
         size_t&           matches, //
         const size_t      i,       //
-        const std::regex& pattern, //
-        const RegexType   type     //
+        const std::regex& pattern  //
+    );
+    // ? Did we fail to find a match?
+    void checkYesFailure (
+        const size_t i,      //
+        const size_t matches //
+    );
+    // ? Did we match an exclusion?
+    void checkNoFailure (
+        const size_t i,      //
+        const size_t matches //
     );
 
     [[nodiscard]] bool checkYesRegex ( const std::string_view& target, const std::regex& regex ) const;

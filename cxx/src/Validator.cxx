@@ -240,16 +240,32 @@ Validator::StoredString Validator::loadText ( const char* path )
     return buffer;
 }
 
+void Validator::checkYesFailure (
+    const size_t i,      //
+    const size_t matches //
+)
+{
+    if ( matches != startMatches )
+        return;
+
+    hold[curType].failures.emplace_back ( &AnyLineView, &hold[curType].regexStrings[i] );
+}
+void Validator::checkNoFailure (
+    const size_t i,      //
+    const size_t matches //
+)
+{
+    if ( matches == ( startMatches + logLines.size () ) )
+        return;
+
+    hold[curType].failures.emplace_back ( lastLineOfInterest, &hold[curType].regexStrings[i] );
+}
 void Validator::findMatchesYes (
     size_t&           matches, //
     const size_t      i,       //
-    const std::regex& pattern, //
-    const RegexType   type     //
+    const std::regex& pattern
 )
 {
-    const auto startMatches = matches;
-    lastLineOfInterest      = nullptr;
-
     for ( const auto& line : logLines )
         if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
         {
@@ -258,62 +274,82 @@ void Validator::findMatchesYes (
         }
 
     // ? Did we fail to find a match?
-    if ( matches == startMatches )
-        hold[type].failures.emplace_back ( &AnyLineView, &hold[type].regexStrings[i] );
+    checkYesFailure ( i, matches );
 }
 void Validator::findMatchesNo (
     size_t&           matches, //
     const size_t      i,       //
-    const std::regex& pattern, //
-    const RegexType   type     //
+    const std::regex& pattern
 )
 {
-    const auto startMatches = matches;
-    lastLineOfInterest      = nullptr;
-
     for ( const auto& line : logLines )
         if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
             matches++;
         else
             lastLineOfInterest = &line;
 
-    // ? Did we find an exclusion?
-    if ( matches < ( startMatches + logLines.size () ) )
-        hold[type].failures.emplace_back ( lastLineOfInterest, &hold[type].regexStrings[i] );
+    // ? Did we match an exclusion?
+    checkNoFailure ( i, matches );
 }
-auto Validator::getMatchFindingFunctor ( const RegexType type ) const
+auto Validator::getMatchFindingFunctor () const
 {
-    return type == RegexType::Yes ? &Validator::findMatchesYes : &Validator::findMatchesNo;
+    return curType == RegexType::Yes ? &Validator::findMatchesYes : &Validator::findMatchesNo;
 }
-size_t Validator::iteratePatternsForMatches (
-    const auto&     patterns,           //
-    const RegexType type,               //
-    const auto      matchFindingFunctor //
+void Validator::iterateLinesForPattern (
+    size_t&           matches, //
+    const size_t      i,       //
+    const std::regex& pattern  //
 )
+{
+    startMatches = matches;
+
+    ( this->*matchFindingFunctor ) ( matches, i, pattern );
+}
+size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns )
 {
     size_t matches {};
 
     const size_t patternCount = patterns.size ();
     for ( size_t i {}; i < patternCount; i++ )
-        ( this->*matchFindingFunctor ) ( matches, i, patterns[i], type );
+        iterateLinesForPattern ( matches, i, patterns[i] );
 
     return matches;
 }
-bool Validator::checkRegexes ( const RegexType type, const auto memberFunctor )
+void Validator::prepareToMatch ( const auto memberFunctor, const auto findingFunctor )
 {
     matchCheckPatternFunctor = memberFunctor;
+    matchFindingFunctor      = findingFunctor;
 
-    const auto& patterns = hold[type].regexes;
-    const auto  matches  = iteratePatternsForMatches ( patterns, type, getMatchFindingFunctor ( type ) );
+    lastLineOfInterest = nullptr;
+}
+bool Validator::checkMatchesCountValid ( const auto& patterns, const auto matches )
+{
+    switch ( curType )
+    {
+    default:
+    case RegexType::Yes:
+        // ** Every inclusion was found somewhere
+        return matches == patterns.size ();
+    case RegexType::No:
+        // ** Every exclusion did not match
+        return matches == ( patterns.size () * logLines.size () );
+    }
+}
+bool Validator::checkRegexes ( const auto memberFunctor )
+{
+    prepareToMatch ( memberFunctor, getMatchFindingFunctor () );
 
-    return type == RegexType::Yes ? matches == patterns.size () : matches == ( patterns.size () * logLines.size () );
+    const auto& patterns = hold[curType].regexes;
+    const auto  matches  = iteratePatternsAndLinesForMatches ( patterns );
+
+    return checkMatchesCountValid ( patterns, matches );
 }
 void Validator::performMatches_ ( const RegexType type, const int failCode, const auto memberFunctor )
 {
-    if ( !checkRegexes ( type, memberFunctor ) )
-        hold[type].result = failCode;
+    curType = type;
 
-    return;
+    if ( !checkRegexes ( memberFunctor ) )
+        hold[curType].result |= failCode;
 }
 void Validator::performMatches ()
 {
