@@ -163,9 +163,11 @@ void Validator::instantiateCurrentLine ( const size_t i )
 {
     // ** How many characters were in this line?
     const auto distance = getDistanceI ( i );
-    if ( distance > 0 )
+    const bool hasDistance = distance > 0;
+    if ( hasDistance || !isSkipCharacter ( ( *splitString )[i] ) )
         instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance ) );
-    else
+
+    if ( !hasDistance )
         isPastYes = true; // ** We are done with Yes matches, switch to No
 }
 void Validator::emplaceNewLog ( const char* startIt, const size_t count )
