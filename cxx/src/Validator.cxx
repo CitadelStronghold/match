@@ -158,7 +158,7 @@ auto Validator::getOffsetCount ( const auto distance, const auto i ) const
 {
     const bool addExtraCharacter = isAtEnd &&                              //
                                    splitString->size () >= distance + 1 && //
-                                   !isSkippedCharacter ( ( *splitString )[i + 1] );
+                                   !isSkippedCharacter ( ( *splitString )[i] );
 
     // ** The last character is not a newline, so it needs to be included
     return addExtraCharacter ? distance + 1 : distance;
