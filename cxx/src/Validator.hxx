@@ -124,6 +124,7 @@ private:
     [[nodiscard]] bool        isAtEndOfParse ( const size_t i ) const;
     [[nodiscard]] bool        shouldSplitHere ( const size_t i ) const;
     [[nodiscard]] static bool isNewlineCharacter ( const char c );
+    [[nodiscard]] static bool isCarriageReturnCharacter ( const char c );
     [[nodiscard]] static bool isSkipCharacter ( const char c );
     [[nodiscard]] static bool isFilteredCharacter ( const char c );
 

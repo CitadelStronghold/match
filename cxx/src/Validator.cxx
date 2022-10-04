@@ -131,10 +131,8 @@ void Validator::finishCurrentLine ( size_t& i )
     instantiateCurrentLine ( i );
     startNewLine ( i );
 
-    #ifdef _WIN64
-    // ** If we hit \r, go past the \n
+    // ** If we hit \r, go past the \n if it exists
     skipPastExtraCharacters ( i );
-    #endif
 }
 RegexType Validator::getTargetType () const
 {
@@ -192,8 +190,10 @@ void Validator::skipPastExtraCharacters ( size_t& i )
 }
 void Validator::skipForward ( size_t& i )
 {
-    const char nextChar = ( *splitString )[curStartIndex];
-    if ( !isSkipCharacter ( nextChar ) )
+    if (                                                        //
+        !isCarriageReturnCharacter ( ( *splitString )[i] ) ||   //
+        !isNewlineCharacter ( ( *splitString )[curStartIndex] ) //
+    )
         return;
 
     i++;
@@ -204,9 +204,13 @@ bool Validator::isNewlineCharacter ( const char c )
 {
     return c == '\n';
 }
+bool Validator::isCarriageReturnCharacter ( const char c )
+{
+    return c == '\r';
+}
 bool Validator::isSkipCharacter ( const char c )
 {
-    return isNewlineCharacter ( c ) || c == '\r';
+    return isNewlineCharacter ( c ) || isCarriageReturnCharacter ( c );
 }
 bool Validator::isFilteredCharacter ( const char c )
 {
