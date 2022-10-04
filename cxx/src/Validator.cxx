@@ -196,7 +196,7 @@ void Validator::skipPastExtraCharacters ( size_t& i )
 void Validator::skipForward ( size_t& i )
 {
     const char nextChar = ( *splitString )[curStartIndex];
-    if ( !isSkipCharacter ( nextChar ) )
+    if ( !isNewlineCharacter ( nextChar ) )
         return;
 
     std::cout << "Skipping past '" << uint8_t(nextChar) << "' to '" << uint8_t(( *splitString )[curStartIndex + 1]) << "'" << std::endl;
