@@ -240,25 +240,31 @@ Validator::StoredString Validator::loadText ( const char* path )
     return buffer;
 }
 
+void Validator::addFailure ( const auto* lineString, const auto* patternString )
+{
+    hold[curType].failures.emplace_back ( lineString, patternString );
+}
 void Validator::checkYesFailure (
     const size_t i,      //
     const size_t matches //
 )
 {
+    // ? Did we find a match this loop?
     if ( matches != startMatches )
         return;
 
-    hold[curType].failures.emplace_back ( &AnyLineView, &hold[curType].regexStrings[i] );
+    addFailure ( &AnyLineView, &hold[curType].regexStrings[i] );
 }
 void Validator::checkNoFailure (
     const size_t i,      //
     const size_t matches //
 )
 {
+    // ? Did this loop expand the number of matches by the expected amount?
     if ( matches == ( startMatches + logLines.size () ) )
         return;
 
-    hold[curType].failures.emplace_back ( lastLineOfInterest, &hold[curType].regexStrings[i] );
+    addFailure ( lastLineOfInterest, &hold[curType].regexStrings[i] );
 }
 void Validator::findMatchesYes (
     size_t&           matches, //

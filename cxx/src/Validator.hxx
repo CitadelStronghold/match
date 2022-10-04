@@ -164,6 +164,7 @@ private:
         const size_t i,      //
         const size_t matches //
     );
+    void addFailure ( const auto* lineString, const auto* patternString );
 
     [[nodiscard]] bool checkYesRegex ( const std::string_view& target, const std::regex& regex ) const;
     [[nodiscard]] bool checkNoRegex ( const std::string_view& target, const std::regex& regex ) const;
