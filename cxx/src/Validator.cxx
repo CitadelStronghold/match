@@ -157,14 +157,14 @@ auto* Validator::getCurStartAddress () const
 }
 auto Validator::getOffsetCount ( const auto distance, const auto i ) const
 {
-    assert ( ( getCurStartAddress () + distance ) < ( splitString->data () + splitString->size () ) );
-
     const bool addExtraCharacter = isAtEnd && //
                                    !isSkippedCharacter ( ( *splitString )[i] );
 
-    /*assert (
-        !addExtraCharacter || ( getCurStartAddress () + distance + 1 ) < ( splitString->data () + splitString->size () )
-    );*/
+    // ** Distance being the number of characters consumed
+    assert ( ( getCurStartAddress () + distance ) <= ( splitString->data () + splitString->size () ) );
+    assert (
+        !addExtraCharacter || ( getCurStartAddress () + distance + 1 ) <= ( splitString->data () + splitString->size () )
+    );
 
     // ** The last character is not a newline, so it needs to be included
     return addExtraCharacter ? distance + 1 : distance;
