@@ -23,11 +23,6 @@ public:
 
 private:
 
-    static inline const std::string      AnyLine = "Any Line";
-    static inline const std::string_view AnyLineView { AnyLine.data (), AnyLine.size () };
-
-private:
-
     using StoredString = std::unique_ptr< char[] >;
 
     StoredString logBuffer {};
@@ -178,6 +173,11 @@ private:
 
     [[nodiscard]] static uint64_t getCurrentNanoseconds ();
     [[nodiscard]] static double   convertToMilliseconds ( const uint64_t nanoseconds );
+
+private:
+
+    static inline const std::string      AnyLine = "Any Line";
+    static inline const std::string_view AnyLineView { AnyLine.data (), AnyLine.size () };
 
 private:
 
