@@ -68,10 +68,10 @@ void Validator::splitAndParse ()
 void Validator::splitAndParse_ ()
 {
     setLogInstantiator ();
-    splitAndParse ( logString );
+    splitAndParseString ( logString );
 
     setRegexInstantiator ();
-    splitAndParse ( regexesString );
+    splitAndParseString ( regexesString );
 }
 void Validator::resetSplitVariables ()
 {
@@ -94,9 +94,9 @@ void Validator::setRegexInstantiator ()
             emplaceNewRegex ( startIt, count );
     };
 }
-void Validator::splitAndParse ( const std::string_view& source )
+void Validator::splitAndParseString ( const std::string_view& source )
 {
-    resetSplit ();
+    resetSplitVariables ();
 
     const size_t count = source.size ();
     endIndex           = source.size () - 1;

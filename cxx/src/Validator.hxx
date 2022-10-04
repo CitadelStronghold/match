@@ -108,7 +108,7 @@ private:
     void  setLogInstantiator ();
     void  setRegexInstantiator ();
     void  splitLogToLines ();
-    void  splitAndParse ( const std::string_view& source );
+    void  splitAndParseString ( const std::string_view& source );
     void  splitAndParseCharacter ( size_t& i );
     void  finishCurrentLine ( size_t& i );
     auto  getDistanceI ( const size_t i ) const;
