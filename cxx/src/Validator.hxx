@@ -62,7 +62,7 @@ private:
 
     const std::string_view* splitString;
 
-    bool   isPastSplit;
+    bool   isPastYes;
     bool   isAtEnd;
     size_t endIndex;
     size_t curStartIndex;
@@ -115,15 +115,18 @@ private:
     void  emplaceNewRegex ( const char* startIt, const size_t count );
     void  startNewLine ( const size_t i );
     // ** Ignore separating characters and empty lines
-    void skipPastSplitCharacters ( size_t& i );
-    void skipForward ( size_t& i, size_t& loops );
+    void               skipPastSplitCharacters ( size_t& i );
+    [[nodiscard]] bool skipForward ( size_t& i, bool& hitNewLine );
+    void               skipForward_ ( size_t& i, bool& hitNewLine, const char nextChar );
+    void               checkPastYes ( const bool hitNewLine, const bool isNewLine );
 
     [[nodiscard]] RegexType   getTargetType () const;
     [[nodiscard]] auto&       getTargetRegexStringsVector ();
     [[nodiscard]] auto&       getTargetRegexVector ();
     [[nodiscard]] bool        isAtEndOfParse ( const size_t i ) const;
     [[nodiscard]] bool        shouldSplitHere ( const size_t i ) const;
-    [[nodiscard]] static bool isSplitCharacter ( const char c );
+    [[nodiscard]] static bool isNewlineCharacter ( const char c );
+    [[nodiscard]] static bool isSkipCharacter ( const char c );
     [[nodiscard]] static bool isFilteredCharacter ( const char c );
 
 private:

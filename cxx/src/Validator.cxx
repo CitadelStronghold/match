@@ -75,7 +75,7 @@ void Validator::splitAndParse_ ()
 }
 void Validator::resetSplitVariables ()
 {
-    isPastSplit   = {};
+    isPastYes     = {};
     isAtEnd       = {};
     curStartIndex = {};
 
@@ -116,7 +116,7 @@ bool Validator::isAtEndOfParse ( const size_t i ) const
 }
 bool Validator::shouldSplitHere ( const size_t i ) const
 {
-    return isAtEnd || isSplitCharacter ( ( *splitString )[i] );
+    return isAtEnd || isSkipCharacter ( ( *splitString )[i] );
 }
 void Validator::splitAndParseCharacter ( size_t& i )
 {
@@ -136,7 +136,7 @@ void Validator::finishCurrentLine ( size_t& i )
 }
 RegexType Validator::getTargetType () const
 {
-    return !isPastSplit ? RegexType::Yes : RegexType::No;
+    return !isPastYes ? RegexType::Yes : RegexType::No;
 }
 auto& Validator::getTargetRegexStringsVector ()
 {
@@ -185,27 +185,46 @@ void Validator::startNewLine ( const size_t i )
 }
 void Validator::skipPastSplitCharacters ( size_t& i )
 {
-    size_t loops {};
+    bool hitNewLine = false;
 
-    do
-        skipForward ( i, loops );
-    while (                                                  //
-        curStartIndex <= endIndex &&                         //
-        isSplitCharacter ( ( *splitString )[curStartIndex] ) //
-    );
+    while ( curStartIndex <= endIndex && skipForward ( i, hitNewLine ) )
+        ;
 }
-void Validator::skipForward ( size_t& i, size_t& loops )
+bool Validator::skipForward ( size_t& i, bool& hitNewLine )
 {
-    if ( loops > 1 || ++loops > 1 )
-        isPastSplit = true;
+    const char nextChar = ( *splitString )[curStartIndex];
+    if ( !isSkipCharacter ( nextChar ) )
+        return false;
+
+    skipForward_ ( i, hitNewLine, nextChar );
+
+    return true;
+}
+void Validator::skipForward_ ( size_t& i, bool& hitNewLine, const char nextChar )
+{
+    const bool isNewLine = isNewlineCharacter ( nextChar );
+    checkPastYes ( hitNewLine, isNewLine );
+    hitNewLine = hitNewLine || isNewLine;
 
     i++;
     curStartIndex++;
 }
-
-bool Validator::isSplitCharacter ( const char c )
+void Validator::checkPastYes ( const bool hitNewLine, const bool isNewLine )
 {
-    return c == '\n' || c == '\r';
+    if (              //
+        hitNewLine && //
+        isNewLine     //
+    )
+        isPastYes = true;
+}
+
+bool Validator::isNewlineCharacter ( const char c )
+{
+    return c == '\n';
+}
+bool Validator::isSkipCharacter ( const char c )
+{
+    return isNewlineCharacter ( c ) || c == '\r';
 }
 bool Validator::isFilteredCharacter ( const char c )
 {

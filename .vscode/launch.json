@@ -9,8 +9,8 @@
             "type": "cppvsdbg",
             "request": "launch",
             "args": [
-                "test.log",
-                "test.regex"
+                "tests/pass.log",
+                "tests/pass.regex"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
