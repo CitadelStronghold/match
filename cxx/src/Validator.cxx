@@ -170,6 +170,7 @@ void Validator::instantiateCurrentLine ( const size_t i )
     // ** How many characters were in this line?
     const auto distance    = getDistanceI ( i );
     const bool hasDistance = distance > 0;
+
     if ( hasDistance || !isSkippedCharacter ( ( *splitString )[i] ) )
         instantiateParsedLine ( getCurStartAddress (), getOffsetCount ( distance, i ) );
 
