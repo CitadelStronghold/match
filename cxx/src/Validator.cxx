@@ -240,73 +240,65 @@ Validator::StoredString Validator::loadText ( const char* path )
     return buffer;
 }
 
-void Validator::findMatches (
-    size_t& matches, const size_t i, const std::regex& pattern, const RegexType type, auto&& functor
-)
+void Validator::findMatchesYes ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type )
 {
     const auto startMatches = matches;
     lastLineOfInterest      = nullptr;
 
     for ( const auto& line : logLines )
-        if ( type == RegexType::Yes )
+        if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
         {
-            if ( functor ( line, pattern ) )
-            {
-                matches++;
-                break;
-            }
-        }
-        else if ( type == RegexType::No )
-        {
-            if ( functor ( line, pattern ) )
-            {
-                matches++;
-            }
-            else
-            {
-                lastLineOfInterest = &line;
-            }
+            matches++;
+            break;
         }
 
-    // ? Did we fail to find a match or exclusion?
-    if ( type == RegexType::Yes )
-    {
-        if ( matches == startMatches )
-            hold[type].failures.emplace_back ( &AnyLineView, &hold[type].regexStrings[i] );
-    }
-    else if ( type == RegexType::No )
-    {
-        if ( matches < ( startMatches + logLines.size () ) )
-            hold[type].failures.emplace_back ( lastLineOfInterest, &hold[type].regexStrings[i] );
-    }
+    // ? Did we fail to find a match?
+    if ( matches == startMatches )
+        hold[type].failures.emplace_back ( &AnyLineView, &hold[type].regexStrings[i] );
 }
-size_t Validator::iteratePatternsForMatches ( const auto& patterns, const RegexType type, auto&& functor )
+void Validator::findMatchesNo ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type )
 {
+    const auto startMatches = matches;
+    lastLineOfInterest      = nullptr;
+
+    for ( const auto& line : logLines )
+        if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
+            matches++;
+        else
+            lastLineOfInterest = &line;
+
+    // ? Did we find an exclusion?
+    if ( matches < ( startMatches + logLines.size () ) )
+        hold[type].failures.emplace_back ( lastLineOfInterest, &hold[type].regexStrings[i] );
+}
+auto Validator::getMatchFindingFunctor ( const RegexType type ) const
+{
+    return type == RegexType::Yes ? &Validator::findMatchesYes : &Validator::findMatchesNo;
+}
+size_t Validator::iteratePatternsForMatches ( const auto& patterns, const RegexType type )
+{
+    const auto matchFindingFunctor = getMatchFindingFunctor ( type );
+
     size_t matches {};
 
     const size_t patternCount = patterns.size ();
     for ( size_t i {}; i < patternCount; i++ )
-        findMatches ( matches, i, patterns[i], type, functor );
+        ( this->*matchFindingFunctor ) ( matches, i, patterns[i], type );
 
     return matches;
 }
-bool Validator::checkRegexes ( const RegexType type, auto&& functor )
+bool Validator::checkRegexes ( const RegexType type, const auto memberFunctor )
 {
+    matchCheckPatternFunctor = memberFunctor;
+
     const auto& patterns = hold[type].regexes;
-    const auto  matches  = iteratePatternsForMatches ( patterns, type, functor );
+    const auto  matches  = iteratePatternsForMatches ( patterns, type );
 
     return type == RegexType::Yes ? matches == patterns.size () : matches == ( patterns.size () * logLines.size () );
 }
-auto Validator::makeTestFunctor ( auto&& memberFunctor )
+void Validator::performMatches_ ( const RegexType type, const int failCode, const auto memberFunctor )
 {
-    return [this, &memberFunctor] ( auto&&... args ) -> bool
-    {
-        return ( this->*memberFunctor ) ( std::forward< decltype ( args ) > ( args )... );
-    };
-}
-void Validator::performMatches_ ( const RegexType type, const int failCode, auto&& memberFunctor )
-{
-    if ( !checkRegexes ( type, makeTestFunctor ( memberFunctor ) ) )
+    if ( !checkRegexes ( type, memberFunctor ) )
         hold[type].result = failCode;
 
     return;

@@ -77,6 +77,7 @@ private:
     void resetSplit ();
 
     std::function< void ( const char*, const size_t ) > instantiateParsedLine {};
+    bool ( Validator::*matchCheckPatternFunctor ) ( const std::string_view&, const std::regex& ) const;
 
 public:
 
@@ -127,13 +128,14 @@ private:
 private:
 
     void                 performMatches ();
-    void                 performMatches_ ( const RegexType type, const int failCode, auto&& functor );
-    [[nodiscard]] bool   checkRegexes ( const RegexType type, auto&& functor );
-    [[nodiscard]] size_t iteratePatternsForMatches ( const auto& patterns, const RegexType type, auto&& functor );
+    void                 performMatches_ ( const RegexType type, const int failCode, const auto memberFunctor );
+    [[nodiscard]] bool   checkRegexes ( const RegexType type, const auto functor );
+    [[nodiscard]] size_t iteratePatternsForMatches ( const auto& patterns, const RegexType type );
+    [[nodiscard]] auto   getMatchFindingFunctor ( const RegexType type ) const;
     [[nodiscard]] void
-    findMatches ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type, auto&& functor );
-
-    [[nodiscard]] auto makeTestFunctor ( auto&& memberFunctor );
+    findMatchesYes ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type );
+    [[nodiscard]] void
+    findMatchesNo ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type );
 
     [[nodiscard]] bool checkYesRegex ( const std::string_view& target, const std::regex& regex ) const;
     [[nodiscard]] bool checkNoRegex ( const std::string_view& target, const std::regex& regex ) const;
