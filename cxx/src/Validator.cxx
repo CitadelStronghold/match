@@ -90,6 +90,7 @@ void Validator::setLogInstantiator ()
 {
     instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
     {
+        std::cout << "Instantiating line using " << std::string_view { startIt, count } << "\n";
         emplaceNewLog ( startIt, count );
     };
 }
