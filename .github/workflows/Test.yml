@@ -26,4 +26,5 @@ jobs:
       - name: Cat
         run: |
           ls result.log || exit -1
-          cat result.log
+          [[ "$(cat result.log)" =~ ^Matches Passed$ ]] || exit -1
+          [[ "$(cat result.log)" =~ ^Exclusions Passed$ ]] || exit -1
