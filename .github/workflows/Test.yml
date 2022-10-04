@@ -26,5 +26,5 @@ jobs:
       - name: A
         uses: ./.github/workflows/match2
         with:
-          patternA: ^Matches Passed$
-          patternB: ^Exclusions Passed$
+          patternA: ^.*Matches.+Passed.*$
+          patternB: ^.*Exclusions.+Passed.*$
