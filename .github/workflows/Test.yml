@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: |
           cmake -S cxx -B build
-          cmake --build build --config Release -- -o3
+          cmake --build build --config Release
       - name: Test
         if: runner.os == 'Windows'
         run: |
