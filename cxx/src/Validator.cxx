@@ -9,20 +9,18 @@ Validator::Validator ( const uint8_t argc, const char* const* const argv )
     : argc ( argc ),
       argv ( argv )
 {
-    prepareFromArguments ();
-
-    // ** They don't care what the log has in it
-    if ( regexesString.empty () )
+    if ( !prepareFromArguments () )
         return;
 
     splitAndParseRegexes ();
+    performMatches ();
 
-    printTimeTaken ();
+    printResults ();
 }
 
 int Validator::getResult () const
 {
-    return result;
+    return results[RegexType::Yes] | results[RegexType::No];
 }
 
 void Validator::checkArgumentsValid () const
@@ -38,16 +36,17 @@ void Validator::checkArgumentValid ( const uint8_t i ) const
     if ( !std::filesystem::is_regular_file ( argv[i] ) )
         throw std::runtime_error ( "Argument '" + std::string { argv[i] } + "' is not a file!" );
 }
-void Validator::prepareFromArguments ()
+bool Validator::prepareFromArguments ()
 {
-    // printArguments ();
-
     readStartTime = getCurrentNanoseconds ();
 
     checkArgumentsValid ();
     loadTargetedFiles ();
 
     readEndTime = getCurrentNanoseconds ();
+
+    // ? They don't care what the log has in it?
+    return !regexesString.empty ();
 }
 void Validator::loadTargetedFiles ()
 {
@@ -122,7 +121,11 @@ void Validator::instantiateCurrentRegex ( const size_t i )
 {
     if ( const auto distance = getDistanceI ( i ); distance > 0 )
         if ( const auto* curStartIt = getCurStartAddress (); !isFilteredCharacter ( *curStartIt ) )
-            getTargetRegexVector ().emplace_back ( curStartIt, getOffsetEndIndex ( distance ) );
+            emplaceNewRegex ( curStartIt, getOffsetEndIndex ( distance ) );
+}
+void Validator::emplaceNewRegex ( const char* startIt, const size_t count )
+{
+    getTargetRegexVector ().emplace_back ( startIt, count );
 }
 void Validator::startNewRegex ( const size_t i )
 {
@@ -190,6 +193,51 @@ Validator::StoredString Validator::loadText ( const char* path )
     return buffer;
 }
 
+bool Validator::iterateRegexes ( const RegexType type, auto&& functor ) const
+{
+    const auto&  vec   = regexes[type];
+    const size_t count = vec.size ();
+
+    for ( size_t i {}; i < count; i++ )
+        if ( !functor ( vec[i] ) )
+            return false;
+
+    return true;
+}
+auto Validator::makeTestFunctor ( auto&& memberFunctor ) const
+{
+    return [this, &memberFunctor] ( const std::regex& regex ) -> bool
+    {
+        return ( this->*memberFunctor ) ( regex );
+    };
+}
+template< size_t FailCode >
+void Validator::performMatches_ ( const RegexType type, auto&& memberFunctor )
+{
+    if ( !iterateRegexes ( type, makeTestFunctor ( memberFunctor ) ) )
+        results[type] = FailCode;
+}
+void Validator::performMatches ()
+{
+    checkStartTime = getCurrentNanoseconds ();
+
+    performMatches_< -1 > ( RegexType::Yes, &Validator::checkYesRegex );
+    performMatches_< -2 > ( RegexType::No, &Validator::checkNoRegex );
+
+    checkEndTime = getCurrentNanoseconds ();
+}
+
+bool Validator::checkYesRegex ( const std::regex& regex ) const
+{
+    // std::regex_search ( logString.begin (), logString.end (), regex );
+
+    return true;
+}
+bool Validator::checkNoRegex ( const std::regex& regex ) const
+{
+    return true;
+}
+
 uint64_t Validator::getCurrentNanoseconds ()
 {
     return std::chrono::duration< uint64_t, std::nano > (            //
@@ -220,13 +268,30 @@ void Validator::printLoaded ( const uintmax_t bytes, const char* path )
         path <<                                  //
         "'\033[0m\n";
 }
-
 void Validator::printTimeTaken () const
 {
-    std::cout << "\033[32mRead files in \033[1;32m" << convertToMilliseconds ( readEndTime - readStartTime )
-              << " milliseconds\033[0m\n";
-    std::cout << "\033[32mParsed in \033[1;32m" << convertToMilliseconds ( parseEndTime - parseStartTime )
-              << " milliseconds\033[0m\n";
-    std::cout << "\033[32mTotal \033[1;32m" << convertToMilliseconds ( getCurrentNanoseconds () - startTime )
-              << " milliseconds\033[0m\n";
+    std::cout << "\033[36mRead in \033[1m" << convertToMilliseconds ( readEndTime - readStartTime )
+              << " \033[0;36mmilliseconds\033[0m\n";
+    std::cout << "\033[36mParsed in \033[1m" << convertToMilliseconds ( parseEndTime - parseStartTime )
+              << " \033[0;36mmilliseconds\033[0m\n";
+    std::cout << "\033[36mChecked in \033[1m" << convertToMilliseconds ( checkEndTime - checkStartTime )
+              << " \033[0;36mmilliseconds\033[0m\n";
+    std::cout << "\033[36mTotal \033[1m" << convertToMilliseconds ( getCurrentNanoseconds () - startTime )
+              << " \033[0;36mmilliseconds\033[0m\n";
+}
+
+void Validator::printResults () const
+{
+    printTimeTaken ();
+
+    printResult ( "Matches", RegexType::Yes );
+    printResult ( "Exclusions", RegexType::No );
+}
+void Validator::printResult ( const char* name, const RegexType type ) const
+{
+    const auto        result       = results[type];
+    const std::string color        = result == 0 ? "\033[32m" : "\033[31m";
+    const std::string resultString = result == 0 ? "\033[1mPassed" : "\033[1mFailed";
+
+    std::cout << color << name << " " << resultString << "\033[0m\n";
 }

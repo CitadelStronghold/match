@@ -22,13 +22,13 @@ public:
 
 private:
 
-    int result { 0 };
-
     const uint64_t startTime { getCurrentNanoseconds () };
     uint64_t       readStartTime {};
     uint64_t       readEndTime {};
     uint64_t       parseStartTime {};
     uint64_t       parseEndTime {};
+    uint64_t       checkStartTime {};
+    uint64_t       checkEndTime {};
 
     using StoredString = std::unique_ptr< char[] >;
 
@@ -38,7 +38,8 @@ private:
     std::string_view logString {};
     std::string_view regexesString {};
 
-    RegexHolder< std::vector< std::string_view > > regexes {};
+    RegexHolder< int >                       results {};
+    RegexHolder< std::vector< std::regex > > regexes {};
 
 private:
 
@@ -60,8 +61,15 @@ private:
     void checkArgumentsValid () const;
     void checkArgumentValid ( const uint8_t i ) const;
 
-    void prepareFromArguments ();
-    void loadTargetedFiles ();
+    [[nodiscard]] bool prepareFromArguments ();
+    void               loadTargetedFiles ();
+
+    [[nodiscard]] static StoredString                               makeBufferTerminated ( const size_t bytes );
+    [[nodiscard]] static std::ifstream                              makeStream ( const char* path );
+    [[nodiscard]] static std::pair< std::ifstream, std::streamoff > createStream ( const char* path );
+    [[nodiscard]] static StoredString                               loadText ( const char* path );
+
+private:
 
     void  splitAndParseRegexes ();
     void  splitAndParseRegexes_ ();
@@ -71,6 +79,7 @@ private:
     auto* getCurStartAddress () const;
     auto  getOffsetEndIndex ( const auto distance ) const;
     void  instantiateCurrentRegex ( const size_t i );
+    void  emplaceNewRegex ( const char* startIt, const size_t count );
     void  startNewRegex ( const size_t i );
     // ** Ignore separating characters and empty lines
     void skipPastSplitCharacters ( size_t& i );
@@ -84,10 +93,17 @@ private:
 
 private:
 
-    [[nodiscard]] static StoredString                               makeBufferTerminated ( const size_t bytes );
-    [[nodiscard]] static std::ifstream                              makeStream ( const char* path );
-    [[nodiscard]] static std::pair< std::ifstream, std::streamoff > createStream ( const char* path );
-    [[nodiscard]] static StoredString                               loadText ( const char* path );
+    void performMatches ();
+    template< size_t FailCode >
+    void               performMatches_ ( const RegexType type, auto&& functor );
+    [[nodiscard]] bool iterateRegexes ( const RegexType type, auto&& functor ) const;
+
+    [[nodiscard]] auto makeTestFunctor ( auto&& memberFunctor ) const;
+
+    [[nodiscard]] bool checkYesRegex ( const std::regex& regex ) const;
+    [[nodiscard]] bool checkNoRegex ( const std::regex& regex ) const;
+
+private:
 
     [[nodiscard]] static uint64_t getCurrentNanoseconds ();
     [[nodiscard]] static double   convertToMilliseconds ( const uint64_t nanoseconds );
@@ -97,5 +113,8 @@ private:
     void        printArguments () const;
     static void printLoaded ( const uintmax_t bytes, const char* path );
     void        printTimeTaken () const;
+
+    void printResults () const;
+    void printResult ( const char* name, const RegexType type ) const;
 
 }; // class Validator
