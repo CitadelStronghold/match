@@ -199,7 +199,7 @@ void Validator::skipForward ( size_t& i )
     if ( !isSkipCharacter ( nextChar ) )
         return;
 
-    std::cout << "Skipping past " << uint8_t(nextChar) << " to " << uint8_t(( *splitString )[curStartIndex + 1]) << std::endl;
+    std::cout << "Skipping past '" << uint8_t(nextChar) << "' to '" << uint8_t(( *splitString )[curStartIndex + 1]) << "'" << std::endl;
 
     i++;
     curStartIndex++;
