@@ -25,4 +25,5 @@ jobs:
           regex_file: tests/pass.regex
       - name: Cat
         run: |
+          ls result2.log || exit -1
           cat result.log
