@@ -90,7 +90,6 @@ void Validator::setLogInstantiator ()
 {
     instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
     {
-        std::cout << "Instantiating line using '" << std::string_view { startIt, count } << "'\n";
         emplaceNewLog ( startIt, count );
     };
 }
@@ -99,10 +98,7 @@ void Validator::setRegexInstantiator ()
     instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
     {
         if ( !isFilteredCharacter ( *startIt ) )
-        {
-            std::cout << "Instantiating regex using '" << std::string_view { startIt, count } << "'\n";
             emplaceNewRegex ( startIt, count );
-        }
     };
 }
 void Validator::splitAndParseString ( const std::string_view& source )
@@ -135,10 +131,10 @@ void Validator::finishCurrentLine ( size_t& i )
     instantiateCurrentLine ( i );
     startNewLine ( i );
 
-#ifdef _WIN64
+    #ifdef _WIN64
     // ** If we hit \r, go past the \n
     skipPastExtraCharacters ( i );
-#endif
+    #endif
 }
 RegexType Validator::getTargetType () const
 {
@@ -169,7 +165,6 @@ void Validator::instantiateCurrentLine ( const size_t i )
 {
     // ** How many characters were in this line?
     const auto distance = getDistanceI ( i );
-    std::cout << i << ": " << distance << "\n";
     if ( distance > 0 )
         instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance ) );
     else
@@ -200,9 +195,6 @@ void Validator::skipForward ( size_t& i )
     const char nextChar = ( *splitString )[curStartIndex];
     if ( !isSkipCharacter ( nextChar ) )
         return;
-
-    std::cout << "Skipping past '" << uint8_t ( nextChar ) << "' to '"
-              << uint8_t ( ( *splitString )[curStartIndex + 1] ) << "'" << std::endl;
 
     i++;
     curStartIndex++;
