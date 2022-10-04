@@ -166,15 +166,9 @@ private:
         const std::regex& pattern  //
     );
     // ? Did we fail to find a match?
-    void checkYesFailure (
-        const size_t i,      //
-        const size_t matches //
-    );
+    void checkYesFailure ( const size_t i, const size_t matches );
     // ? Did we match an exclusion?
-    void checkNoFailure (
-        const size_t i,      //
-        const size_t matches //
-    );
+    void checkNoFailure ( const size_t i, const size_t matches );
     void addFailure ( const auto* lineString, const auto* patternString );
 
     [[nodiscard]] bool checkYesRegex ( const std::string_view& target, const std::regex& regex ) const;

@@ -252,10 +252,7 @@ void Validator::addFailure ( const auto* lineString, const auto* patternString )
 {
     hold[curType].failures.emplace_back ( lineString, patternString );
 }
-void Validator::checkYesFailure (
-    const size_t i,      //
-    const size_t matches //
-)
+void Validator::checkYesFailure ( const size_t i, const size_t matches )
 {
     // ? Did we find a match this loop?
     if ( matches != startMatches )
@@ -263,10 +260,7 @@ void Validator::checkYesFailure (
 
     addFailure ( &AnyLineView, &hold[curType].regexStrings[i] );
 }
-void Validator::checkNoFailure (
-    const size_t i,      //
-    const size_t matches //
-)
+void Validator::checkNoFailure ( const size_t i, const size_t matches )
 {
     // ? Did this loop expand the number of matches by the expected amount?
     if ( matches == ( startMatches + logLines.size () ) )
