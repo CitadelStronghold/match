@@ -98,7 +98,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'Any Line[^\n\|]+\|[^\n]+\^987\\$\n'
+          pattern: 'Any Line[^\n\|]+\|[^\n]+\^987\\$[^\w]'
 
       - name: Fail
         uses: ./.github/workflows/test_fail_pass
