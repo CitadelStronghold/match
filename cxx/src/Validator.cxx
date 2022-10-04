@@ -97,8 +97,10 @@ void Validator::setRegexInstantiator ()
 {
     instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
     {
-        if ( !isFilteredCharacter ( *startIt ) )
+        if ( !isFilteredCharacter ( *startIt ) ) {
+            std::cout << "Instantiating regex using " << std::string_view { startIt, count } << "\n";
             emplaceNewRegex ( startIt, count );
+        }
     };
 }
 void Validator::splitAndParseString ( const std::string_view& source )
