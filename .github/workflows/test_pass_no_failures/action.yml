@@ -1,0 +1,20 @@
+name: 'no_failures'
+inputs:
+  log_file:
+    required: true
+    type: string
+  regex_file:
+    required: true
+    type: string
+runs:
+  using: 'composite'
+  steps:
+    - name: Test
+      uses: ./.github/workflows/test_pass
+      with:
+        log_file: ${{ inputs.log_file }}
+        regex_file: ${{ inputs.regex_file }}
+        patternA: '[^\n]*Matches[^\n]+Passed[^\n]*'
+        patternB: '[^\n]*Exclusions[^\n]+Passed[^\n]*'
+    - name: Validate
+      uses: ./.github/workflows/no_failures

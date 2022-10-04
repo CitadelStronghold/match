@@ -18,12 +18,8 @@ jobs:
         run: |
           cmake -S cxx -B build
           cmake --build build --config Release
-      - name: Test
-        uses: ./.github/workflows/test
+      - name: A
+        uses: ./.github/workflows/test_pass_no_failures
         with:
           log_file: tests/pass.log
           regex_file: tests/pass.regex
-          patternA: '[^\n]*Matches[^\n]+Passed[^\n]*'
-          patternB: '[^\n]*Exclusions[^\n]+Passed[^\n]*'
-      - name: Validate
-        uses: ./.github/workflows/no_failures
