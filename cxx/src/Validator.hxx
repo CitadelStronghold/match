@@ -155,12 +155,12 @@ private:
         const std::string_view& line,    //
         const std::regex&       pattern  //
     );
-    [[nodiscard]] void findMatchesYes (
+    void findMatchesYes (
         size_t&           matches, //
         const size_t      i,       //
         const std::regex& pattern  //
     );
-    [[nodiscard]] void findMatchesNo (
+    void findMatchesNo (
         size_t&           matches, //
         const size_t      i,       //
         const std::regex& pattern  //
