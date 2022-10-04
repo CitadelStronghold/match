@@ -135,8 +135,10 @@ void Validator::finishCurrentLine ( size_t& i )
     instantiateCurrentLine ( i );
     startNewLine ( i );
 
-    // ** Ignore extra separating characters end of the line
+#ifdef _WIN64
+    // ** If we hit \r, go past the \n
     skipPastExtraCharacters ( i );
+#endif
 }
 RegexType Validator::getTargetType () const
 {
@@ -196,10 +198,11 @@ void Validator::skipPastExtraCharacters ( size_t& i )
 void Validator::skipForward ( size_t& i )
 {
     const char nextChar = ( *splitString )[curStartIndex];
-    if ( !isNewlineCharacter ( nextChar ) )
+    if ( !isSkipCharacter ( nextChar ) )
         return;
 
-    std::cout << "Skipping past '" << uint8_t(nextChar) << "' to '" << uint8_t(( *splitString )[curStartIndex + 1]) << "'" << std::endl;
+    std::cout << "Skipping past '" << uint8_t ( nextChar ) << "' to '"
+              << uint8_t ( ( *splitString )[curStartIndex + 1] ) << "'" << std::endl;
 
     i++;
     curStartIndex++;
