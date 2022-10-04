@@ -38,12 +38,6 @@ void Validator::loadArguments ()
 
     log     = { log_.get () };
     regexes = { regexes_.get () };
-
-    for ( int i = 0; i < log.size (); ++i )
-        std::cout << "log[" << i << "] '" << log[i] << "'" << std::endl;
-
-    std::cout << "Log: " << log.size () << "\n";
-    std::cout << "Regexes: " << regexes.size () << "\n";
 }
 
 std::ifstream Validator::createStream ( const char* path )
