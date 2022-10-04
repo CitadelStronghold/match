@@ -23,12 +23,7 @@ jobs:
         with:
           log_file: tests/pass.log
           regex_file: tests/pass.regex
-      - name: Cat
-        shell: bash
-        run: |
-          ls result.log || exit -1
-
-          result='$(cat result.log)'
-
-          [[ "$result" =~ (^Matches Passed$) ]] || (echo "Result match failed 1" && exit -1)
-          [[ "$result" =~ (^Exclusions Passed$) ]] || (echo "Result match failed 2" && exit -1)
+      - name: A
+        uses: ./.github/workflows/match
+        with:
+          match: ^Matches Passed$

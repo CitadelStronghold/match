@@ -1,0 +1,17 @@
+name: 'match'
+inputs:
+  match:
+    type: string
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Match
+      if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        ls result.log || exit -1
+
+        result='$(cat result.log)'
+
+        [[ "$result" =~ (${{ inputs.match }}) ]] || (echo "Result match failed: ${{ inputs.match }}" && exit -1)
