@@ -1,5 +1,6 @@
 #include "Validator.hxx"
 
+#include <cassert>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -156,8 +157,9 @@ auto* Validator::getCurStartAddress () const
 }
 auto Validator::getOffsetCount ( const auto distance, const auto i ) const
 {
-    const bool addExtraCharacter = isAtEnd &&                                                  //
-                                   getCurStartAddress () + distance < &*splitString->end () && //
+    assert ( getCurStartAddress () + distance < &*splitString->end () );
+
+    const bool addExtraCharacter = isAtEnd && //
                                    !isSkippedCharacter ( ( *splitString )[i] );
 
     // ** The last character is not a newline, so it needs to be included
