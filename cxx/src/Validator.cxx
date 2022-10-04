@@ -90,7 +90,7 @@ void Validator::setLogInstantiator ()
 {
     instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
     {
-        std::cout << "Instantiating line using " << std::string_view { startIt, count } << "\n";
+        std::cout << "Instantiating line using '" << std::string_view { startIt, count } << "'\n";
         emplaceNewLog ( startIt, count );
     };
 }
@@ -99,7 +99,7 @@ void Validator::setRegexInstantiator ()
     instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
     {
         if ( !isFilteredCharacter ( *startIt ) ) {
-            std::cout << "Instantiating regex using " << std::string_view { startIt, count } << "\n";
+            std::cout << "Instantiating regex using '" << std::string_view { startIt, count } << "'\n";
             emplaceNewRegex ( startIt, count );
         }
     };
@@ -391,7 +391,7 @@ void Validator::performMatches ()
 
 bool Validator::checkYesRegex ( const std::string_view& target, const std::regex& regex ) const
 {
-    return std::regex_search ( target.begin (), target.end (), regex );
+    return !!std::regex_search ( target.begin (), target.end (), regex );
 }
 bool Validator::checkNoRegex ( const std::string_view& target, const std::regex& regex ) const
 {
