@@ -19,8 +19,7 @@ int main ( const int argc, const char* const* const argv )
 
     try
     {
-        Validator validator { uint8_t ( argc ), argv };
-        return validator.getResult ();
+        return Validator { uint8_t ( argc ), argv }.getResult ();
     }
     catch ( std::exception& e )
     {
