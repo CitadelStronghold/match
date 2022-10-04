@@ -115,10 +115,8 @@ private:
     void  emplaceNewRegex ( const char* startIt, const size_t count );
     void  startNewLine ( const size_t i );
     // ** Ignore separating characters and empty lines
-    void               skipPastSplitCharacters ( size_t& i );
-    [[nodiscard]] bool skipForward ( size_t& i, bool& hitNewLine );
-    void               skipForward_ ( size_t& i, bool& hitNewLine, const char nextChar );
-    void               checkPastYes ( const bool hitNewLine, const bool isNewLine );
+    void skipPastExtraCharacters ( size_t& i );
+    void skipForward ( size_t& i );
 
     [[nodiscard]] RegexType   getTargetType () const;
     [[nodiscard]] auto&       getTargetRegexStringsVector ();

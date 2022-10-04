@@ -135,8 +135,8 @@ void Validator::finishCurrentLine ( size_t& i )
     instantiateCurrentLine ( i );
     startNewLine ( i );
 
-    // ** Ignore separating characters and empty lines from the start of the next line
-    skipPastSplitCharacters ( i );
+    // ** Ignore extra separating characters end of the line
+    skipPastExtraCharacters ( i );
 }
 RegexType Validator::getTargetType () const
 {
@@ -167,10 +167,10 @@ void Validator::instantiateCurrentLine ( const size_t i )
 {
     // ** How many characters were in this line?
     const auto distance = getDistanceI ( i );
-    if ( distance == 0 )
-        return;
-
-    instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance ) );
+    if ( distance > 0 )
+        instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance ) );
+    else
+        isPastYes = true; // ** We are done with Yes matches, switch to No
 }
 void Validator::emplaceNewLog ( const char* startIt, const size_t count )
 {
@@ -187,41 +187,19 @@ void Validator::startNewLine ( const size_t i )
 {
     curStartIndex = i + 1;
 }
-void Validator::skipPastSplitCharacters ( size_t& i )
+void Validator::skipPastExtraCharacters ( size_t& i )
 {
-    bool hitNewLine = false;
-
-    while ( curStartIndex <= endIndex && skipForward ( i, hitNewLine ) )
-        ;
+    if ( curStartIndex <= endIndex )
+        skipForward ( i );
 }
-bool Validator::skipForward ( size_t& i, bool& hitNewLine )
+void Validator::skipForward ( size_t& i )
 {
     const char nextChar = ( *splitString )[curStartIndex];
     if ( !isSkipCharacter ( nextChar ) )
-        return false;
-
-    skipForward_ ( i, hitNewLine, nextChar );
-
-    return true;
-}
-void Validator::skipForward_ ( size_t& i, bool& hitNewLine, const char nextChar )
-{
-    std::cout << "Skipping forward " << nextChar << ", " << i << ", " << hitNewLine << std::endl;
-
-    const bool isNewLine = isNewlineCharacter ( nextChar );
-    checkPastYes ( hitNewLine, isNewLine );
-    hitNewLine = hitNewLine || isNewLine;
+        return;
 
     i++;
     curStartIndex++;
-}
-void Validator::checkPastYes ( const bool hitNewLine, const bool isNewLine )
-{
-    if (              //
-        hitNewLine && //
-        isNewLine     //
-    )
-        isPastYes = true;
 }
 
 bool Validator::isNewlineCharacter ( const char c )
@@ -230,7 +208,8 @@ bool Validator::isNewlineCharacter ( const char c )
 }
 bool Validator::isSkipCharacter ( const char c )
 {
-    std::cout << "Is skip character? '" << c << "' " << (int)c << " : " << (isNewlineCharacter ( c ) || c == '\r') << "\n";
+    std::cout << "Is skip character? '" << c << "' " << (int) c << " : " << ( isNewlineCharacter ( c ) || c == '\r' )
+              << "\n";
     return isNewlineCharacter ( c ) || c == '\r';
 }
 bool Validator::isFilteredCharacter ( const char c )
