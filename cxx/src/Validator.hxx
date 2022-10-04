@@ -130,12 +130,24 @@ private:
     void                 performMatches ();
     void                 performMatches_ ( const RegexType type, const int failCode, const auto memberFunctor );
     [[nodiscard]] bool   checkRegexes ( const RegexType type, const auto functor );
-    [[nodiscard]] size_t iteratePatternsForMatches ( const auto& patterns, const RegexType type );
-    [[nodiscard]] auto   getMatchFindingFunctor ( const RegexType type ) const;
-    [[nodiscard]] void
-    findMatchesYes ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type );
-    [[nodiscard]] void
-    findMatchesNo ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type );
+    [[nodiscard]] size_t iteratePatternsForMatches (
+        const auto&     patterns,           //
+        const RegexType type,               //
+        const auto      matchFindingFunctor //
+    );
+    [[nodiscard]] auto getMatchFindingFunctor ( const RegexType type ) const;
+    [[nodiscard]] void findMatchesYes (
+        size_t&           matches, //
+        const size_t      i,       //
+        const std::regex& pattern, //
+        const RegexType   type     //
+    );
+    [[nodiscard]] void findMatchesNo (
+        size_t&           matches, //
+        const size_t      i,       //
+        const std::regex& pattern, //
+        const RegexType   type     //
+    );
 
     [[nodiscard]] bool checkYesRegex ( const std::string_view& target, const std::regex& regex ) const;
     [[nodiscard]] bool checkNoRegex ( const std::string_view& target, const std::regex& regex ) const;

@@ -240,7 +240,12 @@ Validator::StoredString Validator::loadText ( const char* path )
     return buffer;
 }
 
-void Validator::findMatchesYes ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type )
+void Validator::findMatchesYes (
+    size_t&           matches, //
+    const size_t      i,       //
+    const std::regex& pattern, //
+    const RegexType   type     //
+)
 {
     const auto startMatches = matches;
     lastLineOfInterest      = nullptr;
@@ -256,7 +261,12 @@ void Validator::findMatchesYes ( size_t& matches, const size_t i, const std::reg
     if ( matches == startMatches )
         hold[type].failures.emplace_back ( &AnyLineView, &hold[type].regexStrings[i] );
 }
-void Validator::findMatchesNo ( size_t& matches, const size_t i, const std::regex& pattern, const RegexType type )
+void Validator::findMatchesNo (
+    size_t&           matches, //
+    const size_t      i,       //
+    const std::regex& pattern, //
+    const RegexType   type     //
+)
 {
     const auto startMatches = matches;
     lastLineOfInterest      = nullptr;
@@ -275,10 +285,12 @@ auto Validator::getMatchFindingFunctor ( const RegexType type ) const
 {
     return type == RegexType::Yes ? &Validator::findMatchesYes : &Validator::findMatchesNo;
 }
-size_t Validator::iteratePatternsForMatches ( const auto& patterns, const RegexType type )
+size_t Validator::iteratePatternsForMatches (
+    const auto&     patterns,           //
+    const RegexType type,               //
+    const auto      matchFindingFunctor //
+)
 {
-    const auto matchFindingFunctor = getMatchFindingFunctor ( type );
-
     size_t matches {};
 
     const size_t patternCount = patterns.size ();
@@ -292,7 +304,7 @@ bool Validator::checkRegexes ( const RegexType type, const auto memberFunctor )
     matchCheckPatternFunctor = memberFunctor;
 
     const auto& patterns = hold[type].regexes;
-    const auto  matches  = iteratePatternsForMatches ( patterns, type );
+    const auto  matches  = iteratePatternsForMatches ( patterns, type, getMatchFindingFunctor ( type ) );
 
     return type == RegexType::Yes ? matches == patterns.size () : matches == ( patterns.size () * logLines.size () );
 }
