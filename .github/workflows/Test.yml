@@ -209,6 +209,18 @@ jobs:
         uses: ./.github/workflows/match
         with:
           pattern: '93 97 cd 76 cd fX 65 b4 75 e6 1d 57 dd dd e4 ba[^\n\|]+\|[^\n]+X[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'fa 7f e5 40 df 0a f6 33 43 84 64 cd 80 62 11 9Y[^\n\|]+\|[^\n]+Y[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'R7 ef 1b d8 b6 a1 ab 57 03 7f 82 11 99 79 e5 61[^\n\|]+\|[^\n]+R[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'R7 ef 1b d8 b6 a1 ab 57 03 7f 82 11 99 79 e5 61[^\n\|]+\|[^\n]+\[RY\][^\w]'
 
 
       - name: Fail Edge Case
