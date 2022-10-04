@@ -14,7 +14,7 @@ runs:
       with:
         log_file: ${{ inputs.log_file }}
         regex_file: ${{ inputs.regex_file }}
-        patternA: '[^\n]*Matches[^\n]+Passed[^\n]*'
-        patternB: '[^\n]*Exclusions[^\n]+Passed[^\n]*'
+        patternA: '[^\n]*Matches[^\n]+Failed[^\n]*'
+        patternB: '[^\n]*Exclusions[^\n]+Failed[^\n]*'
     - name: Validate
       uses: ./.github/workflows/reported_failures

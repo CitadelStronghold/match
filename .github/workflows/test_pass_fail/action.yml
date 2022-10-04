@@ -1,0 +1,20 @@
+name: 'test_fail'
+inputs:
+  log_file:
+    required: true
+    type: string
+  regex_file:
+    required: true
+    type: string
+runs:
+  using: 'composite'
+  steps:
+    - name: Test
+      uses: ./.github/workflows/test
+      with:
+        log_file: ${{ inputs.log_file }}
+        regex_file: ${{ inputs.regex_file }}
+        patternA: '[^\n]*Matches[^\n]+Passed[^\n]*'
+        patternB: '[^\n]*Exclusions[^\n]+Failed[^\n]*'
+    - name: Validate
+      uses: ./.github/workflows/reported_failures
