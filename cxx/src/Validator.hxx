@@ -94,8 +94,7 @@ private:
 private:
 
     void performMatches ();
-    template< size_t FailCode >
-    void               performMatches_ ( const RegexType type, auto&& functor );
+    void               performMatches_ ( const RegexType type, const int failCode, auto&& functor );
     [[nodiscard]] bool iterateRegexes ( const RegexType type, auto&& functor ) const;
 
     [[nodiscard]] auto makeTestFunctor ( auto&& memberFunctor ) const;

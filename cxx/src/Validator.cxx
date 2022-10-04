@@ -211,25 +211,24 @@ auto Validator::makeTestFunctor ( auto&& memberFunctor ) const
         return ( this->*memberFunctor ) ( regex );
     };
 }
-template< size_t FailCode >
-void Validator::performMatches_ ( const RegexType type, auto&& memberFunctor )
+void Validator::performMatches_ ( const RegexType type, const int failCode, auto&& memberFunctor )
 {
     if ( !iterateRegexes ( type, makeTestFunctor ( memberFunctor ) ) )
-        results[type] = FailCode;
+        results[type] = failCode;
 }
 void Validator::performMatches ()
 {
     checkStartTime = getCurrentNanoseconds ();
 
-    performMatches_< -1 > ( RegexType::Yes, &Validator::checkYesRegex );
-    performMatches_< -2 > ( RegexType::No, &Validator::checkNoRegex );
+    performMatches_ ( RegexType::Yes, -1, &Validator::checkYesRegex );
+    performMatches_ ( RegexType::No, -2, &Validator::checkNoRegex );
 
     checkEndTime = getCurrentNanoseconds ();
 }
 
 bool Validator::checkYesRegex ( const std::regex& regex ) const
 {
-    // std::regex_search ( logString.begin (), logString.end (), regex );
+    const auto search = std::regex_search ( logString.begin (), logString.end (), regex );
 
     return true;
 }
