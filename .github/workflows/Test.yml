@@ -23,8 +23,5 @@ jobs:
         with:
           log_file: tests/pass.log
           regex_file: tests/pass.regex
-      - name: A
-        uses: ./.github/workflows/match2
-        with:
           patternA: '[^\n]*Matches[^\n]+Passed[^\n]*'
           patternB: '[^\n]*Exclusions[^\n]+Passed[^\n]*'

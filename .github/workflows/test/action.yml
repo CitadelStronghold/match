@@ -6,6 +6,12 @@ inputs:
   regex_file:
     required: true
     type: string
+  patternA:
+    type: string
+    required: true
+  patternB:
+    type: string
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -20,3 +26,8 @@ runs:
       run: |
         sudo chmod +x ./build/TeekValidator
         ./build/TeekValidator ${{ inputs.log_file }} ${{ inputs.regex_file }} > result.log
+    - name: # Provide quick validation route for the basic outputs
+        uses: ./.github/workflows/match2
+        with:
+          patternA: ${{ inputs.patternA }}
+          patternB: ${{ inputs.patternB }}
