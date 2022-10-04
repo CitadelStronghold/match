@@ -78,11 +78,11 @@ private:
     // ** Utilitized inside matching loop
     size_t startMatches;
 
-    void resetSplit ();
-
     std::function< void ( const char*, const size_t ) > instantiateParsedLine {};
     bool ( Validator::*matchCheckPatternFunctor ) ( const std::string_view&, const std::regex& ) const;
     void ( Validator::*matchFindingFunctor ) ( size_t& matches, size_t i, const std::regex& pattern );
+
+    void resetSplitVariables ();
 
 public:
 

@@ -73,7 +73,7 @@ void Validator::splitAndParse_ ()
     setRegexInstantiator ();
     splitAndParse ( regexesString );
 }
-void Validator::resetSplit ()
+void Validator::resetSplitVariables ()
 {
     isPastSplit   = {};
     isAtEnd       = {};
