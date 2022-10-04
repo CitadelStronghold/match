@@ -220,7 +220,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'R7 ef 1b d8 b6 a1 ab 57 03 7f 82 11 99 79 e5 61[^\n\|]+\|[^\n]+\[RY\][^\w]'
+          pattern: 'fa 7f e5 40 df 0a f6 33 43 84 64 cd 80 62 11 9Y[^\n\|]+\|[^\n]+\[RY\][^\w]'
 
 
       - name: Fail Edge Case
