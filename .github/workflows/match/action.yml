@@ -12,7 +12,7 @@ runs:
         ls result.log || exit -1
         cat result.log
 
-        result='$(cat result.log)'
+        result="$(cat result.log)"
 
         echo "$result"
 
