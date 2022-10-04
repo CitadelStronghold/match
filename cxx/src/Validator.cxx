@@ -230,6 +230,7 @@ bool Validator::isNewlineCharacter ( const char c )
 }
 bool Validator::isSkipCharacter ( const char c )
 {
+    std::cout << "Is skip character? '" << c << "' " << (int)c << " : " << (isNewlineCharacter ( c ) || c == '\r') << "\n";
     return isNewlineCharacter ( c ) || c == '\r';
 }
 bool Validator::isFilteredCharacter ( const char c )
