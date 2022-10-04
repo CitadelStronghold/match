@@ -78,6 +78,8 @@ void Validator::resetSplitVariables ()
     isPastSplit   = {};
     isAtEnd       = {};
     curStartIndex = {};
+
+    // ** The other variables are set throughout the matching process
 }
 void Validator::setLogInstantiator ()
 {
