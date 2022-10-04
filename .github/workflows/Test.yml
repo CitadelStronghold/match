@@ -93,6 +93,10 @@ jobs:
         with:
           log_file: tests/both_fail.log
           regex_file: tests/both_fail.regex
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Any Line \| \^987\$\n'
       - name: Fail
         uses: ./.github/workflows/test_fail_pass
         with:
