@@ -297,7 +297,7 @@ void Validator::findMatchNo (
 void Validator::findMatchesYes (
     size_t&           matches, //
     const size_t      i,       //
-    const std::regex& pattern
+    const std::regex& pattern  //
 )
 {
     for ( const auto& line : logLines )
@@ -310,7 +310,7 @@ void Validator::findMatchesYes (
 void Validator::findMatchesNo (
     size_t&           matches, //
     const size_t      i,       //
-    const std::regex& pattern
+    const std::regex& pattern  //
 )
 {
     for ( const auto& line : logLines )
