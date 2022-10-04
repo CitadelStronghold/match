@@ -78,7 +78,6 @@ void Validator::resetSplitVariables ()
     isPastYes     = {};
     isAtEnd       = {};
     curStartIndex = {};
-    isPastYes = {};
 
     // ** The other variables are set throughout the matching process
 }
@@ -199,6 +198,8 @@ void Validator::skipForward ( size_t& i )
     const char nextChar = ( *splitString )[curStartIndex];
     if ( !isSkipCharacter ( nextChar ) )
         return;
+
+    std::cout << "Skipping past " << int(nextChar) << " to " << int(( *splitString )[curStartIndex + 1]) << std::endl;
 
     i++;
     curStartIndex++;
