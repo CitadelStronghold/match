@@ -10,7 +10,7 @@ runs:
   using: 'composite'
   steps:
     - name: Test
-      uses: ./.github/workflows/test_pass
+      uses: ./.github/workflows/test
       with:
         log_file: ${{ inputs.log_file }}
         regex_file: ${{ inputs.regex_file }}
