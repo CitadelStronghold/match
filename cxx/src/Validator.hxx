@@ -22,14 +22,6 @@ public:
 
 private:
 
-    const uint64_t startTime { getCurrentNanoseconds () };
-    uint64_t       readStartTime {};
-    uint64_t       readEndTime {};
-    uint64_t       parseStartTime {};
-    uint64_t       parseEndTime {};
-    uint64_t       checkStartTime {};
-    uint64_t       checkEndTime {};
-
     using StoredString = std::unique_ptr< char[] >;
 
     StoredString logBuffer {};
@@ -40,6 +32,14 @@ private:
 
     RegexHolder< int >                       results {};
     RegexHolder< std::vector< std::regex > > regexes {};
+
+    const uint64_t startTime { getCurrentNanoseconds () };
+    uint64_t       readStartTime {};
+    uint64_t       readEndTime {};
+    uint64_t       parseStartTime {};
+    uint64_t       parseEndTime {};
+    uint64_t       checkStartTime {};
+    uint64_t       checkEndTime {};
 
 private:
 

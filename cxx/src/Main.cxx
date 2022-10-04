@@ -12,11 +12,8 @@ bool validArgCount ( const int argc )
     return false;
 }
 
-int main ( const int argc, const char* const* const argv )
+int tryValidate ( const int argc, const char* const* const argv )
 {
-    if ( !validArgCount ( argc ) )
-        return -1;
-
     try
     {
         return Validator { uint8_t ( argc ), argv }.getResult ();
@@ -26,4 +23,12 @@ int main ( const int argc, const char* const* const argv )
         std::cerr << "Error: " << e.what () << "\n";
         return -1;
     }
+}
+
+int main ( const int argc, const char* const* const argv )
+{
+    if ( !validArgCount ( argc ) )
+        return -1;
+
+    tryValidate ( argc, argv );
 }
