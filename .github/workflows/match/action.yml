@@ -1,6 +1,6 @@
 name: 'match'
 inputs:
-  match:
+  matches: # Pass a JSON array of strings
     type: string
     required: true
 runs:
@@ -13,5 +13,6 @@ runs:
         ls result.log || exit -1
 
         result='$(cat result.log)'
+        match='${{ fromJson(inputs.match) }}'
 
-        [[ "$result" =~ (${{ inputs.match }}) ]] || (echo "Result match failed: ${{ inputs.match }}" && exit -1)
+        [[ "$result" =~ ($match) ]] || (echo "Result match failed: $match" && exit -1)
