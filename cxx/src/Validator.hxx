@@ -153,11 +153,11 @@ private:
         const std::regex&       pattern  //
     );
     void findMatches (
-        size_t&           matches,       //
-        const size_t      i,             //
-        const std::regex& pattern,       //
-        auto&&            matchFunctor,  //
-        auto&&            failureFunctor //
+        size_t&           matches,             //
+        const size_t      i,                   //
+        const std::regex& pattern,             //
+        const auto        matchMemberFunctor,  //
+        const auto        failureMemberFunctor //
     );
     void findMatchesYes (
         size_t&           matches, //

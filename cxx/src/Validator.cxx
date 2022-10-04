@@ -320,19 +320,19 @@ bool Validator::findMatchNo (
     return true;
 }
 void Validator::findMatches (
-    size_t&           matches,       //
-    const size_t      i,             //
-    const std::regex& pattern,       //
-    auto&&            matchFunctor,  //
-    auto&&            failureFunctor //
+    size_t&           matches,             //
+    const size_t      i,                   //
+    const std::regex& pattern,             //
+    const auto        matchMemberFunctor,  //
+    const auto        failureMemberFunctor //
 )
 {
     for ( const auto& line : logLines )
-        if ( !matchFunctor ( matches, line, pattern ) )
+        if ( !( this->*matchMemberFunctor ) ( matches, line, pattern ) )
             break;
 
     // ? Did we identify a point of failure here?
-    failureFunctor ( i, matches );
+    ( this->*failureMemberFunctor ) ( i, matches );
 }
 void Validator::findMatchesYes (
     size_t&           matches, //
@@ -344,15 +344,8 @@ void Validator::findMatchesYes (
         matches,
         i,
         pattern,
-        [this] ( auto&&... args )
-        {
-            return findMatchYes ( std::forward< decltype ( args ) > ( args )... );
-        },
-        [this] ( const auto i, auto& matches )
-        {
-            // ? Did we fail to find a match?
-            checkYesFailure ( i, matches );
-        }
+        &Validator::findMatchYes,
+        &Validator::checkYesFailure // ? Did we fail to find a match?
     );
 }
 void Validator::findMatchesNo (
@@ -365,15 +358,8 @@ void Validator::findMatchesNo (
         matches,
         i,
         pattern,
-        [this] ( auto&&... args )
-        {
-            return findMatchNo ( std::forward< decltype ( args ) > ( args )... );
-        },
-        [this] ( const auto i, auto& matches )
-        {
-            // ? Did we match an exclusion?
-            checkNoFailure ( i, matches );
-        }
+        &Validator::findMatchNo,
+        &Validator::checkNoFailure // ? Did we match an exclusion?
     );
 }
 auto Validator::getMatchFindingFunctor () const
