@@ -109,7 +109,7 @@ private:
     void  finishCurrentLine ( size_t& i );
     auto  getDistanceI ( const size_t i ) const;
     auto* getCurStartAddress () const;
-    auto  getOffsetEndIndex ( const auto distance, const char curChar ) const;
+    auto  getOffsetCount ( const auto distance, const auto i ) const;
     void  instantiateCurrentLine ( const size_t i );
     void  emplaceNewLog ( const char* startIt, const size_t count );
     void  emplaceNewRegex ( const char* startIt, const size_t count );
@@ -125,7 +125,7 @@ private:
     [[nodiscard]] bool        shouldSplitHere ( const size_t i ) const;
     [[nodiscard]] static bool isNewlineCharacter ( const char c );
     [[nodiscard]] static bool isCarriageReturnCharacter ( const char c );
-    [[nodiscard]] static bool isSkipCharacter ( const char c );
+    [[nodiscard]] static bool isSkippedCharacter ( const char c );
     [[nodiscard]] static bool isFilteredCharacter ( const char c );
 
 private:

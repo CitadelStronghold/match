@@ -116,7 +116,7 @@ bool Validator::isAtEndOfParse ( const size_t i ) const
 }
 bool Validator::shouldSplitHere ( const size_t i ) const
 {
-    return isAtEnd || isSkipCharacter ( ( *splitString )[i] );
+    return isAtEnd || isSkippedCharacter ( ( *splitString )[i] );
 }
 void Validator::splitAndParseCharacter ( size_t& i )
 {
@@ -154,21 +154,22 @@ auto* Validator::getCurStartAddress () const
 {
     return splitString->data () + curStartIndex;
 }
-auto Validator::getOffsetEndIndex ( const auto distance, const char curChar ) const
+auto Validator::getOffsetCount ( const auto distance, const auto i ) const
 {
-    if ( isSkipCharacter ( curChar ) )
-        return distance > 0 ? distance - 1 : 0;
+    const bool addExtraCharacter = isAtEnd &&                              //
+                                   splitString->size () >= distance + 1 && //
+                                   !isSkippedCharacter ( ( *splitString )[i + 1] );
 
     // ** The last character is not a newline, so it needs to be included
-    return isAtEnd ? distance + 1 : distance;
+    return addExtraCharacter ? distance + 1 : distance;
 }
 void Validator::instantiateCurrentLine ( const size_t i )
 {
     // ** How many characters were in this line?
     const auto distance    = getDistanceI ( i );
     const bool hasDistance = distance > 0;
-    if ( hasDistance || !isSkipCharacter ( ( *splitString )[i] ) )
-        instantiateParsedLine ( getCurStartAddress (), distance); // getOffsetEndIndex ( distance, ( *splitString )[i] ) );
+    if ( hasDistance || !isSkippedCharacter ( ( *splitString )[i] ) )
+        instantiateParsedLine ( getCurStartAddress (), getOffsetCount ( distance, i ) );
 
     if ( !hasDistance )
         isPastYes = true; // ** We are done with Yes matches, switch to No
@@ -213,7 +214,7 @@ bool Validator::isCarriageReturnCharacter ( const char c )
 {
     return c == '\r';
 }
-bool Validator::isSkipCharacter ( const char c )
+bool Validator::isSkippedCharacter ( const char c )
 {
     return isNewlineCharacter ( c ) || isCarriageReturnCharacter ( c );
 }
