@@ -12,7 +12,7 @@ Validator::Validator ( const uint8_t argc, const char* const* const argv )
     if ( !prepareFromArguments () )
         return;
 
-    splitAndParseRegexes ();
+    splitAndParse ();
     performMatches ();
 
     printResults ();
@@ -20,7 +20,7 @@ Validator::Validator ( const uint8_t argc, const char* const* const argv )
 
 int Validator::getResult () const
 {
-    return results[RegexType::Yes] | results[RegexType::No];
+    return hold[RegexType::Yes].result | hold[RegexType::No].result;
 }
 
 void Validator::checkArgumentsValid () const
@@ -57,45 +57,77 @@ void Validator::loadTargetedFiles ()
     regexesString = { regexesBuffer.get () };
 }
 
-void Validator::splitAndParseRegexes ()
+void Validator::splitAndParse ()
 {
     parseStartTime = getCurrentNanoseconds ();
 
-    splitAndParseRegexes_ ();
+    splitAndParse_ ();
 
     parseEndTime = getCurrentNanoseconds ();
 }
-void Validator::splitAndParseRegexes_ ()
+void Validator::splitAndParse_ ()
 {
-    const size_t regexesSize = regexesString.size ();
-    endIndex                 = regexesString.size () - 1;
+    setLogInstantiator ();
+    splitAndParse ( logString );
 
-    for ( size_t i {}; i < regexesSize; ++i )
-        splitAndParseRegexCharacter ( i );
+    setRegexInstantiator ();
+    splitAndParse ( regexesString );
 }
-bool Validator::isAtEndOfParsedRegex ( const size_t i ) const
+void Validator::resetSplit ()
+{
+    isPastSplit   = {};
+    isAtEnd       = {};
+    curStartIndex = {};
+}
+void Validator::setLogInstantiator ()
+{
+    instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
+    {
+        emplaceNewLog ( startIt, count );
+    };
+}
+void Validator::setRegexInstantiator ()
+{
+    instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
+    {
+        if ( !isFilteredCharacter ( *startIt ) )
+            emplaceNewRegex ( startIt, count );
+    };
+}
+void Validator::splitAndParse ( const std::string_view& source )
+{
+    resetSplit ();
+
+    const size_t count = source.size ();
+    endIndex           = source.size () - 1;
+    splitString        = &source;
+
+    for ( size_t i {}; i < count; ++i )
+        splitAndParseCharacter ( i );
+}
+bool Validator::isAtEndOfParse ( const size_t i ) const
 {
     return i == endIndex;
 }
-bool Validator::shouldSplitRegexHere ( const size_t i ) const
+bool Validator::shouldSplitHere ( const size_t i ) const
 {
-    return isAtEnd || isSplitCharacter ( regexesString[i] );
+    return isAtEnd || isSplitCharacter ( ( *splitString )[i] );
 }
-void Validator::splitAndParseRegexCharacter ( size_t& i )
+void Validator::splitAndParseCharacter ( size_t& i )
 {
-    isAtEnd = isAtEndOfParsedRegex ( i );
-    if ( !shouldSplitRegexHere ( i ) )
+    isAtEnd = isAtEndOfParse ( i );
+    if ( !shouldSplitHere ( i ) )
         return;
 
-    finishCurrentRegex ( i );
+    finishCurrentLine ( i );
 }
-void Validator::finishCurrentRegex ( size_t& i )
+void Validator::finishCurrentLine ( size_t& i )
 {
     // ** How many characters were in this regex?
-    instantiateCurrentRegex ( i );
+    instantiateCurrentLine ( i );
 
-    // ** Start a new regex
-    startNewRegex ( i );
+    // ** Start a new line
+    startNewLine ( i );
 
     // ** Ignore separating characters and empty lines
     skipPastSplitCharacters ( i );
@@ -106,11 +138,11 @@ RegexType Validator::getTargetType () const
 }
 auto& Validator::getTargetRegexStringsVector ()
 {
-    return regexStrings[getTargetType ()];
+    return hold[getTargetType ()].regexStrings;
 }
 auto& Validator::getTargetRegexVector ()
 {
-    return regexes[getTargetType ()];
+    return hold[getTargetType ()].regexes;
 }
 auto Validator::getDistanceI ( const size_t i ) const
 {
@@ -118,25 +150,30 @@ auto Validator::getDistanceI ( const size_t i ) const
 }
 auto* Validator::getCurStartAddress () const
 {
-    return regexesString.data () + curStartIndex;
+    return splitString->data () + curStartIndex;
 }
 auto Validator::getOffsetEndIndex ( const auto distance ) const
 {
     // ** The last character is not a newline, so it needs to be included
     return isAtEnd ? distance + 1 : distance;
 }
-void Validator::instantiateCurrentRegex ( const size_t i )
+void Validator::instantiateCurrentLine ( const size_t i )
 {
     if ( const auto distance = getDistanceI ( i ); distance > 0 )
-        if ( const auto* curStartIt = getCurStartAddress (); !isFilteredCharacter ( *curStartIt ) )
-            emplaceNewRegex ( curStartIt, getOffsetEndIndex ( distance ) );
+        instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance ) );
+}
+void Validator::emplaceNewLog ( const char* startIt, const size_t count )
+{
+    logLines.emplace_back ( startIt, count );
 }
 void Validator::emplaceNewRegex ( const char* startIt, const size_t count )
 {
     getTargetRegexStringsVector ().emplace_back ( startIt, count );
+
+    // * std::regex::multiline not supported by MSVC
     getTargetRegexVector ().emplace_back ( startIt, count );
 }
-void Validator::startNewRegex ( const size_t i )
+void Validator::startNewLine ( const size_t i )
 {
     curStartIndex = i + 1;
 }
@@ -144,7 +181,7 @@ void Validator::skipPastSplitCharacters ( size_t& i )
 {
     size_t loops {};
 
-    while ( curStartIndex <= endIndex && isSplitCharacter ( regexesString[curStartIndex] ) )
+    while ( curStartIndex <= endIndex && isSplitCharacter ( ( *splitString )[curStartIndex] ) )
         skipForward ( i, loops );
 }
 void Validator::skipForward ( size_t& i, size_t& loops )
@@ -204,29 +241,63 @@ Validator::StoredString Validator::loadText ( const char* path )
 
 bool Validator::checkRegexes ( const RegexType type, auto&& functor )
 {
-    const auto&  source = regexes[type];
-    const size_t count  = source.size ();
+    const auto&  patterns     = hold[type].regexes;
+    const size_t patternCount = patterns.size ();
 
-    for ( size_t i {}; i < count; i++ )
-        if ( !functor ( source[i] ) )
+    size_t matches {};
+
+    for ( size_t i {}; i < patternCount; i++ )
+    {
+        const auto startMatches = matches;
+
+        // TODO ONLY ON ::No
+        const std::string_view* lastLineOfInterest {};
+
+        for ( const auto& line : logLines )
+            if ( type == RegexType::Yes )
+            {
+                if ( functor ( line, patterns[i] ) )
+                {
+                    matches++;
+                    break;
+                }
+            }
+            else if ( type == RegexType::No )
+            {
+                if ( functor ( line, patterns[i] ) )
+                {
+                    matches++;
+                } else {
+                    lastLineOfInterest = &line;
+                }
+            }
+
+        // ? Did we fail to find a match?
+        if ( type == RegexType::Yes )
         {
-            failures[type].push_back ( &regexStrings[type][i] );
-            return false;
+            if ( matches == startMatches )
+                hold[type].failures.emplace_back ( &AnyLineView, &hold[type].regexStrings[i] );
         }
+        else if ( type == RegexType::No )
+        {
+            if ( matches < ( startMatches + logLines.size () ) )
+                hold[type].failures.emplace_back ( lastLineOfInterest, &hold[type].regexStrings[i] );
+        }
+    }
 
-    return true;
+    return type == RegexType::Yes ? matches == patternCount : matches == ( patternCount * logLines.size () );
 }
 auto Validator::makeTestFunctor ( auto&& memberFunctor )
 {
-    return [this, &memberFunctor] ( const std::regex& regex ) -> bool
+    return [this, &memberFunctor] ( auto&&... args ) -> bool
     {
-        return ( this->*memberFunctor ) ( regex );
+        return ( this->*memberFunctor ) ( std::forward< decltype ( args ) > ( args )... );
     };
 }
 void Validator::performMatches_ ( const RegexType type, const int failCode, auto&& memberFunctor )
 {
     if ( !checkRegexes ( type, makeTestFunctor ( memberFunctor ) ) )
-        results[type] = failCode;
+        hold[type].result = failCode;
 
     return;
 }
@@ -240,13 +311,13 @@ void Validator::performMatches ()
     checkEndTime = getCurrentNanoseconds ();
 }
 
-bool Validator::checkYesRegex ( const std::regex& regex ) const
+bool Validator::checkYesRegex ( const std::string_view& target, const std::regex& regex ) const
 {
-    return std::regex_search ( logString.begin (), logString.end (), regex );
+    return std::regex_search ( target.begin (), target.end (), regex );
 }
-bool Validator::checkNoRegex ( const std::regex& regex ) const
+bool Validator::checkNoRegex ( const std::string_view& target, const std::regex& regex ) const
 {
-    return !std::regex_search ( logString.begin (), logString.end (), regex );
+    return !std::regex_search ( target.begin (), target.end (), regex );
 }
 
 uint64_t Validator::getCurrentNanoseconds ()
@@ -300,7 +371,7 @@ void Validator::printResults () const
 }
 void Validator::printResult ( const char* name, const RegexType type ) const
 {
-    const auto        result       = results[type];
+    const auto        result       = hold[type].result;
     const std::string color        = result == 0 ? "\033[32m" : "\033[31m";
     const std::string resultString = result == 0 ? "\033[1mPassed" : "\033[1mFailed";
 
@@ -310,6 +381,6 @@ void Validator::printResult ( const char* name, const RegexType type ) const
 }
 void Validator::printFailures ( const RegexType type ) const
 {
-    for ( const auto* failure : failures[type] )
-        std::cout << "\033[31m" << *failure << "\033[0m\n";
+    for ( const auto [line, regex] : hold[type].failures )
+        std::cout << "\033[1;31m" << *line << " \033[0;31m| \033[1;31m" << *regex << "\033[0m\n";
 }
