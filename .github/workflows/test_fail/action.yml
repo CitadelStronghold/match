@@ -1,4 +1,4 @@
-name: 'test_pass_no_failures'
+name: 'test_fail'
 inputs:
   log_file:
     required: true
@@ -17,4 +17,4 @@ runs:
         patternA: '[^\n]*Matches[^\n]+Passed[^\n]*'
         patternB: '[^\n]*Exclusions[^\n]+Passed[^\n]*'
     - name: Validate
-      uses: ./.github/workflows/reported_no_failures
+      uses: ./.github/workflows/reported_failures

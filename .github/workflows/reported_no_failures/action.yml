@@ -1,4 +1,4 @@
-name: 'no_failures'
+name: 'reported_no_failures'
 runs:
   using: 'composite'
   steps:
