@@ -99,24 +99,112 @@ jobs:
         uses: ./.github/workflows/match
         with:
           pattern: 'Any Line[^\n\|]+\|[^\n]+\^987\$[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '4321[^\n\|]+\|[^\n]+\^4321\$[^\w]'
 
       - name: Fail
         uses: ./.github/workflows/test_fail_pass
         with:
           log_file: tests/match_fail.log
           regex_file: tests/match_fail.regex
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Any Line[^\n\|]+\|[^\n]+\^Random string Y\$[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Any Line[^\n\|]+\|[^\n]+\^Random string C\$[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Any Line[^\n\|]+\|[^\n]+\^Random string Z\$[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Any Line[^\n\|]+\|[^\n]+\^Random string D\$[^\w]'
 
       - name: Fail
         uses: ./.github/workflows/test_pass_fail
         with:
           log_file: tests/exclusion_fail.log
           regex_file: tests/exclusion_fail.regex
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'There was an error, catch this line[^\n\|]+\|[^\n]+error[^\w]'
 
       - name: Fail
         uses: ./.github/workflows/test_fail_fail
         with:
           log_file: tests/hex.log
           regex_file: tests/hex_fail.regex
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+0[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+1[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+2[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+3[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+4[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '49 ac c3 bf e7 0a 06 be 7d de b3 0a a9 35 37 d0[^\n\|]+\|[^\n]+5[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+6[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+7[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+8[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+9[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+10[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+11[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+12[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '49 ac c3 bf e7 0a 06 be 7d de b3 0a a9 35 37 d0[^\n\|]+\|[^\n]+13[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+14[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '60 e2 9c f1 b4 b8 08 78 84 7a 4e 07 31 98 9b 60[^\n\|]+\|[^\n]+15[^\w]'
 
 
       - name: Fail Edge Case
@@ -124,15 +212,39 @@ jobs:
         with:
           log_file: tests/edge_cases/fail_last_exclusion_not_missed.log
           regex_file: tests/edge_cases/fail_last_exclusion_not_missed.regex
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'ZC[^\n\|]+\|[^\n]+C[^\w]'
 
       - name: Fail Edge Case
         uses: ./.github/workflows/test_pass_fail
         with:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_exclusions_fail.regex
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '1[^\n\|]+\|[^\n]+1[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '21_12[^\n\|]+\|[^\n]+2[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '321_123[^\n\|]+\|[^\n]+3[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: '1234[^\n\|]+\|[^\n]+4[^\w]'
 
       - name: Fail Edge Case
         uses: ./.github/workflows/test_fail_pass
         with:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_matches_fail.regex
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Any Line[^\n\|]+\|[^\n]+12345[^\w]'
