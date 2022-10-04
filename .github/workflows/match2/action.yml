@@ -1,0 +1,19 @@
+name: 'match2'
+inputs:
+  patternA:
+    type: string
+    required: true
+  patternB:
+    type: string
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Matches
+      uses: ./.github/workflows/match
+      with:
+        match: ${{ inputs.patternA }}
+    - name: Matches
+      uses: ./.github/workflows/match
+      with:
+        match: ${{ inputs.patternB }}

@@ -1,6 +1,6 @@
 name: 'match'
 inputs:
-  match:
+  pattern:
     type: string
     required: true
 runs:
@@ -14,4 +14,4 @@ runs:
 
         result='$(cat result.log)'
 
-        ([[ "$result" =~ (${{ inputs.match }}) ]] && echo "Matched: ${{ inputs.match }}") || (echo "!Matched: ${{ inputs.match }}" && exit -1)
+        ([[ "$result" =~ (${{ inputs.pattern }}) ]] && echo "Matched: ${{ inputs.pattern }}") || (echo "!Matched: ${{ inputs.pattern }}" && exit -1)
