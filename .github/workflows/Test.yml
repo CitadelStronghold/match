@@ -24,7 +24,7 @@ jobs:
           log_file: tests/pass.log
           regex_file: tests/pass.regex
       - name: A
-        uses: ./.github/workflows/match
+        uses: ./.github/workflows/match2
         with:
           patternA: ^Matches Passed$
           patternB: ^Exclusions Passed$
