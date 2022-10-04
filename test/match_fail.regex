@@ -1,0 +1,8 @@
+^Random string A$
+^Random string Y$
+# Does not count as a blank line, below are still matches
+^Random string B$
+^Random string C$
+^Random string Z$
+^Random string D$
+# We do not include any exclusions, to ensure this is properly processed

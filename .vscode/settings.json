@@ -70,6 +70,9 @@
         "xtree": "cpp",
         "fstream": "cpp",
         "regex": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "functional": "cpp",
+        "unordered_map": "cpp",
+        "xhash": "cpp"
     },
 }
