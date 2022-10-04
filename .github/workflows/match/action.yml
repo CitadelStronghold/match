@@ -11,6 +11,7 @@ runs:
       shell: bash
       run: |
         ls result.log || exit -1
+        cat result.log
 
         result='$(cat result.log)'
         match='${{ fromJson(inputs.match) }}'
