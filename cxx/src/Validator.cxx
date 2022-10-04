@@ -98,11 +98,11 @@ void Validator::setRegexInstantiator ()
 }
 void Validator::splitAndParseString ( const std::string_view& source )
 {
-    resetSplitVariables ();
-
     const size_t count = source.size ();
     endIndex           = source.size () - 1;
     splitString        = &source;
+
+    resetSplitVariables ();
 
     for ( size_t i {}; i < count; ++i )
         splitAndParseCharacter ( i );
@@ -184,7 +184,10 @@ void Validator::skipPastSplitCharacters ( size_t& i )
 {
     size_t loops {};
 
-    while ( curStartIndex <= endIndex && isSplitCharacter ( ( *splitString )[curStartIndex] ) )
+    while (                                                  //
+        curStartIndex <= endIndex &&                         //
+        isSplitCharacter ( ( *splitString )[curStartIndex] ) //
+    )
         skipForward ( i, loops );
 }
 void Validator::skipForward ( size_t& i, size_t& loops )
@@ -268,6 +271,29 @@ void Validator::checkNoFailure (
 
     addFailure ( lastLineOfInterest, &hold[curType].regexStrings[i] );
 }
+bool Validator::findMatchYes (
+    size_t&                 matches, //
+    const std::string_view& line,    //
+    const std::regex&       pattern  //
+)
+{
+    if ( !( this->*matchCheckPatternFunctor ) ( line, pattern ) )
+        return true;
+
+    matches++;
+    return false;
+}
+void Validator::findMatchNo (
+    size_t&                 matches, //
+    const std::string_view& line,    //
+    const std::regex&       pattern  //
+)
+{
+    if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
+        matches++;
+    else
+        lastLineOfInterest = &line;
+}
 void Validator::findMatchesYes (
     size_t&           matches, //
     const size_t      i,       //
@@ -275,11 +301,8 @@ void Validator::findMatchesYes (
 )
 {
     for ( const auto& line : logLines )
-        if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
-        {
-            matches++;
+        if ( !findMatchYes ( matches, line, pattern ) )
             break;
-        }
 
     // ? Did we fail to find a match?
     checkYesFailure ( i, matches );
@@ -291,10 +314,7 @@ void Validator::findMatchesNo (
 )
 {
     for ( const auto& line : logLines )
-        if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
-            matches++;
-        else
-            lastLineOfInterest = &line;
+        findMatchNo ( matches, line, pattern );
 
     // ? Did we match an exclusion?
     checkNoFailure ( i, matches );

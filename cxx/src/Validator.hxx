@@ -144,6 +144,16 @@ private:
                         const std::regex& pattern  //
                     );
     [[nodiscard]] auto getMatchFindingFunctor () const;
+    [[nodiscard]] bool findMatchYes (
+        size_t&                 matches, //
+        const std::string_view& line,    //
+        const std::regex&       pattern  //
+    );
+    void findMatchNo (
+        size_t&                 matches, //
+        const std::string_view& line,    //
+        const std::regex&       pattern  //
+    );
     [[nodiscard]] void findMatchesYes (
         size_t&           matches, //
         const size_t      i,       //
