@@ -24,7 +24,11 @@ jobs:
           log_file: tests/pass.log
           regex_file: tests/pass.regex
       - name: Cat
+        shell: bash
         run: |
           ls result.log || exit -1
-          [[ "$(cat result.log)" =~ ^Matches Passed$ ]] || exit -1
-          [[ "$(cat result.log)" =~ ^Exclusions Passed$ ]] || exit -1
+
+          result='$(cat result.log)'
+
+          [[ $result =~ ^Matches Passed$ ]] || exit -1
+          [[ $result =~ ^Exclusions Passed$ ]] || exit -1
