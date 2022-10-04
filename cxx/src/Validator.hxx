@@ -152,6 +152,13 @@ private:
         const std::string_view& line,    //
         const std::regex&       pattern  //
     );
+    void findMatches (
+        size_t&           matches,       //
+        const size_t      i,             //
+        const std::regex& pattern,       //
+        auto&&            matchFunctor,  //
+        auto&&            failureFunctor //
+    );
     void findMatchesYes (
         size_t&           matches, //
         const size_t      i,       //

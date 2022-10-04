@@ -319,18 +319,41 @@ bool Validator::findMatchNo (
 
     return true;
 }
+void Validator::findMatches (
+    size_t&           matches,       //
+    const size_t      i,             //
+    const std::regex& pattern,       //
+    auto&&            matchFunctor,  //
+    auto&&            failureFunctor //
+)
+{
+    for ( const auto& line : logLines )
+        if ( !matchFunctor ( matches, line, pattern ) )
+            break;
+
+    // ? Did we identify a point of failure here?
+    failureFunctor ( i, matches );
+}
 void Validator::findMatchesYes (
     size_t&           matches, //
     const size_t      i,       //
     const std::regex& pattern  //
 )
 {
-    for ( const auto& line : logLines )
-        if ( !findMatchYes ( matches, line, pattern ) )
-            break;
-
-    // ? Did we fail to find a match?
-    checkYesFailure ( i, matches );
+    findMatches (
+        matches,
+        i,
+        pattern,
+        [this] ( auto&&... args )
+        {
+            return findMatchYes ( std::forward< decltype ( args ) > ( args )... );
+        },
+        [this] ( const auto i, auto& matches )
+        {
+            // ? Did we fail to find a match?
+            checkYesFailure ( i, matches );
+        }
+    );
 }
 void Validator::findMatchesNo (
     size_t&           matches, //
@@ -338,12 +361,20 @@ void Validator::findMatchesNo (
     const std::regex& pattern  //
 )
 {
-    for ( const auto& line : logLines )
-        if ( !findMatchNo ( matches, line, pattern ) )
-            break;
-
-    // ? Did we match an exclusion?
-    checkNoFailure ( i, matches );
+    findMatches (
+        matches,
+        i,
+        pattern,
+        [this] ( auto&&... args )
+        {
+            return findMatchNo ( std::forward< decltype ( args ) > ( args )... );
+        },
+        [this] ( const auto i, auto& matches )
+        {
+            // ? Did we match an exclusion?
+            checkNoFailure ( i, matches );
+        }
+    );
 }
 auto Validator::getMatchFindingFunctor () const
 {
