@@ -147,7 +147,7 @@ private:
         const std::string_view& line,    //
         const std::regex&       pattern  //
     );
-    void findMatchNo (
+    [[nodiscard]] bool findMatchNo (
         size_t&                 matches, //
         const std::string_view& line,    //
         const std::regex&       pattern  //

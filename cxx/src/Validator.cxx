@@ -300,16 +300,24 @@ bool Validator::findMatchYes (
     matches++;
     return false;
 }
-void Validator::findMatchNo (
+bool Validator::findMatchNo (
     size_t&                 matches, //
     const std::string_view& line,    //
     const std::regex&       pattern  //
 )
 {
     if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
+    {
         matches++;
+        return true;
+    }
     else if ( firstLineOfInterest == nullptr )
+    {
         firstLineOfInterest = &line;
+        return false;
+    }
+
+    return true;
 }
 void Validator::findMatchesYes (
     size_t&           matches, //
@@ -331,7 +339,8 @@ void Validator::findMatchesNo (
 )
 {
     for ( const auto& line : logLines )
-        findMatchNo ( matches, line, pattern );
+        if ( !findMatchNo ( matches, line, pattern ) )
+            break;
 
     // ? Did we match an exclusion?
     checkNoFailure ( i, matches );
@@ -346,7 +355,7 @@ void Validator::iterateLinesForPattern (
     const std::regex& pattern  //
 )
 {
-    startMatches = matches;
+    startMatches        = matches;
     firstLineOfInterest = nullptr;
 
     ( this->*matchFindingFunctor ) ( matches, i, pattern );
