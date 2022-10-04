@@ -28,18 +28,49 @@ jobs:
         with:
           log_file: tests/hex.log
           regex_file: tests/hex_pass.regex
-      - name: Pass C
+      - name: Pass C Edge Case
         uses: ./.github/workflows/test_pass_no_failures
         with:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_exclusions_pass.regex
-      - name: Pass D
+      - name: Pass D Edge Case
         uses: ./.github/workflows/test_pass_no_failures
         with:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_matches_pass.regex
+
       - name: Fail A
         uses: ./.github/workflows/test_fail_fail
         with:
           log_file: tests/both_fail.log
           regex_file: tests/both_fail.regex
+      - name: Fail B
+        uses: ./.github/workflows/test_pass_fail
+        with:
+          log_file: tests/match_fail.log
+          regex_file: tests/match_fail.regex
+      - name: Fail C
+        uses: ./.github/workflows/test_pass_fail
+        with:
+          log_file: tests/exclusion_fail.log
+          regex_file: tests/exclusion_fail.regex
+      - name: Fail D
+        uses: ./.github/workflows/test_fail_fail
+        with:
+          log_file: tests/hex.log
+          regex_file: tests/hex_fail.regex
+      - name: Fail E Edge Case
+        uses: ./.github/workflows/test_pass_fail
+        with:
+          log_file: tests/edge_cases/fail_last_exclusion_not_missed.log
+          regex_file: tests/edge_cases/fail_last_exclusion_not_missed.regex
+      - name: Fail F Edge Case
+        uses: ./.github/workflows/test_pass_fail
+        with:
+          log_file: tests/edge_cases/only.log
+          regex_file: tests/edge_cases/only_exclusions_fail.regex
+      - name: Fail G Edge Case
+        uses: ./.github/workflows/test_fail_pass
+        with:
+          log_file: tests/edge_cases/only.log
+          regex_file: tests/edge_cases/only_matches_fail.regex
