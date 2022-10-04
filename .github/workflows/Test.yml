@@ -45,7 +45,7 @@ jobs:
           log_file: tests/both_fail.log
           regex_file: tests/both_fail.regex
       - name: Fail B
-        uses: ./.github/workflows/test_pass_fail
+        uses: ./.github/workflows/test_fail_pass
         with:
           log_file: tests/match_fail.log
           regex_file: tests/match_fail.regex
