@@ -1,0 +1,8 @@
+name: 'no_failures'
+runs:
+  using: 'composite'
+  steps:
+    - name: Validate
+      uses: ./.github/workflows/no_failures
+      with:
+        pattern: '[^\|]'

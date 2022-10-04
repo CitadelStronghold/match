@@ -25,7 +25,5 @@ jobs:
           regex_file: tests/pass.regex
           patternA: '[^\n]*Matches[^\n]+Passed[^\n]*'
           patternB: '[^\n]*Exclusions[^\n]+Passed[^\n]*'
-      - name: Matches
-        uses: ./.github/workflows/match
-        with:
-          pattern: '[^\|]'
+      - name: Validate
+        uses: ./.github/workflows/no_failures
