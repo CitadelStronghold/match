@@ -15,6 +15,7 @@ runs:
 
         result='$(cat result.log)'
         match='${{ fromJson(inputs.match) }}'
+        echo "$match"
 
         echo "A"
         ([[ "$result" =~ ($match) ]] && echo "Matched: $match") || (echo "!Matched: $match" && exit -1)
