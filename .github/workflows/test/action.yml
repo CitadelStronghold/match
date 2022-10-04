@@ -1,0 +1,22 @@
+name: 'test'
+inputs:
+  log_file:
+    required: true
+    type: string
+  regex_file:
+    required: true
+    type: string
+runs:
+  using: 'composite'
+  steps:
+    - name: Test
+      if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        ./build/Release/TeekValidator.exe ${{ inputs.log_file }} ${{ inputs.regex_file }}
+    - name: Test
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        sudo chmod +x ./build/TeekValidator
+        ./build/TeekValidator ${{ inputs.log_file }} ${{ inputs.regex_file }}

@@ -19,11 +19,7 @@ jobs:
           cmake -S cxx -B build
           cmake --build build --config Release
       - name: Test
-        if: runner.os == 'Windows'
-        run: |
-          ./build/Release/TeekValidator.exe test.log test.regex
-      - name: Test
-        if: runner.os == 'Linux'
-        run: |
-          sudo chmod +x ./build/TeekValidator
-          ./build/TeekValidator test.log test.regex
+        uses: ./.github/workflows/test
+        with:
+          log_file: tests/pass.log
+          regex_file: tests/pass.regex
