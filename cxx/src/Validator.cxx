@@ -136,7 +136,7 @@ void Validator::finishCurrentLine ( size_t& i )
 }
 RegexType Validator::getTargetType () const
 {
-    return isPastSplit ? RegexType::No : RegexType::Yes;
+    return !isPastSplit ? RegexType::Yes : RegexType::No;
 }
 auto& Validator::getTargetRegexStringsVector ()
 {
@@ -187,11 +187,12 @@ void Validator::skipPastSplitCharacters ( size_t& i )
 {
     size_t loops {};
 
+    do
+        skipForward ( i, loops );
     while (                                                  //
         curStartIndex <= endIndex &&                         //
         isSplitCharacter ( ( *splitString )[curStartIndex] ) //
-    )
-        skipForward ( i, loops );
+    );
 }
 void Validator::skipForward ( size_t& i, size_t& loops )
 {
