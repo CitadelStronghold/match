@@ -30,5 +30,9 @@ jobs:
 
           result='$(cat result.log)'
 
-          [[ $result =~ ^Matches Passed$ ]] || exit -1
-          [[ $result =~ ^Exclusions Passed$ ]] || exit -1
+          if [[ "$result" =~ ^Matches Passed$ ]]; then
+            exit -1
+          fi
+          if [[ "$result" =~ ^Exclusions Passed$ ]]; then
+            exit -1
+          fi
