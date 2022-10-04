@@ -22,8 +22,7 @@ int main ( const int argc, const char* const* const argv )
     try
     {
         Validator validator { argc, argv };
-        // return validator.getResult ();
-        return -1;
+        return validator.getResult ();
     }
     catch ( std::exception& e )
     {
