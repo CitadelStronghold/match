@@ -12,4 +12,4 @@ runs:
         cat result.log
 
         result="$(cat result.log)"
-        (![[ "$result" =~ (${{ inputs.pattern }}) ]] && echo "!Matched: ${{ inputs.pattern }}") || (echo "Matched: ${{ inputs.pattern }}" && exit -1)
+        ( ! [[ "$result" =~ (${{ inputs.pattern }}) ]] && echo "!Matched: ${{ inputs.pattern }}") || (echo "Matched: ${{ inputs.pattern }}" && exit -1)
