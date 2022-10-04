@@ -90,6 +90,7 @@ void Validator::setLogInstantiator ()
 {
     instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
     {
+        std::cout << "Instantiating line using '" << std::string_view { startIt, count } << "'\n";
         emplaceNewLog ( startIt, count );
     };
 }
@@ -98,7 +99,10 @@ void Validator::setRegexInstantiator ()
     instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
     {
         if ( !isFilteredCharacter ( *startIt ) )
+        {
+            std::cout << "Instantiating regex using '" << std::string_view { startIt, count } << "'\n";
             emplaceNewRegex ( startIt, count );
+        }
     };
 }
 void Validator::splitAndParseString ( const std::string_view& source )
@@ -202,6 +206,8 @@ bool Validator::skipForward ( size_t& i, bool& hitNewLine )
 }
 void Validator::skipForward_ ( size_t& i, bool& hitNewLine, const char nextChar )
 {
+    std::cout << "Skipping forward " << nextChar << ", " << i << ", " << hitNewLine << std::endl;
+
     const bool isNewLine = isNewlineCharacter ( nextChar );
     checkPastYes ( hitNewLine, isNewLine );
     hitNewLine = hitNewLine || isNewLine;
