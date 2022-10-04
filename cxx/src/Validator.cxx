@@ -123,13 +123,10 @@ void Validator::splitAndParseCharacter ( size_t& i )
 }
 void Validator::finishCurrentLine ( size_t& i )
 {
-    // ** How many characters were in this regex?
     instantiateCurrentLine ( i );
-
-    // ** Start a new line
     startNewLine ( i );
 
-    // ** Ignore separating characters and empty lines
+    // ** Ignore separating characters and empty lines from the start of the next line
     skipPastSplitCharacters ( i );
 }
 RegexType Validator::getTargetType () const
@@ -159,8 +156,12 @@ auto Validator::getOffsetEndIndex ( const auto distance ) const
 }
 void Validator::instantiateCurrentLine ( const size_t i )
 {
-    if ( const auto distance = getDistanceI ( i ); distance > 0 )
-        instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance ) );
+    // ** How many characters were in this line?
+    const auto distance = getDistanceI ( i );
+    if ( distance == 0 )
+        return;
+
+    instantiateParsedLine ( getCurStartAddress (), getOffsetEndIndex ( distance ) );
 }
 void Validator::emplaceNewLog ( const char* startIt, const size_t count )
 {
@@ -267,12 +268,14 @@ bool Validator::checkRegexes ( const RegexType type, auto&& functor )
                 if ( functor ( line, patterns[i] ) )
                 {
                     matches++;
-                } else {
+                }
+                else
+                {
                     lastLineOfInterest = &line;
                 }
             }
 
-        // ? Did we fail to find a match?
+        // ? Did we fail to find a match or exclusion?
         if ( type == RegexType::Yes )
         {
             if ( matches == startMatches )
