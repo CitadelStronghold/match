@@ -1,6 +1,7 @@
 ^Random string A$
 ^Random string Y$
 # Does not count as a blank line, below are still matches
+# These ones should fail:
 ^Random string B$
 ^Random string C$
 ^Random string Z$
