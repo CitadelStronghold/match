@@ -18,7 +18,12 @@ jobs:
         run: |
           cmake -S cxx -B build
           cmake --build build --config Release
-      - name: A
+      - name: pass.regex
+        uses: ./.github/workflows/test_pass_no_failures
+        with:
+          log_file: tests/pass.log
+          regex_file: tests/pass.regex
+      - name: hex_pass.regex
         uses: ./.github/workflows/test_pass_no_failures
         with:
           log_file: tests/pass.log
