@@ -1,6 +1,6 @@
 name: 'match'
 inputs:
-  matches: # Pass a JSON array of strings
+  matches: # Pass a string JSON array of strings
     type: string
     required: true
 runs:
