@@ -25,8 +25,5 @@ jobs:
       - name: Test
         if: runner.os == 'Linux'
         run: |
-          ls -la ./
-          ls -la ./build
-
-          sudo chmod +x ./build/Release/TeekValidator
-          ./build/Release/TeekValidator test.log test.regex
+          sudo chmod +x ./build/TeekValidator
+          ./build/TeekValidator test.log test.regex
