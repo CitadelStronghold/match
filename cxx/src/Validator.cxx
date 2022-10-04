@@ -82,13 +82,6 @@ void Validator::resetSplitVariables ()
 
     // ** The other variables are set throughout the matching process
 }
-void Validator::prepareToMatch ( const auto memberFunctor, const auto findingFunctor )
-{
-    matchCheckPatternFunctor = memberFunctor;
-    matchFindingFunctor      = findingFunctor;
-
-    firstLineOfInterest = nullptr;
-}
 void Validator::setSplitTarget ( const std::string_view& source )
 {
     endIndex    = source.size () - 1;
@@ -354,6 +347,7 @@ void Validator::iterateLinesForPattern (
 )
 {
     startMatches = matches;
+    firstLineOfInterest = nullptr;
 
     ( this->*matchFindingFunctor ) ( matches, i, pattern );
 }
@@ -366,6 +360,11 @@ size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns )
         iterateLinesForPattern ( matches, i, patterns[i] );
 
     return matches;
+}
+void Validator::prepareToMatch ( const auto memberFunctor, const auto findingFunctor )
+{
+    matchCheckPatternFunctor = memberFunctor;
+    matchFindingFunctor      = findingFunctor;
 }
 bool Validator::checkMatchesCountValid ( const auto& patterns, const auto matches )
 {
