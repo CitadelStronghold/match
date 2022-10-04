@@ -7,7 +7,6 @@ runs:
   using: 'composite'
   steps:
     - name: Match
-      if: runner.os == 'Windows'
       shell: bash
       run: |
         ls result.log || exit -1
