@@ -18,11 +18,11 @@ jobs:
         run: |
           cmake -S cxx -B build
           cmake --build build --config Release
-      - Name: Test
+      - name: Test
         if: runner.os == 'Windows'
         run: |
           ./build/Release/TeekValidator.exe test.log test.regex
-      - Name: Test
+      - name: Test
         if: runner.os == 'Linux'
         run: |
           sudo chmod +x ./build/release/TeekValidator
