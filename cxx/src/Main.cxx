@@ -29,7 +29,7 @@ int tryValidate ( const int argc, const char* const* const argv )
 int main ( const int argc, const char* const* const argv )
 {
     if ( !validArgCount ( argc ) )
-        return -1;
+        return 4;
 
     tryValidate ( argc, argv );
 }
