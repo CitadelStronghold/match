@@ -9,18 +9,13 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Release Build
-      uses: ./cxx/lib/TeekValidator/.github/workflows/build
-      with:
-        release: true
-        working_directory: ${{ inputs.working_directory }}
-
     - name: Key Date
       if: ${{ inputs.do_cache }}
       id: date
       shell: bash
       run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
     - name: Cache Workspace
+      if: ${{ inputs.do_cache }}
       id: cache-internal
       uses: actions/cache@v3
       with:
@@ -30,3 +25,9 @@ runs:
           validator-cache-${{ steps.date.outputs.date }}
         restore-keys: |
           validator-cache
+
+    - name: Release Build
+      uses: ./cxx/lib/TeekValidator/.github/workflows/build
+      with:
+        release: true
+        working_directory: ${{ inputs.working_directory }}
