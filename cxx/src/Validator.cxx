@@ -288,11 +288,7 @@ void Validator::checkNoFailure ( const size_t i, const size_t matches )
 
     addFailure ( firstLineOfInterest, &hold[curType].regexStrings[i] );
 }
-bool Validator::findMatchYes (
-    size_t&                 matches, //
-    const std::string_view& line,    //
-    const std::regex&       pattern  //
-)
+bool Validator::findMatchYes ( size_t& matches, const std::string_view& line, const std::regex& pattern )
 {
     if ( !( this->*matchCheckPatternFunctor ) ( line, pattern ) )
         return true;
@@ -300,11 +296,7 @@ bool Validator::findMatchYes (
     matches++;
     return false;
 }
-bool Validator::findMatchNo (
-    size_t&                 matches, //
-    const std::string_view& line,    //
-    const std::regex&       pattern  //
-)
+bool Validator::findMatchNo ( size_t& matches, const std::string_view& line, const std::regex& pattern )
 {
     if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
     {
@@ -334,11 +326,7 @@ void Validator::findMatches (
     // ? Did we identify a point of failure here?
     ( this->*failureMemberFunctor ) ( i, matches );
 }
-void Validator::findMatchesYes (
-    size_t&           matches, //
-    const size_t      i,       //
-    const std::regex& pattern  //
-)
+void Validator::findMatchesYes ( size_t& matches, const size_t i, const std::regex& pattern )
 {
     findMatches (
         matches,
@@ -348,11 +336,7 @@ void Validator::findMatchesYes (
         &Validator::checkYesFailure // ? Did we fail to find a match?
     );
 }
-void Validator::findMatchesNo (
-    size_t&           matches, //
-    const size_t      i,       //
-    const std::regex& pattern  //
-)
+void Validator::findMatchesNo ( size_t& matches, const size_t i, const std::regex& pattern )
 {
     findMatches (
         matches,
@@ -366,11 +350,7 @@ auto Validator::getMatchFindingFunctor () const
 {
     return curType == RegexType::Yes ? &Validator::findMatchesYes : &Validator::findMatchesNo;
 }
-void Validator::iterateLinesForPattern (
-    size_t&           matches, //
-    const size_t      i,       //
-    const std::regex& pattern  //
-)
+void Validator::iterateLinesForPattern ( size_t& matches, const size_t i, const std::regex& pattern )
 {
     startMatches        = matches;
     firstLineOfInterest = nullptr;

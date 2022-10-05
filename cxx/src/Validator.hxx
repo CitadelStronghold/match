@@ -140,39 +140,19 @@ private:
     [[nodiscard]] bool   checkMatchesCountValid ( const auto& patterns, const auto matches );
     void                 prepareToMatch ( const auto memberFunctor, const auto findingFunctor );
     [[nodiscard]] size_t iteratePatternsAndLinesForMatches ( const auto& patterns );
-    void                 iterateLinesForPattern (
-                        size_t&           matches, //
-                        const size_t      i,       //
-                        const std::regex& pattern  //
+    void                 iterateLinesForPattern ( size_t& matches, const size_t i, const std::regex& pattern );
+    [[nodiscard]] auto   getMatchFindingFunctor () const;
+    [[nodiscard]] bool   findMatchYes ( size_t& matches, const std::string_view& line, const std::regex& pattern );
+    [[nodiscard]] bool   findMatchNo ( size_t& matches, const std::string_view& line, const std::regex& pattern );
+    void                 findMatches (
+                        size_t&           matches,             //
+                        const size_t      i,                   //
+                        const std::regex& pattern,             //
+                        const auto        matchMemberFunctor,  //
+                        const auto        failureMemberFunctor //
                     );
-    [[nodiscard]] auto getMatchFindingFunctor () const;
-    [[nodiscard]] bool findMatchYes (
-        size_t&                 matches, //
-        const std::string_view& line,    //
-        const std::regex&       pattern  //
-    );
-    [[nodiscard]] bool findMatchNo (
-        size_t&                 matches, //
-        const std::string_view& line,    //
-        const std::regex&       pattern  //
-    );
-    void findMatches (
-        size_t&           matches,             //
-        const size_t      i,                   //
-        const std::regex& pattern,             //
-        const auto        matchMemberFunctor,  //
-        const auto        failureMemberFunctor //
-    );
-    void findMatchesYes (
-        size_t&           matches, //
-        const size_t      i,       //
-        const std::regex& pattern  //
-    );
-    void findMatchesNo (
-        size_t&           matches, //
-        const size_t      i,       //
-        const std::regex& pattern  //
-    );
+    void findMatchesYes ( size_t& matches, const size_t i, const std::regex& pattern );
+    void findMatchesNo ( size_t& matches, const size_t i, const std::regex& pattern );
     // ? Did we fail to find a match?
     void checkYesFailure ( const size_t i, const size_t matches );
     // ? Did we match an exclusion?
