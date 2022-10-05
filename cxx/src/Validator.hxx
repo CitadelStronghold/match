@@ -23,7 +23,11 @@ public:
 
 private:
 
-    using StoredString = std::unique_ptr< char[] >;
+    using StoredString   = std::unique_ptr< char[] >;
+    using StringViewPair = std::pair< const std::string_view*, const std::string_view* >;
+    using StreamPair     = std::pair< std::ifstream, std::streamoff >;
+
+private:
 
     StoredString logBuffer {};
     StoredString regexesBuffer {};
@@ -45,10 +49,10 @@ private:
     struct RegexHold
     {
 
-        int                                                                          result;
-        std::vector< std::string_view >                                              regexStrings;
-        std::vector< std::regex >                                                    regexes;
-        std::vector< std::pair< const std::string_view*, const std::string_view* > > failures;
+        int                             result;
+        std::vector< std::string_view > regexStrings;
+        std::vector< std::regex >       regexes;
+        std::vector< StringViewPair >   failures;
 
     }; // struct RegexHold
 
@@ -91,10 +95,10 @@ private:
     [[nodiscard]] bool prepareFromArguments ();
     void               loadTargetedFiles ();
 
-    [[nodiscard]] static StoredString                               makeBufferTerminated ( const size_t bytes );
-    [[nodiscard]] static std::ifstream                              makeStream ( const char* path );
-    [[nodiscard]] static std::pair< std::ifstream, std::streamoff > createStream ( const char* path );
-    [[nodiscard]] static StoredString                               loadText ( const char* path );
+    [[nodiscard]] static StoredString  makeBufferTerminated ( const size_t bytes );
+    [[nodiscard]] static std::ifstream makeStream ( const char* path );
+    [[nodiscard]] static StreamPair    createStream ( const char* path );
+    [[nodiscard]] static StoredString  loadText ( const char* path );
 
 private:
 

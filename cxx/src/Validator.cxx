@@ -240,7 +240,7 @@ std::ifstream Validator::makeStream ( const char* path )
 
     return stream;
 }
-std::pair< std::ifstream, std::streamoff > Validator::createStream ( const char* path )
+Validator::StreamPair Validator::createStream ( const char* path )
 {
     std::ifstream stream = makeStream ( path );
 
