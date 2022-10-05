@@ -17,6 +17,8 @@ Validator::Validator ( const uint8_t argc, const char* const* const argv )
     performMatches ();
 
     printResults ();
+
+    assert(false);
 }
 
 int Validator::getResult () const
