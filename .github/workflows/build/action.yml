@@ -1,0 +1,27 @@
+input:
+  release:
+    type: boolean
+runs:
+  using: 'composite'
+  steps:
+    - name: Purge
+      shell: bash
+      run: |
+        rm -r -f ./build
+    - name: Build Debug
+      if: inputs.release == 'false'
+      shell: bash
+      run: |
+        cmake -S cxx -B ./build
+        cmake --build ./build --config Debug
+    - name: Build Release
+      if: inputs.release == 'true'
+      shell: bash
+      run: |
+        cmake -S cxx -B ./build
+        cmake --build ./build --config Release
+    - name: Executable
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        sudo chmod +x ./build/TeekValidator

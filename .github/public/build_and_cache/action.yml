@@ -1,11 +1,16 @@
 runs:
   using: 'composite'
   steps:
-    - name: Build
+    - name: Adjust Working Directory
       shell: bash
       run: |
         cd ${{ github.action_path }}/../../..
         ls -la
+    - name: Release Build
+      uses: ./.github/workflows/build
+      with:
+        release: true
+
     #- name: Key Date
     #  id: date
     #  shell: bash
