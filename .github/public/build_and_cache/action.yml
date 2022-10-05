@@ -10,6 +10,7 @@ runs:
   using: 'composite'
   steps:
     - run: cd ${{ inputs.working_directory }}
+      shell: bash
     - name: Release Build
       uses: .github/workflows/build # ./cxx/lib/TeekValidator/.github/workflows/build
       with:
