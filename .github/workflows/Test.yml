@@ -32,6 +32,10 @@ jobs:
         uses: ./.github/workflows/match
         with:
           pattern: 'TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+      - name: Exit Code
+        uses: ./.github/workflows/match_exit_code_not
+        with:
+          undesired_code: 0
 
       - name: Usage
         uses: ./.github/workflows/test_unvalidated
@@ -42,6 +46,10 @@ jobs:
         uses: ./.github/workflows/match
         with:
           pattern: 'TeekValidator[^\n]*LOG[^\n]*REGEXES[^\n]*'
+      - name: Exit Code
+        uses: ./.github/workflows/match_exit_code_not
+        with:
+          undesired_code: 0
 
       - name: Non-Existent Log
         uses: ./.github/workflows/test_unvalidated
@@ -52,6 +60,10 @@ jobs:
         uses: ./.github/workflows/match
         with:
           pattern: '\.log[^\n]*does not exist'
+      - name: Exit Code
+        uses: ./.github/workflows/match_exit_code_not
+        with:
+          undesired_code: 0
 
       - name: Non-Existent Regex
         uses: ./.github/workflows/test_unvalidated
@@ -62,6 +74,10 @@ jobs:
         uses: ./.github/workflows/match
         with:
           pattern: '\.regex[^\n]*does not exist'
+      - name: Exit Code
+        uses: ./.github/workflows/match_exit_code_not
+        with:
+          undesired_code: 0
 
       - name: Both Non-Existent
         uses: ./.github/workflows/test_unvalidated

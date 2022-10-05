@@ -1,0 +1,15 @@
+inputs:
+  desired_code:
+    required: true
+    type: string
+runs:
+  using: 'composite'
+  steps:
+    - name: Exit Code
+      shell: bash
+      run: |
+        ls exit_code.log || exit -1
+        cat exit_code.log
+
+        exit_code="$(cat exit_code.log)"
+        ([[ "$exit_code" =~ (${{ inputs.desired_code }}) ]] && echo "Exit Code Matched: ${{ inputs.desired_code }}") || (echo "Exit Code Did Not Match: ${{ inputs.desired_code }}" && exit -1)
