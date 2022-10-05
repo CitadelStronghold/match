@@ -3,6 +3,12 @@ inputs:
     type: boolean
     default: false
     required: false
+  working_directory:
+    type: string
+    required: true
+defaults:
+  run:
+    working-directory: ${{ inputs.working_directory }}
 runs:
   using: 'composite'
   steps:
