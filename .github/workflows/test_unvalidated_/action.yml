@@ -14,11 +14,15 @@ runs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
+        set -o pipefail
+
         (./build/Debug/TeekValidator.exe${{ inputs.args }} &> result.log) || true
         echo $? | tee exit_code.log
     - name: Test
       if: runner.os == 'Linux'
       shell: bash
       run: |
+        set -o pipefail
+
         (./build/TeekValidator${{ inputs.args }} &> result.log) || true
         echo $? | tee exit_code.log
