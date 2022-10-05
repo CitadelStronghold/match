@@ -1,11 +1,11 @@
 inputs:
-  working_directory:
-    type: string
-    required: true
   do_cache:
     type: boolean
     default: false
     required: false
+  working_directory:
+    type: string
+    required: true
 runs:
   using: 'composite'
   steps:
