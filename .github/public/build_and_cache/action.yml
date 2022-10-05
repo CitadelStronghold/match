@@ -12,9 +12,10 @@ runs:
     - run: cd ${{ inputs.working_directory }}
       shell: bash
     - name: Release Build
-      uses: ./.github/workflows/build # ./cxx/lib/TeekValidator/.github/workflows/build
+      uses: ./cxx/lib/TeekValidator/.github/workflows/build
       with:
         release: true
+        working_directory: ${{ inputs.working_directory }}
 
     #- name: Key Date
     #  id: date
