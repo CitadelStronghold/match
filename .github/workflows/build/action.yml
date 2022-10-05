@@ -36,7 +36,7 @@ runs:
         cd ${{ inputs.working_directory }}
 
         cmake -S cxx -B ./build
-        cmake --build ./build --config Debug -- -j $(nproc)"
+        cmake --build ./build --config Debug -- -j $(nproc)
     - name: Build Release
       if: inputs.release == 'true' && runner.os == 'Linux'
       shell: bash
@@ -44,7 +44,7 @@ runs:
         cd ${{ inputs.working_directory }}
 
         cmake -S cxx -B ./build
-        cmake --build ./build --config Release -- -j $(nproc)"
+        cmake --build ./build --config Release -- -j $(nproc)
     - name: Executable
       if: runner.os == 'Linux'
       shell: bash
