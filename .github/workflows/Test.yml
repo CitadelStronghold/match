@@ -26,25 +26,25 @@ jobs:
 
       # See https://www.regextester.com/99203 for regex syntax, bash is different than modern RegEx
 
-      #- name: Usage
-      #  uses: ./.github/workflows/test_unvalidated
-      #  with:
-      #    log_file: ''
-      #    regex_file: ''
-      #- name: Validate
-      #  uses: ./.github/workflows/match
-      #  with:
-      #    pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+      - name: Usage
+        uses: ./.github/workflows/test_unvalidated
+        with:
+          log_file: ''
+          regex_file: ''
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
 
-      #- name: Usage
-      #  uses: ./.github/workflows/test_unvalidated
-      #  with:
-      #    log_file: '1 2'
-      #    regex_file: '3 4'
-      #- name: Validate
-      #  uses: ./.github/workflows/match
-      #  with:
-      #    pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+      - name: Usage
+        uses: ./.github/workflows/test_unvalidated
+        with:
+          log_file: '1 2'
+          regex_file: '3 4'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'TeekValidator[^\n]*LOG[^\n]*REGEXES[^\n]*'
 
       - name: Non-Existent Log
         uses: ./.github/workflows/test_unvalidated
