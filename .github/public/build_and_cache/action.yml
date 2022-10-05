@@ -6,11 +6,12 @@ inputs:
     type: boolean
     default: false
     required: false
+defaults:
+  run:
+    working-directory: ${{ inputs.working_directory }}
 runs:
   using: 'composite'
   steps:
-    - run: cd ${{ inputs.working_directory }}
-      shell: bash
     - name: Release Build
       uses: ./cxx/lib/TeekValidator/.github/workflows/build
       with:
