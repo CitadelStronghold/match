@@ -12,7 +12,7 @@ runs:
         rm -f exit_code.log
     - name: Test
       if: runner.os == 'Windows'
-      continue-on-error: true
+      # continue-on-error: true
       shell: bash
       run: |
         set -o pipefail
@@ -20,7 +20,7 @@ runs:
         (./build/Debug/TeekValidator.exe${{ inputs.args }} &> result.log) || (echo $? | tee exit_code.log)
     - name: Test
       if: runner.os == 'Linux'
-      continue-on-error: true
+      # continue-on-error: true
       shell: bash
       run: |
         set -o pipefail
