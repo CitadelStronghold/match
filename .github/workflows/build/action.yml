@@ -1,4 +1,4 @@
-input:
+inputs:
   release:
     type: boolean
 runs:
