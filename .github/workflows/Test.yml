@@ -52,7 +52,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+          pattern: 'Argument[^\n]+\.log[^\n]+does not exist'
 
       - name: Non-Existent Regex
         uses: ./.github/workflows/test_unvalidated
@@ -62,7 +62,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+          pattern: 'Argument[^\n]+\.regex[^\n]+does not exist'
 
       - name: Both Non-Existent
         uses: ./.github/workflows/test_unvalidated
@@ -72,7 +72,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+          pattern: 'Argument[^\n]+\.log[^\n]+does not exist'
 
       - name: Pass
         uses: ./.github/workflows/test_pass_no_failures
