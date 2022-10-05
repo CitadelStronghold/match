@@ -6,6 +6,6 @@ runs:
       with:
         pattern: '[^\|]'
     - name: Exit Code
-        uses: ./.github/workflows/match_exit_code
-        with:
-          desired_code: 0
+      uses: ./.github/workflows/match_exit_code
+      with:
+        desired_code: 0
