@@ -168,7 +168,7 @@ auto Validator::getOffsetCount ( const auto distance, const auto i ) const
     );
 
     // ** The last character is not a newline, so it needs to be included
-    return addExtraCharacter ? distance + 1 : distance;
+    return addExtraCharacter ? distance  : distance;
 }
 void Validator::instantiateCurrentLine ( const size_t i )
 {
