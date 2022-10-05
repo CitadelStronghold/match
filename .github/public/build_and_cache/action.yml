@@ -1,0 +1,22 @@
+runs:
+  using: 'composite'
+  steps:
+    - name: Build
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}/../../..
+        ls -la
+    #- name: Key Date
+    #  id: date
+    #  shell: bash
+    #  run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
+    #- name: Cache Workspace
+    #  id: cache-internal
+    #  uses: actions/cache@v3
+    #  with:
+    #    path: |
+    #      ${{ inputs.path }}
+    #    key: |
+    #      ${{ inputs.key }}-cache-${{ steps.date.outputs.date }}
+    #    restore-keys: |
+    #      ${{ inputs.key }}-cache
