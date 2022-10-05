@@ -27,10 +27,7 @@ jobs:
       # See https://www.regextester.com/99203 for regex syntax, bash is different than modern RegEx
 
       - name: Usage
-        uses: ./.github/workflows/test_unvalidated
-        with:
-          log_file: ''
-          regex_file: ''
+        uses: ./.github/workflows/test_blank
       - name: Validate
         uses: ./.github/workflows/match
         with:

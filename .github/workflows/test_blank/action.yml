@@ -1,0 +1,6 @@
+runs:
+  using: 'composite'
+  steps:
+    - uses: ./.github/workflows/test_unvalidated_
+      with:
+        args: ''
