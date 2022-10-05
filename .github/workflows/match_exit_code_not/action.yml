@@ -12,4 +12,4 @@ runs:
         cat exit_code.log
 
         exit_code="$(cat exit_code.log)"
-        ( ! [[ "$exit_code" =~ (${{ inputs.desired_code }}) ]] && echo "Exit Code Did Not Match: ${{ inputs.desired_code }}") || (echo "Exit Code Matched: ${{ inputs.desired_code }}" && exit -1)
+        ( ! [[ "$exit_code" =~ (${{ inputs.undesired_code }}) ]] && echo "Exit Code Did Not Match: ${{ inputs.undesired_code }}") || (echo "Exit Code Matched: ${{ inputs.undesired_code }}" && exit -1)
