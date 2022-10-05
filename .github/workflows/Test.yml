@@ -52,7 +52,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'Argument[^\n]+\.log[^\n]+does not exist'
+          pattern: 'Argument[^\n]+?log[^\n]+?does not exist'
 
       - name: Non-Existent Regex
         uses: ./.github/workflows/test_unvalidated
