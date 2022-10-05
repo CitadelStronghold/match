@@ -14,7 +14,7 @@ runs:
 
         rm -r -f ./build
     - name: Build Debug
-      if: inputs.release == 'false'
+      if: inputs.release == 'false' && runner.os == 'Windows'
       shell: bash
       run: |
         cd ${{ inputs.working_directory }}
@@ -22,13 +22,29 @@ runs:
         cmake -S cxx -B ./build
         cmake --build ./build --config Debug
     - name: Build Release
-      if: inputs.release == 'true'
+      if: inputs.release == 'true' && runner.os == 'Windows'
       shell: bash
       run: |
         cd ${{ inputs.working_directory }}
 
         cmake -S cxx -B ./build
         cmake --build ./build --config Release
+    - name: Build Debug
+      if: inputs.release == 'false' && runner.os == 'Linux'
+      shell: bash
+      run: |
+        cd ${{ inputs.working_directory }}
+
+        cmake -S cxx -B ./build
+        cmake --build ./build --config Debug -- -j $(nproc)"
+    - name: Build Release
+      if: inputs.release == 'true' && runner.os == 'Linux'
+      shell: bash
+      run: |
+        cd ${{ inputs.working_directory }}
+
+        cmake -S cxx -B ./build
+        cmake --build ./build --config Release -- -j $(nproc)"
     - name: Executable
       if: runner.os == 'Linux'
       shell: bash
