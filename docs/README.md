@@ -7,7 +7,7 @@
 - Provides comprehensive output
     - Total data read
     - Time taken for each portion of validation
-    - Check failures
+    - Failures
         - Shows which patterns failed against which lines
 
 ## Usage
