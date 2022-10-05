@@ -10,7 +10,7 @@ runs:
   using: 'composite'
   steps:
     - name: Release Build
-      uses: ./.github/workflows/build
+      uses: ./lib/cvv/TeekValidator/.github/workflows/build
       with:
         release: true
 
