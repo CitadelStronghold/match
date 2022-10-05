@@ -14,8 +14,8 @@
 
 | OS       | Compiler | Status |
 | -------- | -------- | ------ |
-| Linux    | GCC      | ![GCC](https://github.com/GeodeGames/TeekValidator/actions/workflows/Test.yml/badge.svg)  |
-| Windows  | MSVC     |        |
+| Linux    | GCC      | ![Tests](https://github.com/GeodeGames/TeekValidator/actions/workflows/Test.yml/badge.svg) |
+| Windows  | MSVC     | ![Tests](https://github.com/GeodeGames/TeekValidator/actions/workflows/Test.yml/badge.svg) |
 
 ## Usage
 ```
