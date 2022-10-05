@@ -5,12 +5,12 @@ inputs:
     required: false
 defaults:
   run:
-    working-directory: ./lib/cxx/TeekValidator
+    working-directory: ./cxx/lib/TeekValidator
 runs:
   using: 'composite'
   steps:
     - name: Release Build
-      uses: ./lib/cxx/TeekValidator/.github/workflows/build
+      uses: ./.github/workflows/build # ./cxx/lib/TeekValidator/.github/workflows/build
       with:
         release: true
 
