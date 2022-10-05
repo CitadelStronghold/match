@@ -1,4 +1,3 @@
-name: 'match'
 inputs:
   pattern:
     type: string

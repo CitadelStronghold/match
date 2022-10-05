@@ -1,4 +1,3 @@
-name: 'test_pass_no_failures'
 inputs:
   log_file:
     required: true

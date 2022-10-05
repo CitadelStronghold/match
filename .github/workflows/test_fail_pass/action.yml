@@ -1,4 +1,3 @@
-name: 'test_fail'
 inputs:
   log_file:
     required: true
