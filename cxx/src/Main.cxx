@@ -22,14 +22,14 @@ int tryValidate ( const int argc, const char* const* const argv )
     catch ( std::exception& e )
     {
         std::cerr << "\033[31mError: \033[1m" << e.what () << "\033[0m\n";
-        return -1;
+        return 2;
     }
 }
 
 int main ( const int argc, const char* const* const argv )
 {
     if ( !validArgCount ( argc ) )
-        return 4;
+        return 1;
 
     tryValidate ( argc, argv );
 }

@@ -24,7 +24,7 @@ jobs:
         run: |
           sudo chmod +x ./build/TeekValidator
 
-      # See https://www.regextester.com/99203 for regex syntax, bash is different than modern RegEx
+      # See https://www.regextester.com/99203 for syntax, bash is different than modern RegEx
 
       - name: Usage
         uses: ./.github/workflows/test_blank
