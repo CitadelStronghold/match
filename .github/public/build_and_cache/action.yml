@@ -15,17 +15,18 @@ runs:
         release: true
         working_directory: ${{ inputs.working_directory }}
 
-    #- name: Key Date
-    #  id: date
-    #  shell: bash
-    #  run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
-    #- name: Cache Workspace
-    #  id: cache-internal
-    #  uses: actions/cache@v3
-    #  with:
-    #    path: |
-    #      ${{ inputs.path }}
-    #    key: |
-    #      ${{ inputs.key }}-cache-${{ steps.date.outputs.date }}
-    #    restore-keys: |
-    #      ${{ inputs.key }}-cache
+    - name: Key Date
+      if: ${{ inputs.do_cache }}
+      id: date
+      shell: bash
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
+    - name: Cache Workspace
+      id: cache-internal
+      uses: actions/cache@v3
+      with:
+        path: |
+          ./cxx/lib/TeekValidator/build
+        key: |
+          validator-cache-${{ steps.date.outputs.date }}
+        restore-keys: |
+          validator-cache
