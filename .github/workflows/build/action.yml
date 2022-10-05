@@ -4,6 +4,9 @@ inputs:
   working_directory:
     type: string
     default: '.'
+defaults:
+  run:
+    working-directory: ${{ inputs.working_directory }}
 runs:
   using: 'composite'
   steps:
