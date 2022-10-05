@@ -1,6 +1,6 @@
 # TeekValidator
 
-![Tests](https://github.com/GeodeGames/TeekValidator/actions/workflows/Test.yml/badge.svg
+![Tests](https://github.com/GeodeGames/TeekValidator/actions/workflows/Test.yml/badge.svg)
 
 - Check a log / character file against a series of regular expressions
 - Fails if any matches fail or exclusions exist
