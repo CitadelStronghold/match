@@ -12,6 +12,11 @@
         - Shows which patterns failed against which lines
     - Colorful!
 
+| OS       | Compiler | Status |
+| -------- | -------- | ------ |
+| Linux    | GCC      | ![GCC](https://github.com/GeodeGames/TeekValidator/actions/workflows/Test.yml/badge.svg)  |
+| Windows  | MSVC     |        |
+
 ## Usage
 ```
 TeekValidator LOG_FILE REGEXES_FILE
