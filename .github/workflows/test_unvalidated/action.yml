@@ -1,0 +1,24 @@
+inputs:
+  log_file:
+    required: true
+    type: string
+  regex_file:
+    required: true
+    type: string
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Erase Existing Output File'
+      shell: bash
+      run: |
+        rm -f result.log
+    - name: Test
+      if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        ./build/Debug/TeekValidator.exe ${{ inputs.log_file }} ${{ inputs.regex_file }} > result.log
+    - name: Test
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        ./build/TeekValidator ${{ inputs.log_file }} ${{ inputs.regex_file }} > result.log

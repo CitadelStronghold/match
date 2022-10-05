@@ -14,21 +14,11 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Erase Existing Output File'
-      shell: bash
-      run: |
-        rm -f result.log
-    - name: Test
-      if: runner.os == 'Windows'
-      shell: bash
-      run: |
-        ./build/Debug/TeekValidator.exe ${{ inputs.log_file }} ${{ inputs.regex_file }} > result.log
-    - name: Test
-      if: runner.os == 'Linux'
-      shell: bash
-      run: |
-        sudo chmod +x ./build/TeekValidator
-        ./build/TeekValidator ${{ inputs.log_file }} ${{ inputs.regex_file }} > result.log
+    - name: 'Perform Test'
+      uses: ./.github/workflows/test_unvalidated
+      with:
+        log_file: ${{ inputs.log_file }}
+        regex_file: ${{ inputs.regex_file }}
     - name: # Provide quick validation route for the basic outputs
       uses: ./.github/workflows/match2
       with:

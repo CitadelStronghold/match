@@ -19,6 +19,60 @@ jobs:
         run: |
           cmake -S cxx -B build
           cmake --build build --config Debug
+      - name: Executable
+        if: runner.os == 'Linux'
+        run: |
+          sudo chmod +x ./build/TeekValidator
+
+      - name: Usage
+        uses: ./.github/workflows/test_unvalidated
+        with:
+          log_file: ''
+          regex_file: ''
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+
+      - name: Usage
+        uses: ./.github/workflows/test_unvalidated
+        with:
+          log_file: '1 2'
+          regex_file: '3 4'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+
+      - name: Non-Existent Log
+        uses: ./.github/workflows/test_unvalidated
+        with:
+          log_file: 'tests/nonexistent.log'
+          regex_file: 'tests/pass.regex'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+
+      - name: Non-Existent Regex
+        uses: ./.github/workflows/test_unvalidated
+        with:
+          log_file: 'tests/pass.log'
+          regex_file: 'tests/nonexistent.regex'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+
+      - name: Both Non-Existent
+        uses: ./.github/workflows/test_unvalidated
+        with:
+          log_file: 'tests/nonexistent.log'
+          regex_file: 'tests/nonexistent.regex'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'Usage:[^\n]+TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
 
       - name: Pass
         uses: ./.github/workflows/test_pass_no_failures
