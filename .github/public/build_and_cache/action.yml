@@ -6,11 +6,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Adjust Working Directory
-      shell: bash
-      run: |
-        cd ${{ github.action_path }}/../../..
-        ls -la
     - name: Release Build
       uses: ./.github/workflows/build
       with:
