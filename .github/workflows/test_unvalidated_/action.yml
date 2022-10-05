@@ -13,9 +13,9 @@ runs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
-        ./build/Debug/TeekValidator.exe${{ inputs.args }} &> result.log
+        (./build/Debug/TeekValidator.exe${{ inputs.args }} &> result.log) || exit 0
     - name: Test
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        ./build/TeekValidator${{ inputs.args }} &> result.log
+        (./build/TeekValidator${{ inputs.args }} &> result.log) || exit 0
