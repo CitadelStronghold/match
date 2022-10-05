@@ -4,32 +4,35 @@ inputs:
   working_directory:
     type: string
     default: '.'
-defaults:
-  run:
-    working-directory: ${{ inputs.working_directory }}
 runs:
   using: 'composite'
   steps:
-    - run: cd ${{ inputs.working_directory }}
-      shell: bash
     - name: Purge
       shell: bash
       run: |
+        cd ${{ inputs.working_directory }}
+
         rm -r -f ./build
     - name: Build Debug
       if: inputs.release == 'false'
       shell: bash
       run: |
+        cd ${{ inputs.working_directory }}
+
         cmake -S cxx -B ./build
         cmake --build ./build --config Debug
     - name: Build Release
       if: inputs.release == 'true'
       shell: bash
       run: |
+        cd ${{ inputs.working_directory }}
+
         cmake -S cxx -B ./build
         cmake --build ./build --config Release
     - name: Executable
       if: runner.os == 'Linux'
       shell: bash
       run: |
+        cd ${{ inputs.working_directory }}
+
         sudo chmod +x ./build/TeekValidator
