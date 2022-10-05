@@ -64,7 +64,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'Argument[^\n]+?\.regex[^\n]+?does[[:space:]]not[[:space:]]exist'
+          pattern: '\.regex[^\n]*does not exist'
 
       - name: Both Non-Existent
         uses: ./.github/workflows/test_unvalidated
@@ -74,7 +74,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'Argument[^\n]+?\.log[^\n]+?does[[:space:]]not[[:space:]]exist'
+          pattern: '\.log[^\n]*does not exist'
 
       - name: Pass
         uses: ./.github/workflows/test_pass_no_failures
