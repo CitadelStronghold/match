@@ -35,4 +35,4 @@ runs:
       run: |
         cd ${{ inputs.working_directory }}
 
-        sudo chmod +x ./build/TeekValidator
+        chmod +x ./build/TeekValidator
