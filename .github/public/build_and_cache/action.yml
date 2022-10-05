@@ -3,12 +3,9 @@ inputs:
     type: boolean
     default: false
     required: false
-  working_directory:
-    type: string
-    required: true
 defaults:
   run:
-    working-directory: ${{ inputs.working_directory }}
+    working-directory: ./lib/cxx/TeekValidator
 runs:
   using: 'composite'
   steps:
