@@ -10,8 +10,13 @@
     - Time taken for each portion of validation
     - Failures
         - Shows which patterns failed against which lines
+    - Colorful!
 
 ## Usage
 ```
 TeekValidator LOG_FILE REGEXES_FILE
 ```
+
+## Example Output
+![Pass](https://i.imgur.com/uOL91Qt.png)
+![Fail](https://i.imgur.com/OGymPZc.png)
