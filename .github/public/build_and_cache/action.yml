@@ -1,16 +1,17 @@
 inputs:
+  working_directory:
+    type: string
+    required: true
   do_cache:
     type: boolean
     default: false
     required: false
-defaults:
-  run:
-    working-directory: ./cxx/lib/TeekValidator
 runs:
   using: 'composite'
   steps:
+    - run: cd ${{ inputs.working_directory }}
     - name: Release Build
-      uses: ./cxx/lib/TeekValidator/.github/workflows/build
+      uses: .github/workflows/build # ./cxx/lib/TeekValidator/.github/workflows/build
       with:
         release: true
 
