@@ -21,7 +21,7 @@ int tryValidate ( const int argc, const char* const* const argv )
     }
     catch ( std::exception& e )
     {
-        std::cerr << "\033[31mError: \033[1m" << e.what () << "\033[0m\n";
+        std::cerr << "Error:" << e.what () << "\n";
         return -1;
     }
 }
