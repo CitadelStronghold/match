@@ -31,5 +31,5 @@ int main ( const int argc, const char* const* const argv )
     if ( !validArgCount ( argc ) )
         return 1;
 
-    tryValidate ( argc, argv );
+    return tryValidate ( argc, argv );
 }
