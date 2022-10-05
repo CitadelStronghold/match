@@ -7,7 +7,7 @@ runs:
   using: 'composite'
   steps:
     - name: Release Build
-      uses: ./cxx/lib/TeekValidator/.github/workflows/build
+      uses: ./.github/workflows/build
       with:
         release: true
 
