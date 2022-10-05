@@ -15,6 +15,10 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: 'Erase Existing Output File'
+      shell: bash
+      run: |
+        rm -f result.log
     - name: Test
       if: runner.os == 'Windows'
       shell: bash
