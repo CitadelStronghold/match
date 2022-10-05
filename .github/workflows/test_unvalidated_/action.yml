@@ -16,11 +16,11 @@ runs:
       run: |
         set -o pipefail
 
-        (./build/Debug/TeekValidator.exe${{ inputs.args }} &> result.log) || (echo $? | tee exit_code.log)
+        (./build/Debug/TeekValidator.exe${{ inputs.args }} &> result.log) && (echo $? | tee exit_code.log) || (echo $? | tee exit_code.log)
     - name: Test
       if: runner.os == 'Linux'
       shell: bash
       run: |
         set -o pipefail
 
-        (./build/TeekValidator${{ inputs.args }} &> result.log) || (echo $? | tee exit_code.log)
+        (./build/TeekValidator${{ inputs.args }} &> result.log) && (echo $? | tee exit_code.log) || (echo $? | tee exit_code.log)
