@@ -17,8 +17,7 @@ runs:
       run: |
         set -o pipefail
 
-        ./build/Debug/TeekValidator.exe${{ inputs.args }} 2> result.log
-        echo $? | tee exit_code.log
+        (./build/Debug/TeekValidator.exe${{ inputs.args }} 2> result.log) || (echo $? | tee exit_code.log)
     - name: Test
       if: runner.os == 'Linux'
       continue-on-error: true
@@ -26,5 +25,4 @@ runs:
       run: |
         set -o pipefail
 
-        ./build/TeekValidator${{ inputs.args }} 2> result.log
-        echo $? | tee exit_code.log
+        (./build/TeekValidator${{ inputs.args }} 2> result.log) || (echo $? | tee exit_code.log)
