@@ -5,3 +5,7 @@ runs:
       uses: ./.github/workflows/match
       with:
         pattern: '[\|]'
+    - name: Exit Code
+        uses: ./.github/workflows/match_exit_code_not
+        with:
+          undesired_code: 0

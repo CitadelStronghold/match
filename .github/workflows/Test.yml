@@ -88,6 +88,10 @@ jobs:
         uses: ./.github/workflows/match
         with:
           pattern: '\.log[^\n]*does not exist'
+      - name: Exit Code
+        uses: ./.github/workflows/match_exit_code_not
+        with:
+          undesired_code: 0
 
       - name: Pass
         uses: ./.github/workflows/test_pass_no_failures
