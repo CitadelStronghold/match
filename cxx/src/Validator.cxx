@@ -303,7 +303,7 @@ bool Validator::findMatchNo ( size_t& matches, const std::string_view& line, con
         matches++;
         return true;
     }
-    else if ( firstLineOfInterest == nullptr )
+    else if ( !firstLineOfInterest )
     {
         firstLineOfInterest = &line;
         return false;
