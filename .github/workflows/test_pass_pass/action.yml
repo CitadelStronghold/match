@@ -19,7 +19,7 @@ runs:
       with:
         log_file: ${{ inputs.log_file }}
         regex_file: ${{ inputs.regex_file }}
-        patternA: '[^\n]*${{ inputs.match_count }}[^\n]+Matches[^\n]+Passed[^\n]*'
-        patternB: '[^\n]*${{ inputs.exclusion_count }}[^\n]+Exclusions[^\n]+Passed[^\n]*'
+        patternA: '[^\n]*${{ inputs.match_count }}[[:space:]]Matches[^\n]+Passed[^\n]*'
+        patternB: '[^\n]*${{ inputs.exclusion_count }}[[:space:]]Exclusions[^\n]+Passed[^\n]*'
     - name: Validate
       uses: ./.github/workflows/reported_no_failures
