@@ -95,8 +95,8 @@ jobs:
         with:
           log_file: tests/pass.log
           regex_file: tests/pass.regex
-          match_count: 5
-          exclusion_count: 5
+          match_count: 6
+          exclusion_count: 6
       - name: Pass
         uses: ./.github/workflows/test_pass_pass
         with:
