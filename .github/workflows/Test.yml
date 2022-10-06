@@ -91,72 +91,98 @@ jobs:
           undesired_code: 0
 
       - name: Pass
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/pass.log
           regex_file: tests/pass.regex
+          match_count: 5
+          exclusion_count: 5
       - name: Pass
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/hex.log
           regex_file: tests/hex_pass.regex
+          match_count: 20
+          exclusion_count: 0
 
       - name: Pass Edge Case
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_exclusions_pass.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Pass Edge Case
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_matches_pass.regex
+          match_count: 0
+          exclusion_count: 0
 
       - name: Pass EOF
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof.log
           regex_file: tests/eof/eof.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Pass EOF
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_1.log
           regex_file: tests/eof/eof_1.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Pass EOF
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_2.log
           regex_file: tests/eof/eof_2.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Pass EOF
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_3.log
           regex_file: tests/eof/eof_3.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Pass EOF
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_4.log
           regex_file: tests/eof/eof_4.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Pass EOF
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_5.log
           regex_file: tests/eof/eof_5.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Pass EOF
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_6.log
           regex_file: tests/eof/eof_6.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Pass EOF
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_7.log
           regex_file: tests/eof/eof_7.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Pass EOF
-        uses: ./.github/workflows/test_pass_no_failures
+        uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_8.log
           regex_file: tests/eof/eof_8.regex
+          match_count: 0
+          exclusion_count: 0
 
 
 
@@ -165,6 +191,8 @@ jobs:
         with:
           log_file: tests/both_fail.log
           regex_file: tests/both_fail.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Validate
         uses: ./.github/workflows/match
         with:
@@ -179,6 +207,8 @@ jobs:
         with:
           log_file: tests/match_fail.log
           regex_file: tests/match_fail.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Validate
         uses: ./.github/workflows/match
         with:
@@ -201,6 +231,8 @@ jobs:
         with:
           log_file: tests/exclusion_fail.log
           regex_file: tests/exclusion_fail.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Validate
         uses: ./.github/workflows/match_not
         with:
@@ -215,6 +247,8 @@ jobs:
         with:
           log_file: tests/hex.log
           regex_file: tests/hex_fail.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Validate
         uses: ./.github/workflows/match
         with:
@@ -306,6 +340,8 @@ jobs:
         with:
           log_file: tests/edge_cases/fail_last_exclusion_not_missed.log
           regex_file: tests/edge_cases/fail_last_exclusion_not_missed.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Validate
         uses: ./.github/workflows/match_not
         with:
@@ -320,6 +356,8 @@ jobs:
         with:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_exclusions_fail.regex
+          match_count: 0
+          exclusion_count: 0
       - name: Validate
         uses: ./.github/workflows/match_not
         with:

@@ -5,6 +5,12 @@ inputs:
   regex_file:
     required: true
     type: string
+  match_count:
+    required: true
+    type: number
+  exclusion_count:
+    required: true
+    type: number
 runs:
   using: 'composite'
   steps:
@@ -13,7 +19,7 @@ runs:
       with:
         log_file: ${{ inputs.log_file }}
         regex_file: ${{ inputs.regex_file }}
-        patternA: '[^\n]*Matches[^\n]+Failed[^\n]*'
-        patternB: '[^\n]*Exclusions[^\n]+Failed[^\n]*'
+        patternA: '[^\n]*${{ inputs.match_count }}[^\n]+Matches[^\n]+Failed[^\n]*'
+        patternB: '[^\n]*${{ inputs.exclusion_count }}[^\n]+Exclusions[^\n]+Failed[^\n]*'
     - name: Validate
       uses: ./.github/workflows/reported_failures
