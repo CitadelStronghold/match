@@ -204,7 +204,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'TIMESTAMP[[:space:]]\[E\][[:space:]]Error[^\n\|]+\|[^\n]+\^4321\$[^\w]'
+          pattern: 'TIMESTAMP[[:space:]]\[E\][[:space:]]Error[^\n\|]+\|[^\n]+\^\\\[E\\\]\$[^\w]'
 
       - name: Fail
         uses: ./.github/workflows/test_fail_pass
