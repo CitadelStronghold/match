@@ -341,7 +341,7 @@ jobs:
           log_file: tests/edge_cases/fail_last_exclusion_not_missed.log
           regex_file: tests/edge_cases/fail_last_exclusion_not_missed.regex
           match_count: 0
-          exclusion_count: 0
+          exclusion_count: 4
       - name: Validate
         uses: ./.github/workflows/match_not
         with:
