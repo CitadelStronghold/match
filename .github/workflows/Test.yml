@@ -192,7 +192,7 @@ jobs:
           log_file: tests/both_fail.log
           regex_file: tests/both_fail.regex
           match_count: 1
-          exclusion_count: 1
+          exclusion_count: 2
       - name: Validate
         uses: ./.github/workflows/match
         with:
@@ -201,6 +201,10 @@ jobs:
         uses: ./.github/workflows/match
         with:
           pattern: '4321[^\n\|]+\|[^\n]+\^4321\$[^\w]'
+      - name: Validate
+        uses: ./.github/workflows/match
+        with:
+          pattern: 'TIMESTAMP[[:space:]]\[E\][[:space:]]Error[^\n\|]+\|[^\n]+\^4321\$[^\w]'
 
       - name: Fail
         uses: ./.github/workflows/test_fail_pass
