@@ -6,6 +6,7 @@
 .*
 ^1$
 # Lines starting with # are skipped
+\[I\]
 
 #
 ^4321
@@ -13,6 +14,7 @@
 # ^1234$
 # ^1\d\d*3\d$
 abcdef
+\[E\]
 
 #
 
