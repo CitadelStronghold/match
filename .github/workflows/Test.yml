@@ -125,63 +125,63 @@ jobs:
         with:
           log_file: tests/eof/eof.log
           regex_file: tests/eof/eof.regex
-          match_count: 0
+          match_count: 3
           exclusion_count: 0
       - name: Pass EOF
         uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_1.log
           regex_file: tests/eof/eof_1.regex
-          match_count: 0
-          exclusion_count: 0
+          match_count: 4
+          exclusion_count: 4
       - name: Pass EOF
         uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_2.log
           regex_file: tests/eof/eof_2.regex
-          match_count: 0
-          exclusion_count: 0
+          match_count: 4
+          exclusion_count: 4
       - name: Pass EOF
         uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_3.log
           regex_file: tests/eof/eof_3.regex
-          match_count: 0
+          match_count: 4
           exclusion_count: 0
       - name: Pass EOF
         uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_4.log
           regex_file: tests/eof/eof_4.regex
-          match_count: 0
+          match_count: 4
           exclusion_count: 0
       - name: Pass EOF
         uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_5.log
           regex_file: tests/eof/eof_5.regex
-          match_count: 0
-          exclusion_count: 0
+          match_count: 4
+          exclusion_count: 4
       - name: Pass EOF
         uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_6.log
           regex_file: tests/eof/eof_6.regex
-          match_count: 0
-          exclusion_count: 0
+          match_count: 4
+          exclusion_count: 4
       - name: Pass EOF
         uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_7.log
           regex_file: tests/eof/eof_7.regex
-          match_count: 0
+          match_count: 4
           exclusion_count: 0
       - name: Pass EOF
         uses: ./.github/workflows/test_pass_pass
         with:
           log_file: tests/eof/eof_8.log
           regex_file: tests/eof/eof_8.regex
-          match_count: 0
+          match_count: 4
           exclusion_count: 0
 
 
