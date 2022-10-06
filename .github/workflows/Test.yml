@@ -117,7 +117,7 @@ jobs:
         with:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_matches_pass.regex
-          match_count: 0
+          match_count: 5
           exclusion_count: 0
 
       - name: Pass EOF
