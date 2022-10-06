@@ -471,11 +471,12 @@ void Validator::printResults () const
 }
 void Validator::printResult ( const char* name, const RegexType type ) const
 {
-    const auto        result       = hold[type].result;
-    const std::string color        = result == 0 ? "\033[32m" : "\033[31m";
-    const std::string resultString = result == 0 ? "\033[1mPassed" : "\033[1mFailed";
+    const auto        passed       = hold[type].result == 0;
+    const auto        count        = passed ? hold[type].regexes.size () : hold[type].failures.size ();
+    const std::string color        = passed ? "\033[32m" : "\033[31m";
+    const std::string resultString = passed ? "\033[1mPassed" : "\033[1mFailed";
 
-    std::cout << color << name << " " << resultString << "\033[0m\n";
+    std::cout << color << count << " " << name << " " << resultString << "\033[0m\n";
 
     printFailures ( type );
 }
