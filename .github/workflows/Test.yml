@@ -191,8 +191,8 @@ jobs:
         with:
           log_file: tests/both_fail.log
           regex_file: tests/both_fail.regex
-          match_count: 0
-          exclusion_count: 0
+          match_count: 1
+          exclusion_count: 1
       - name: Validate
         uses: ./.github/workflows/match
         with:
