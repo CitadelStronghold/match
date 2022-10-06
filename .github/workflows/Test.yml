@@ -111,7 +111,7 @@ jobs:
           log_file: tests/edge_cases/only.log
           regex_file: tests/edge_cases/only_exclusions_pass.regex
           match_count: 0
-          exclusion_count: 0
+          exclusion_count: 4
       - name: Pass Edge Case
         uses: ./.github/workflows/test_pass_pass
         with:
