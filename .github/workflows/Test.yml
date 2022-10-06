@@ -207,7 +207,7 @@ jobs:
         with:
           log_file: tests/match_fail.log
           regex_file: tests/match_fail.regex
-          match_count: 0
+          match_count: 4
           exclusion_count: 0
       - name: Validate
         uses: ./.github/workflows/match
