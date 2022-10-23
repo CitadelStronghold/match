@@ -13,7 +13,7 @@ runs:
       if: ${{ inputs.do_cache }}
       id: date
       shell: bash
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
+      run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
     - name: Cache Workspace
       if: ${{ inputs.do_cache }}
       id: cache-internal
