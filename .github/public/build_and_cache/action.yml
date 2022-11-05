@@ -18,7 +18,7 @@ runs:
       if: ${{ inputs.do_cache }}
       id: key
       shell: bash
-      run: echo "git=$(git rev-parse --git-dir=./cxx/lib/TeekValidator HEAD | tr -d '\n')" >> $GITHUB_OUTPUT
+      run: echo "git=$(git -C ./cxx/lib/TeekValidator rev-parse HEAD)" >> $GITHUB_OUTPUT
     - name: Cache Release Build
       if: ${{ inputs.do_cache }}
       id: cache-internal
