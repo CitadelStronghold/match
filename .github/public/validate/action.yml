@@ -20,4 +20,4 @@ runs:
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        ${{ inputs.working_directory }}//build/TeekValidator ${{ inputs.log_file }} ${{ inputs.regex_file }}
+        ${{ inputs.working_directory }}/build/TeekValidator ${{ inputs.log_file }} ${{ inputs.regex_file }}
