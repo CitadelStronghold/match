@@ -365,24 +365,31 @@ void Validator::iterateLinesForPattern (
 size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns, const auto& patternStrings )
 {
     std::vector< PatternStringHolder > patternHolders = computePatternHolders ( patterns, patternStrings );
+    std::atomic< size_t >              combinedMatches {};
 
-    std::atomic< size_t > combinedMatches {};
+    performMatchesParallel (patternHolders, combinedMatches);
 
+    return combinedMatches.load ( std::memory_order_acquire );
+}
+auto Validator::makeParallelMatchingFunctor ( auto& combinedMatches )
+{
+    return [this, &combinedMatches] ( const auto& patternHolder )
+    {
+        PatternMatchHold matchHold {};
+
+        iterateLinesForPattern ( matchHold, patternHolder );
+
+        combinedMatches.fetch_add ( matchHold.matches, std::memory_order_acq_rel );
+    };
+}
+void Validator::performMatchesParallel ( auto& patternHolders, auto& combinedMatches )
+{
     std::for_each (
         std::execution::par,
         patternHolders.begin (),
         patternHolders.end (),
-        [this, &combinedMatches] ( const auto& patternHolder )
-        {
-            PatternMatchHold matchHold {};
-
-            iterateLinesForPattern ( matchHold, patternHolder );
-
-            combinedMatches.fetch_add ( matchHold.matches, std::memory_order_acq_rel );
-        }
+        makeParallelMatchingFunctor ( combinedMatches )
     );
-
-    return combinedMatches.load ( std::memory_order_acquire );
 }
 std::vector< Validator::PatternStringHolder > Validator::computePatternHolders (
     const auto& patterns,      //
