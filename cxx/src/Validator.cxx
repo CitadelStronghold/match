@@ -364,15 +364,7 @@ void Validator::iterateLinesForPattern (
 }
 size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns, const auto& patternStrings )
 {
-    const size_t patternCount = patterns.size ();
-    assert ( patternCount == patternStrings.size () );
-
-    std::vector< PatternStringHolder > patternHolders {};
-
-    auto patternIt       = patterns.begin ();
-    auto patternStringIt = patternStrings.begin ();
-    for ( size_t i {}; i < patternCount; i++ )
-        patternHolders.emplace_back ( &*( patternIt++ ), &*( patternStringIt++ ) );
+    std::vector< PatternStringHolder > patternHolders = computePatternHolders ( patterns, patternStrings );
 
     std::atomic< size_t > combinedMatches {};
 
@@ -391,6 +383,27 @@ size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns, cons
     );
 
     return combinedMatches.load ( std::memory_order_acquire );
+}
+std::vector< Validator::PatternStringHolder > Validator::computePatternHolders (
+    const auto& patterns,      //
+    const auto& patternStrings //
+)
+{
+    std::vector< PatternStringHolder > patternHolders {};
+
+    populatePatternHolders ( patterns, patternStrings, patternHolders );
+
+    return patternHolders;
+}
+void Validator::populatePatternHolders ( const auto& patterns, const auto& patternStrings, auto& patternHolders )
+{
+    auto         patternIt       = patterns.begin ();
+    auto         patternStringIt = patternStrings.begin ();
+    const size_t patternCount    = patterns.size ();
+    assert ( patternCount == patternStrings.size () );
+
+    for ( size_t i {}; i < patternCount; i++ )
+        patternHolders.emplace_back ( &*( patternIt++ ), &*( patternStringIt++ ) );
 }
 void Validator::prepareToMatch ( const auto memberFunctor, const auto findingFunctor )
 {

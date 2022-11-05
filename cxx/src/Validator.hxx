@@ -163,6 +163,15 @@ private:
     [[nodiscard]] bool   checkMatchesCountValid ( const auto& patterns, const auto matches );
     void                 prepareToMatch ( const auto memberFunctor, const auto findingFunctor );
     [[nodiscard]] size_t iteratePatternsAndLinesForMatches ( const auto& patterns, const auto& patternStrings );
+    [[nodiscard]] std::vector< PatternStringHolder > computePatternHolders (
+        const auto& patterns,      //
+        const auto& patternStrings //
+    );
+    [[nodiscard]] void populatePatternHolders (
+        const auto& patterns,       //
+        const auto& patternStrings, //
+        auto&       patternHolders  //
+    );
     void               iterateLinesForPattern ( PatternMatchHold& matchHold, const PatternStringHolder& patternHolder );
     [[nodiscard]] auto getMatchFindingFunctor () const;
     [[nodiscard]] bool
