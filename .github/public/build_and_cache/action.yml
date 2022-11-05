@@ -25,13 +25,13 @@ runs:
           validator-cache-${{ runner.os }}-${{ hashFiles('./cxx/lib/TeekValidator/.git') }}
 
       - name: Checkout
-      if: steps.cache-internal.outputs.cache-hit == 'true'
-      shell: bash
-      run: |
-        git config --local advice.detachedHead false
+        if: steps.cache-internal.outputs.cache-hit == 'true'
+        shell: bash
+        run: |
+          git config --local advice.detachedHead false
 
-        git pull
-        git checkout ${{ github.ref }}
+          git pull
+          git checkout ${{ github.ref }}
 
     - name: Release Build
       if: steps.cache-internal.outputs.cache-hit != 'true'
