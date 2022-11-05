@@ -30,8 +30,8 @@ runs:
       run: |
         git config --local advice.detachedHead false
 
+        git fetch
         git checkout ${{ github.sha }} --force
-        git pull
 
     - name: Release Build
       if: steps.cache-internal.outputs.cache-hit != 'true'
