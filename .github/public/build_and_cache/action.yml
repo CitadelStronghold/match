@@ -14,7 +14,7 @@ runs:
     #  id: date
     #  shell: bash
     #  run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
-    - name: Cache Workspace
+    - name: Cache Release Build
       if: ${{ inputs.do_cache }}
       id: cache-internal
       uses: actions/cache@v3
