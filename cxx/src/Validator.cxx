@@ -404,9 +404,11 @@ std::vector< Validator::PatternStringHolder > Validator::computePatternHolders (
 }
 void Validator::populatePatternHolders ( const auto& patterns, const auto& patternStrings, auto& patternHolders )
 {
+    const size_t patternCount    = patterns.size ();
+
     auto         patternIt       = patterns.begin ();
     auto         patternStringIt = patternStrings.begin ();
-    const size_t patternCount    = patterns.size ();
+
     assert ( patternCount == patternStrings.size () );
 
     for ( size_t i {}; i < patternCount; i++ )
