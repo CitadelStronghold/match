@@ -176,10 +176,16 @@ private:
     );
     void               iterateLinesForPattern ( PatternMatchHold& matchHold, const PatternStringHolder& patternHolder );
     [[nodiscard]] auto getMatchFindingFunctor () const;
-    [[nodiscard]] bool
-    findMatchYes ( PatternMatchHold& matchHold, const std::string_view& line, const std::regex& pattern );
-    [[nodiscard]] bool
-         findMatchNo ( PatternMatchHold& matchHold, const std::string_view& line, const std::regex& pattern );
+    [[nodiscard]] bool findMatchYes (
+        PatternMatchHold&       matchHold, //
+        const std::string_view& line,      //
+        const std::regex&       pattern    //
+    );
+    [[nodiscard]] bool findMatchNo (
+        PatternMatchHold&       matchHold, //
+        const std::string_view& line,      //
+        const std::regex&       pattern    //
+    );
     void findMatches (
         PatternMatchHold&          matchHold,           //
         const PatternStringHolder& patternHolder,       //

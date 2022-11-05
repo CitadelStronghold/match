@@ -296,7 +296,11 @@ void Validator::checkNoFailure ( const PatternMatchHold& matchHold, const Patter
 
     addFailure ( matchHold.firstLineOfInterest, patternHolder.patternString );
 }
-bool Validator::findMatchYes ( PatternMatchHold& matchHold, const std::string_view& line, const std::regex& pattern )
+bool Validator::findMatchYes (
+    PatternMatchHold&       matchHold, //
+    const std::string_view& line,      //
+    const std::regex&       pattern    //
+)
 {
     if ( !( this->*matchCheckPatternFunctor ) ( line, pattern ) )
         return true;
@@ -304,7 +308,11 @@ bool Validator::findMatchYes ( PatternMatchHold& matchHold, const std::string_vi
     matchHold.matches++;
     return false;
 }
-bool Validator::findMatchNo ( PatternMatchHold& matchHold, const std::string_view& line, const std::regex& pattern )
+bool Validator::findMatchNo (
+    PatternMatchHold&       matchHold, //
+    const std::string_view& line,      //
+    const std::regex&       pattern    //
+)
 {
     if ( ( this->*matchCheckPatternFunctor ) ( line, pattern ) )
     {
@@ -367,7 +375,7 @@ size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns, cons
     std::vector< PatternStringHolder > patternHolders = computePatternHolders ( patterns, patternStrings );
     std::atomic< size_t >              combinedMatches {};
 
-    performMatchesParallel (patternHolders, combinedMatches);
+    performMatchesParallel ( patternHolders, combinedMatches );
 
     return combinedMatches.load ( std::memory_order_acquire );
 }
@@ -404,10 +412,10 @@ std::vector< Validator::PatternStringHolder > Validator::computePatternHolders (
 }
 void Validator::populatePatternHolders ( const auto& patterns, const auto& patternStrings, auto& patternHolders )
 {
-    const size_t patternCount    = patterns.size ();
+    const size_t patternCount = patterns.size ();
 
-    auto         patternIt       = patterns.begin ();
-    auto         patternStringIt = patternStrings.begin ();
+    auto patternIt       = patterns.begin ();
+    auto patternStringIt = patternStrings.begin ();
 
     assert ( patternCount == patternStrings.size () );
 
