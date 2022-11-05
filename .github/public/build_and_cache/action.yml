@@ -25,6 +25,7 @@ runs:
           validator-cache-${{ hashFiles('./cxx/lib/TeekValidator/.git') }}
 
     - name: Release Build
+      if: steps.cache-internal.outputs.cache-hit != 'true'
       uses: ./cxx/lib/TeekValidator/.github/workflows/build
       with:
         release: true
