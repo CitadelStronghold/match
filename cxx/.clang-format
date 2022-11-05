@@ -15,6 +15,9 @@ ColumnLimit: 120
 # ColumnLimit: 130
 # TODONT: It would be nice if function signatures past ~ 80 characters would be converted into having one line per parameter
 
+UseCRLF: false
+DeriveLineEnding: false
+
 EmptyLineAfterAccessModifier: Always
 FixNamespaceComments: true
 ReflowComments: false
@@ -39,16 +42,20 @@ AlignTrailingComments: true
 AlignAfterOpenBracket: BlockIndent
 
 AllowShortLambdasOnASingleLine: Empty
-AllowShortBlocksOnASingleLine: Empty
+AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
+BraceWrapping:
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
 
 CompactNamespaces: false
 SortUsingDeclarations: true
 Cpp11BracedListStyle: true
+SortIncludes: CaseSensitive
 
 SpaceBeforeCpp11BracedList: true
 SpaceBeforeCtorInitializerColon: true
@@ -70,10 +77,14 @@ SpacesInCStyleCastParentheses: false
 SpacesInConditionalStatement: true
 SpacesInContainerLiterals: true
 SpacesInParentheses: true
-SpacesInSquareBrackets: false
+SpacesInSquareBrackets: true
 
 AlwaysBreakTemplateDeclarations: Yes
 
 AccessModifierOffset: -4
 
 WhitespaceSensitiveMacros: ['STRINGIZE']
+
+# Breaks nds macro
+## QualifierAlignment: Custom
+## QualifierOrder: ['static', 'inline', 'const', 'volatile', 'type']
