@@ -16,9 +16,9 @@ runs:
     #  run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
     - name: Key Git
       if: ${{ inputs.do_cache }}
-      id: date
+      id: key
       shell: bash
-      run: echo "git=$(git rev-parse --git-dir=./cxx/lib/TeekValidator HEAD)" >> $GITHUB_OUTPUT
+      run: echo "git=$(git rev-parse --git-dir=./cxx/lib/TeekValidator HEAD | tr -d '\n')" >> $GITHUB_OUTPUT
     - name: Cache Release Build
       if: ${{ inputs.do_cache }}
       id: cache-internal
@@ -27,7 +27,7 @@ runs:
         path: |
           ./cxx/lib/TeekValidator/build
         key: |
-          validator-cache-${{ runner.os }}-${{ steps.date.outputs.git }}
+          validator-cache-${{ runner.os }}-${{ steps.key.outputs.git }}
 
     - name: Checkout
       if: steps.cache-internal.outputs.cache-hit == 'true'
