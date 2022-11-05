@@ -378,8 +378,8 @@ size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns, cons
     assert ( patternCount == patternStrings.size () );
 
     std::vector< std::pair<
-        std::decay_t< decltype ( patterns ) >::const_iterator,
-        std::decay_t< decltype ( patternStrings ) >::const_iterator > >
+        typename std::decay_t< decltype ( patterns ) >::const_iterator,
+        typename std::decay_t< decltype ( patternStrings ) >::const_iterator > >
         patternIterators {};
 
     auto patternIt       = patterns.begin ();
