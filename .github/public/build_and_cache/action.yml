@@ -22,7 +22,7 @@ runs:
         path: |
           ./cxx/lib/TeekValidator/build
         key: |
-          validator-cache-${{ hashFiles('./cxx/lib/TeekValidator/.git') }}
+          validator-cache-${{ runner.os }}-${{ hashFiles('./cxx/lib/TeekValidator/.git') }}
 
     - name: Release Build
       if: steps.cache-internal.outputs.cache-hit != 'true'
