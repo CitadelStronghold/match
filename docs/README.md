@@ -14,6 +14,7 @@
     - Failures
         - Shows which patterns failed against which lines
     - Colorful!
+- Automatic multithreading
 
 | OS       | Compiler |
 | -------- | -------- |
