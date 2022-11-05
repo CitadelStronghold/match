@@ -169,7 +169,7 @@ private:
         const auto& patterns,      //
         const auto& patternStrings //
     );
-    [[nodiscard]] void populatePatternHolders (
+    void populatePatternHolders (
         const auto& patterns,       //
         const auto& patternStrings, //
         auto&       patternHolders  //
