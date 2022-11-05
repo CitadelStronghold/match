@@ -24,7 +24,7 @@ Validator::Validator ( const uint8_t argc, const char* const* const argv )
 
 int Validator::getResult () const
 {
-    return hold[RegexType::Yes].result | hold[RegexType::No].result;
+    return hold[ RegexType::Yes ].result | hold[ RegexType::No ].result;
 }
 
 void Validator::checkArgumentsValid () const
@@ -34,11 +34,11 @@ void Validator::checkArgumentsValid () const
 }
 void Validator::checkArgumentValid ( const uint8_t i ) const
 {
-    if ( !std::filesystem::exists ( argv[i] ) )
-        throw std::runtime_error ( "Argument '" + std::string { argv[i] } + "' does not exist!" );
+    if ( !std::filesystem::exists ( argv[ i ] ) )
+        throw std::runtime_error ( "Argument '" + std::string { argv[ i ] } + "' does not exist!" );
 
-    if ( !std::filesystem::is_regular_file ( argv[i] ) )
-        throw std::runtime_error ( "Argument '" + std::string { argv[i] } + "' is not a file!" );
+    if ( !std::filesystem::is_regular_file ( argv[ i ] ) )
+        throw std::runtime_error ( "Argument '" + std::string { argv[ i ] } + "' is not a file!" );
 }
 bool Validator::prepareFromArguments ()
 {
@@ -54,8 +54,8 @@ bool Validator::prepareFromArguments ()
 }
 void Validator::loadTargetedFiles ()
 {
-    logBuffer     = loadText ( argv[1] );
-    regexesBuffer = loadText ( argv[2] );
+    logBuffer     = loadText ( argv[ 1 ] );
+    regexesBuffer = loadText ( argv[ 2 ] );
 
     logString     = { logBuffer.get () };
     regexesString = { regexesBuffer.get () };
@@ -92,14 +92,14 @@ void Validator::setSplitTarget ( const std::string_view& source )
 }
 void Validator::setLogInstantiator ()
 {
-    instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
+    instantiateParsedLine = [ this ] ( const auto* startIt, const size_t count )
     {
         emplaceNewLog ( startIt, count );
     };
 }
 void Validator::setRegexInstantiator ()
 {
-    instantiateParsedLine = [this] ( const auto* startIt, const size_t count )
+    instantiateParsedLine = [ this ] ( const auto* startIt, const size_t count )
     {
         if ( !isFilteredCharacter ( *startIt ) )
             emplaceNewRegex ( startIt, count );
@@ -120,7 +120,7 @@ bool Validator::isAtEndOfParse ( const size_t i ) const
 }
 bool Validator::shouldSplitHere ( const size_t i ) const
 {
-    return isAtEnd || isSkippedCharacter ( ( *splitString )[i] );
+    return isAtEnd || isSkippedCharacter ( ( *splitString )[ i ] );
 }
 void Validator::splitAndParseCharacter ( size_t& i )
 {
@@ -144,11 +144,11 @@ RegexType Validator::getTargetType () const
 }
 auto& Validator::getTargetRegexStringsVector ()
 {
-    return hold[getTargetType ()].regexStrings;
+    return hold[ getTargetType () ].regexStrings;
 }
 auto& Validator::getTargetRegexVector ()
 {
-    return hold[getTargetType ()].regexes;
+    return hold[ getTargetType () ].regexes;
 }
 auto Validator::getDistanceI ( const size_t i ) const
 {
@@ -161,7 +161,7 @@ auto* Validator::getCurStartAddress () const
 auto Validator::getOffsetCount ( const auto distance, const auto i ) const
 {
     const bool addExtraCharacter = isAtEnd && //
-                                   !isSkippedCharacter ( ( *splitString )[i] );
+                                   !isSkippedCharacter ( ( *splitString )[ i ] );
 
     // ** Distance being the number of characters consumed
     assert ( ( getCurStartAddress () + distance ) <= ( splitString->data () + splitString->size () ) );
@@ -179,7 +179,7 @@ void Validator::instantiateCurrentLine ( const size_t i )
     const auto distance    = getDistanceI ( i );
     const bool hasDistance = distance > 0;
 
-    if ( hasDistance || !isSkippedCharacter ( ( *splitString )[i] ) )
+    if ( hasDistance || !isSkippedCharacter ( ( *splitString )[ i ] ) )
         instantiateParsedLine ( getCurStartAddress (), getOffsetCount ( distance, i ) );
 
     if ( !hasDistance )
@@ -207,9 +207,9 @@ void Validator::skipPastExtraCharacters ( size_t& i )
 }
 void Validator::skipForward ( size_t& i )
 {
-    if (                                                        //
-        !isCarriageReturnCharacter ( ( *splitString )[i] ) ||   //
-        !isNewlineCharacter ( ( *splitString )[curStartIndex] ) //
+    if (                                                          //
+        !isCarriageReturnCharacter ( ( *splitString )[ i ] ) ||   //
+        !isNewlineCharacter ( ( *splitString )[ curStartIndex ] ) //
     )
         return;
 
@@ -256,14 +256,14 @@ Validator::StoredString Validator::makeBufferTerminated ( const size_t bytes )
 {
     auto buffer = std::make_unique_for_overwrite< char[] > ( bytes + 1 );
 
-    buffer.get ()[bytes] = '\0';
+    buffer.get ()[ bytes ] = '\0';
 
     return buffer;
 }
 Validator::StoredString Validator::loadText ( const char* path )
 {
-    auto&& [stream, bytes] = createStream ( path );
-    auto buffer            = makeBufferTerminated ( bytes );
+    auto&& [ stream, bytes ] = createStream ( path );
+    auto buffer              = makeBufferTerminated ( bytes );
 
     stream.read ( buffer.get (), bytes );
 
@@ -278,7 +278,7 @@ void Validator::addFailure ( const auto* lineString, const auto* patternString )
 
     std::scoped_lock lock { failureMutex };
 
-    hold[curType].failures.emplace_back ( lineString, patternString );
+    hold[ curType ].failures.emplace_back ( lineString, patternString );
 }
 void Validator::checkYesFailure ( const PatternMatchHold& matchHold, const PatternStringHolder& patternHolder )
 {
@@ -381,7 +381,7 @@ size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns, cons
 }
 auto Validator::makeParallelMatchingFunctor ( auto& combinedMatches )
 {
-    return [this, &combinedMatches] ( const auto& patternHolder )
+    return [ this, &combinedMatches ] ( const auto& patternHolder )
     {
         PatternMatchHold matchHold {};
 
@@ -444,8 +444,8 @@ bool Validator::checkRegexes ( const auto memberFunctor )
 {
     prepareToMatch ( memberFunctor, getMatchFindingFunctor () );
 
-    const auto& patterns       = hold[curType].regexes;
-    const auto& patternStrings = hold[curType].regexStrings;
+    const auto& patterns       = hold[ curType ].regexes;
+    const auto& patternStrings = hold[ curType ].regexStrings;
     const auto  matches        = iteratePatternsAndLinesForMatches ( patterns, patternStrings );
 
     return checkMatchesCountValid ( patterns, matches );
@@ -455,7 +455,7 @@ void Validator::performMatches_ ( const RegexType type, const int failCode, cons
     curType = type;
 
     if ( !checkRegexes ( memberFunctor ) )
-        hold[curType].result |= failCode;
+        hold[ curType ].result |= failCode;
 }
 void Validator::performMatches ()
 {
@@ -493,9 +493,9 @@ void Validator::printArguments () const
     std::cout << "TeekValidator ";
 
     for ( int i = 1; i < argc; ++i )
-        std::cout << argv[i] << ( i == argc - 1 ? "" : " " );
+        std::cout << argv[ i ] << ( i == argc - 1 ? "" : " " );
 
-    std::cout << "\n";
+    std::cout << std::endl;
 }
 void Validator::printLoaded ( const uintmax_t bytes, const char* path )
 {
@@ -504,18 +504,18 @@ void Validator::printLoaded ( const uintmax_t bytes, const char* path )
         bytes <<                                 //
         " \033[0;34mcharacters from \033[1m'" << //
         path <<                                  //
-        "'\033[0m\n";
+        "'\033[0m" << std::endl;
 }
 void Validator::printTimeTaken () const
 {
     std::cout << "\033[36mRead in \033[1m" << convertToMilliseconds ( readEndTime - readStartTime )
-              << " \033[0;36mmilliseconds\033[0m\n";
+              << " \033[0;36mmilliseconds\033[0m" << std::endl;
     std::cout << "\033[36mParsed in \033[1m" << convertToMilliseconds ( parseEndTime - parseStartTime )
-              << " \033[0;36mmilliseconds\033[0m\n";
+              << " \033[0;36mmilliseconds\033[0m" << std::endl;
     std::cout << "\033[36mChecked in \033[1m" << convertToMilliseconds ( checkEndTime - checkStartTime )
-              << " \033[0;36mmilliseconds\033[0m\n";
+              << " \033[0;36mmilliseconds\033[0m" << std::endl;
     std::cout << "\033[36mTotal \033[1m" << convertToMilliseconds ( getCurrentNanoseconds () - startTime )
-              << " \033[0;36mmilliseconds\033[0m\n";
+              << " \033[0;36mmilliseconds\033[0m" << std::endl;
 }
 
 void Validator::printResults () const
@@ -527,17 +527,17 @@ void Validator::printResults () const
 }
 void Validator::printResult ( const char* name, const RegexType type ) const
 {
-    const auto        passed       = hold[type].result == 0;
-    const auto        count        = passed ? hold[type].regexes.size () : hold[type].failures.size ();
+    const auto        passed       = hold[ type ].result == 0;
+    const auto        count        = passed ? hold[ type ].regexes.size () : hold[ type ].failures.size ();
     const std::string color        = passed ? "\033[32m" : "\033[31m";
     const std::string resultString = passed ? "\033[1mPassed" : "\033[1mFailed";
 
-    std::cout << color << count << " " << name << " " << resultString << "\033[0m\n";
+    std::cout << color << count << " " << name << " " << resultString << "\033[0m" << std::endl;
 
     printFailures ( type );
 }
 void Validator::printFailures ( const RegexType type ) const
 {
-    for ( const auto [line, regex] : hold[type].failures )
-        std::cout << "\033[1;31m" << *line << " \033[0;31m| \033[1;31m" << *regex << "\033[0m\n";
+    for ( const auto [ line, regex ] : hold[ type ].failures )
+        std::cout << "\033[1;31m" << *line << " \033[0;31m| \033[1;31m" << *regex << "\033[0m" << std::endl;
 }

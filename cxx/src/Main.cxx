@@ -7,8 +7,7 @@ bool validArgCount ( const int argc )
     if ( argc == 3 )
         return true;
 
-    std::cout << "\033[36mUsage: \033[1mTeekValidator LOG_FILE REGEXES_FILE\033[0m"
-              << "\n";
+    std::cout << "\033[36mUsage: \033[1mTeekValidator LOG_FILE REGEXES_FILE\033[0m" << std::endl;
 
     return false;
 }
@@ -21,7 +20,7 @@ int tryValidate ( const int argc, const char* const* const argv )
     }
     catch ( std::exception& e )
     {
-        std::cerr << "\033[31mError: \033[1m" << e.what () << "\033[0m\n";
+        std::cerr << "\033[31mError: \033[1m" << e.what () << "\033[0m" << std::endl;
         return 2;
     }
 }
