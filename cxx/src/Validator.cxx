@@ -390,7 +390,7 @@ size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns, cons
     std::atomic< size_t > globalMatches {};
 
     std::for_each (
-        std::execution::parallel_policy {},
+        std::execution::par,
         patternIterators.begin (),
         patternIterators.end (),
         [this, &globalMatches] ( const auto& patternPair )
