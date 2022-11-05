@@ -1,6 +1,9 @@
 #include "Validator.hxx"
 
+#include <algorithm>
+#include <atomic>
 #include <cassert>
+#include <execution>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -270,23 +273,25 @@ Validator::StoredString Validator::loadText ( const char* path )
 
 void Validator::addFailure ( const auto* lineString, const auto* patternString )
 {
+    std::scoped_lock lock { failureMutex };
+
     hold[curType].failures.emplace_back ( lineString, patternString );
 }
-void Validator::checkYesFailure ( const size_t i, const size_t matches )
+void Validator::checkYesFailure ( const std::string_view& patternString, const size_t matches )
 {
     // ? Did we find a match this loop?
     if ( matches != startMatches )
         return;
 
-    addFailure ( &AnyLineView, &hold[curType].regexStrings[i] );
+    addFailure ( &AnyLineView, &patternString );
 }
-void Validator::checkNoFailure ( const size_t i, const size_t matches )
+void Validator::checkNoFailure ( const std::string_view& patternString, const size_t matches )
 {
     // ? Did this loop expand the number of matches by the expected amount?
     if ( matches == ( startMatches + logLines.size () ) )
         return;
 
-    addFailure ( firstLineOfInterest, &hold[curType].regexStrings[i] );
+    addFailure ( firstLineOfInterest, &patternString );
 }
 bool Validator::findMatchYes ( size_t& matches, const std::string_view& line, const std::regex& pattern )
 {
@@ -312,11 +317,11 @@ bool Validator::findMatchNo ( size_t& matches, const std::string_view& line, con
     return true;
 }
 void Validator::findMatches (
-    size_t&           matches,             //
-    const size_t      i,                   //
-    const std::regex& pattern,             //
-    const auto        matchMemberFunctor,  //
-    const auto        failureMemberFunctor //
+    size_t&                 matches,             //
+    const std::regex&       pattern,             //
+    const std::string_view& patternString,       //
+    const auto              matchMemberFunctor,  //
+    const auto              failureMemberFunctor //
 )
 {
     for ( const auto& line : logLines )
@@ -324,24 +329,24 @@ void Validator::findMatches (
             break;
 
     // ? Did we identify a point of failure here?
-    ( this->*failureMemberFunctor ) ( i, matches );
+    ( this->*failureMemberFunctor ) ( patternString, matches );
 }
-void Validator::findMatchesYes ( size_t& matches, const size_t i, const std::regex& pattern )
+void Validator::findMatchesYes ( size_t& matches, const std::regex& pattern, const std::string_view& patternString )
 {
     findMatches (
         matches,
-        i,
         pattern,
+        patternString,
         &Validator::findMatchYes,
         &Validator::checkYesFailure // ? Did we fail to find a match?
     );
 }
-void Validator::findMatchesNo ( size_t& matches, const size_t i, const std::regex& pattern )
+void Validator::findMatchesNo ( size_t& matches, const std::regex& pattern, const std::string_view& patternString )
 {
     findMatches (
         matches,
-        i,
         pattern,
+        patternString,
         &Validator::findMatchNo,
         &Validator::checkNoFailure // ? Did we match an exclusion?
     );
@@ -350,22 +355,57 @@ auto Validator::getMatchFindingFunctor () const
 {
     return curType == RegexType::Yes ? &Validator::findMatchesYes : &Validator::findMatchesNo;
 }
-void Validator::iterateLinesForPattern ( size_t& matches, const size_t i, const std::regex& pattern )
+void Validator::iterateLinesForPattern (
+    size_t&                 matches,      //
+    const std::regex&       pattern,      //
+    const std::string_view& patternString //
+)
 {
     startMatches        = matches;
     firstLineOfInterest = nullptr;
 
-    ( this->*matchFindingFunctor ) ( matches, i, pattern );
+    ( this->*matchFindingFunctor ) ( matches, pattern, patternString );
 }
-size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns )
+size_t Validator::iteratePatternsAndLinesForMatches ( const auto& patterns, const auto& patternStrings )
 {
-    size_t matches {};
-
+    /*
     const size_t patternCount = patterns.size ();
     for ( size_t i {}; i < patternCount; i++ )
         iterateLinesForPattern ( matches, i, patterns[i] );
+    */
 
-    return matches;
+    const size_t patternCount = patterns.size ();
+    assert ( patternCount == patternStrings.size () );
+
+    std::vector< std::pair<
+        std::decay_t< decltype ( patterns ) >::const_iterator,
+        std::decay_t< decltype ( patternStrings ) >::const_iterator > >
+        patternIterators {};
+
+    auto patternIt       = patterns.begin ();
+    auto patternStringIt = patternStrings.begin ();
+    for ( size_t i {}; i < patternCount; i++ )
+        patternIterators.emplace_back ( patternIt++, patternStringIt++ );
+
+    std::atomic< size_t > globalMatches {};
+
+    std::for_each (
+        std::execution::parallel_policy {},
+        patternIterators.begin (),
+        patternIterators.end (),
+        [this, &globalMatches] ( const auto& patternPair )
+        {
+            auto&& [pattern, patternString] = patternPair;
+
+            size_t localMatches {};
+
+            iterateLinesForPattern ( localMatches, *pattern, *patternString );
+
+            globalMatches.fetch_add ( localMatches, std::memory_order_acq_rel );
+        }
+    );
+
+    return globalMatches.load ( std::memory_order_acquire );
 }
 void Validator::prepareToMatch ( const auto memberFunctor, const auto findingFunctor )
 {
@@ -389,8 +429,9 @@ bool Validator::checkRegexes ( const auto memberFunctor )
 {
     prepareToMatch ( memberFunctor, getMatchFindingFunctor () );
 
-    const auto& patterns = hold[curType].regexes;
-    const auto  matches  = iteratePatternsAndLinesForMatches ( patterns );
+    const auto& patterns       = hold[curType].regexes;
+    const auto& patternStrings = hold[curType].regexStrings;
+    const auto  matches        = iteratePatternsAndLinesForMatches ( patterns, patternStrings );
 
     return checkMatchesCountValid ( patterns, matches );
 }

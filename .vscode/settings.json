@@ -73,6 +73,10 @@
         "array": "cpp",
         "functional": "cpp",
         "unordered_map": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "deque": "cpp",
+        "execution": "cpp",
+        "numeric": "cpp",
+        "queue": "cpp"
     },
 }
