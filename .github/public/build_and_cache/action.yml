@@ -18,7 +18,9 @@ runs:
       if: ${{ inputs.do_cache }}
       id: key
       shell: bash
-      run: echo "git=$(git -C ./cxx/lib/TeekValidator rev-parse HEAD)" >> $GITHUB_OUTPUT
+      run: |
+        echo "git=$(git -C ./cxx/lib/TeekValidator rev-parse HEAD)" >> $GITHUB_OUTPUT
+        echo "branch=$(git -C ./cxx/lib/TeekValidator branch --show-current)" >> $GITHUB_OUTPUT
     - name: Cache Release Build
       if: ${{ inputs.do_cache }}
       id: cache-internal
@@ -27,7 +29,7 @@ runs:
         path: |
           ./cxx/lib/TeekValidator/build
         key: |
-          validator-cache-${{ runner.os }}-${{ github.ref_name }}-${{ steps.key.outputs.git }}
+          validator-cache-${{ runner.os }}-${{ steps.key.outputs.branch }}-${{ steps.key.outputs.git }}
 
     - name: Checkout
       if: steps.cache-internal.outputs.cache-hit == 'true'
