@@ -13,14 +13,14 @@ runs:
     #  if: ${{ inputs.do_cache }}
     #  id: date
     #  shell: bash
-    #  run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
+    #  run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')\n" >> $GITHUB_OUTPUT
     - name: Key Git
       if: ${{ inputs.do_cache }}
       id: key
       shell: bash
       run: |
-        echo "git=$(git -C ./cxx/lib/TeekValidator rev-parse HEAD)" >> $GITHUB_OUTPUT
-        echo "branch=$(git -C ./cxx/lib/TeekValidator branch --show-current)" >> $GITHUB_OUTPUT
+        echo "git=$(git -C ./cxx/lib/TeekValidator rev-parse HEAD)\n" >> $GITHUB_OUTPUT
+        echo "branch=$(git -C ./cxx/lib/TeekValidator branch --show-current)\n" >> $GITHUB_OUTPUT
     - name: Cache Release Build
       if: ${{ inputs.do_cache }}
       id: cache-internal
