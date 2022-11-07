@@ -27,7 +27,7 @@ runs:
         path: |
           ./cxx/lib/TeekValidator/build
         key: |
-          validator-cache-${{ runner.os }}-${{ steps.key.outputs.git }}
+          validator-cache-${{ runner.os }}-${{ github.ref_name }}-${{ steps.key.outputs.git }}
 
     - name: Checkout
       if: steps.cache-internal.outputs.cache-hit == 'true'
