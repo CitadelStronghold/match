@@ -13,7 +13,7 @@ runs:
     #  if: ${{ inputs.do_cache }}
     #  id: date
     #  shell: bash
-    #  run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')\n" >> $GITHUB_OUTPUT
+    #  run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
     - name: Key Git
       if: ${{ inputs.do_cache }}
       id: key
