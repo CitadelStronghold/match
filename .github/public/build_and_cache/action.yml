@@ -9,26 +9,21 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    #- name: Key Date
+    #- name: Key Git
     #  if: ${{ inputs.do_cache }}
-    #  id: date
+    #  id: key
     #  shell: bash
-    #  run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
-    - name: Key Git
-      if: ${{ inputs.do_cache }}
-      id: key
-      shell: bash
-      run: |
-        echo "git=$(git -C ./cxx/lib/TeekValidator rev-parse HEAD)" >> $GITHUB_OUTPUT
-    - name: Cache Release Build
-      if: ${{ inputs.do_cache }}
-      id: cache-internal
-      uses: actions/cache@v3
-      with:
-        path: |
-          ./cxx/lib/TeekValidator/build
-        key: |
-          validator-cache-${{ runner.os }}-${{ steps.key.outputs.git }}
+    #  run: |
+    #    echo "git=$(git -C ./cxx/lib/TeekValidator rev-parse HEAD)" >> $GITHUB_OUTPUT
+    #- name: Cache Release Build
+    #  if: ${{ inputs.do_cache }}
+    #  id: cache-internal
+    #  uses: actions/cache@v3
+    #  with:
+    #    path: |
+    #      ./cxx/lib/TeekValidator/build
+    #    key: |
+    #      validator-cache-${{ runner.os }}-${{ steps.key.outputs.git }}
 
     - name: Checkout
       if: steps.cache-internal.outputs.cache-hit == 'true'
