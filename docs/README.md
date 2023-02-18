@@ -1,4 +1,4 @@
-# TeekValidator
+# Match
 
 ![Tests](https://github.com/GeodeGames/TeekValidator/actions/workflows/Test.yml/badge.svg)
 
