@@ -23,7 +23,7 @@
 
 ## Usage
 ```
-TeekValidator LOG_FILE REGEXES_FILE
+TeekValidator <LOG_FILE> <REGEX_FILE>
 ```
 
 ## Example Output
