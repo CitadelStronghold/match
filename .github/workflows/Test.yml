@@ -28,7 +28,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'TeekValidator[^\n]+LOG[^\n]+REGEXES[^\n]+'
+          pattern: 'match[^\n]+LOG[^\n]+REGEXES[^\n]+'
       - name: Exit Code
         uses: ./.github/workflows/match_exit_code_not
         with:
@@ -42,7 +42,7 @@ jobs:
       - name: Validate
         uses: ./.github/workflows/match
         with:
-          pattern: 'TeekValidator[^\n]*LOG[^\n]*REGEXES[^\n]*'
+          pattern: 'match[^\n]*LOG[^\n]*REGEXES[^\n]*'
       - name: Exit Code
         uses: ./.github/workflows/match_exit_code_not
         with:

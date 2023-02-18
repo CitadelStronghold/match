@@ -15,9 +15,9 @@ runs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
-        ${{ inputs.working_directory }}/build/Release/TeekValidator.exe ${{ inputs.log_file }} ${{ inputs.regex_file }}
+        ${{ inputs.working_directory }}/build/Release/match.exe ${{ inputs.log_file }} ${{ inputs.regex_file }}
     - name: Validate
       if: runner.os == 'Linux'
       shell: bash
       run: |
-        ${{ inputs.working_directory }}/build/TeekValidator ${{ inputs.log_file }} ${{ inputs.regex_file }}
+        ${{ inputs.working_directory }}/build/match ${{ inputs.log_file }} ${{ inputs.regex_file }}

@@ -490,7 +490,7 @@ double Validator::convertToMilliseconds ( const uint64_t nanoseconds )
 
 void Validator::printArguments () const
 {
-    std::cout << "TeekValidator ";
+    std::cout << "match ";
 
     for ( int i = 1; i < argc; ++i )
         std::cout << argv[ i ] << ( i == argc - 1 ? "" : " " );

@@ -51,4 +51,4 @@ runs:
       run: |
         cd ${{ inputs.working_directory }}
 
-        chmod +x ./build/TeekValidator
+        chmod +x ./build/match

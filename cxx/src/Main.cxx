@@ -7,7 +7,7 @@ bool validArgCount ( const int argc )
     if ( argc == 3 )
         return true;
 
-    std::cout << "\033[36mUsage: \033[1mTeekValidator LOG_FILE REGEXES_FILE\033[0m" << std::endl;
+    std::cout << "\033[36mUsage: \033[1mmatch LOG_FILE REGEXES_FILE\033[0m" << std::endl;
 
     return false;
 }
