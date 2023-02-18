@@ -14,14 +14,14 @@ runs:
     #  id: key
     #  shell: bash
     #  run: |
-    #    echo "git=$(git -C ./cxx/lib/match rev-parse HEAD)" >> $GITHUB_OUTPUT
+    #    echo "git=$(git -C lib/match rev-parse HEAD)" >> $GITHUB_OUTPUT
     #- name: Cache Release Build
     #  if: ${{ inputs.do_cache }}
     #  id: cache-internal
     #  uses: actions/cache@v3
     #  with:
     #    path: |
-    #      ./cxx/lib/match/build
+    #      lib/match/build
     #    key: |
     #      validator-cache-${{ runner.os }}-${{ steps.key.outputs.git }}
 
@@ -36,7 +36,7 @@ runs:
 
     - name: Release Build
       if: steps.cache-internal.outputs.cache-hit != 'true'
-      uses: ./cxx/lib/match/.github/workflows/build
+      uses: ./lib/match/.github/workflows/build
       with:
         release: true
         working_directory: ${{ inputs.working_directory }}

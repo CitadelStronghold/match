@@ -4,20 +4,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "format_changes",
-            "command": "sh",
-            "args": [
-                "scripts/format_changes.sh"
-            ],
-            "type": "shell",
-            "presentation": {
-                "reveal": "never",
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            }
-        },
-        {
             "label": "build_debug",
             "command": "cmake",
             "args": [
