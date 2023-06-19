@@ -20,7 +20,8 @@ ReflowComments: true
 
 PackConstructorInitializers: Never
 
-# InsertTrailingCommas: Wrapped # Only works on Javascript - it cannot be used with BinPackArguments
+# Only works on Javascript - it cannot be used with BinPackArguments
+# InsertTrailingCommas: Wrapped
 BinPackArguments: false
 
 # ExperimentalAutoDetectBinPacking: true
@@ -100,6 +101,5 @@ AccessModifierOffset: 0
 
 WhitespaceSensitiveMacros: ['STRINGIZE']
 
-# Breaks nds macro
 ## QualifierAlignment: Custom
 ## QualifierOrder: ['static', 'inline', 'const', 'volatile', 'type']
