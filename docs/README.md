@@ -5,6 +5,9 @@
 
 **Introducing Match: The Simple Log Validation Tool**
 
+![Pass](https://i.imgur.com/uOL91Qt.png)
+![Fail](https://i.imgur.com/OGymPZc.png)
+
 Match is the indispensable tool designed to simplify and automate log validation tasks. Tailored specifically for developers, Match allows you to effortlessly verify that your tests generate the expected log output, ensuring the smooth functioning of your continuous integration (CI) pipeline. Let's explore how Match can elevate your development workflow:
 
 - Effortless Log Validation
@@ -40,10 +43,6 @@ The tool requires two input files: a log file and a text file containing regex p
 Lines in the regex file starting with the <kbd>#</kbd> character are considered as comments and are ignored by the parser.
 
 ### [Examples](https://github.com/Eshnek/match/tree/main/tests)
-
-## Example Output
-![Pass](https://i.imgur.com/uOL91Qt.png)
-![Fail](https://i.imgur.com/OGymPZc.png)
 
 ## Github Actions Usage
 
