@@ -21,7 +21,7 @@ jobs:
           release: false
 
       # See https://www.regextester.com/99203 for syntax, bash is different than modern regex
-      # Even still, bash regex seems to fail in weird situations. Try till it works.
+      # Even still, bash regex seems to fail in weird situations.
 
       - name: Usage
         uses: ./.github/workflows/test_blank
