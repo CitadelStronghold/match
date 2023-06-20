@@ -2,7 +2,7 @@
 
 ![Tests](https://github.com/GeodeGames/match/actions/workflows/Test.yml/badge.svg)
 
-Introducing Match: The Simple Log Validation Tool
+**Introducing Match: The Simple Log Validation Tool**
 
 Match is the indispensable tool designed to simplify and automate log validation tasks. Tailored specifically for developers, Match allows you to effortlessly verify that your tests generate the expected log output, ensuring the smooth functioning of your continuous integration (CI) pipeline. Let's explore how Match can elevate your development workflow:
 
