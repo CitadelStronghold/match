@@ -19,6 +19,6 @@
                 "program": "${workspaceRoot}/build/Debug/match.exe"
             },
             "requireExactSource": false
-        },
+        }
     ]
 }
