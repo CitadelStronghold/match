@@ -26,11 +26,6 @@ Match is the indispensable tool designed to simplify and automate log validation
 - Multithreading Automation
     - Boost your CI times with Match's automatic multithreading capability.
 
-| OS       | Compiler |
-| -------- | -------- |
-| Linux    | GCC      |
-| Windows  | MSVC     |
-
 ## Usage
 ```
 match <LOG_FILE> <REGEX_FILE>
@@ -43,6 +38,13 @@ The tool requires two input files: a log file and a text file containing regex p
 Lines in the regex file starting with the <kbd>#</kbd> character are considered as comments and are ignored by the parser.
 
 ### [Examples](https://github.com/Eshnek/match/tree/main/tests)
+
+## Current CI Test Environments
+
+| OS       | Compiler |
+| -------- | -------- |
+| Linux    | GCC      |
+| Windows  | MSVC     |
 
 ## Github Actions Usage
 
