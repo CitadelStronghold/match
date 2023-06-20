@@ -46,3 +46,19 @@ Lines in the regex file starting with the <kbd>#</kbd> character are considered 
 ![Fail](https://i.imgur.com/OGymPZc.png)
 
 ## Github Actions Usage
+
+Add Match as a Git submodule, then use it in CI:
+
+```
+- name: Build Match
+  uses: ./lib/match/.github/public/build
+  with:
+    do_cache: true
+    working_directory: 'lib/match'
+- name: Match
+  uses: ./lib/match/.github/public/validate
+  with:
+    log_file: log.txt
+    regex_file: src/${{ inputs.project }}/tests/regex/Log.regex
+    working_directory: lib/match
+```
