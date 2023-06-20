@@ -1,0 +1,34 @@
+inputs:
+  do_cache:
+    type: boolean
+    default: false
+    required: false
+  working_directory:
+    type: string
+    required: true
+
+  log_file:
+    required: true
+    type: string
+  regex_file:
+    required: true
+    type: string
+  working_directory:
+    required: true
+    type: string
+runs:
+  using: 'composite'
+  steps:
+
+    - name: Build
+      uses: ./lib/match/.github/public/build
+      with:
+        do_cache: ${{ inputs.do_cache }}
+        working_directory: '${{ inputs.working_directory }}'
+
+    - name: Match
+      uses: ./lib/match/.github/public/validate
+      with:
+        log_file: ${{ inputs.log_file }}
+        regex_file: '${{ inputs.regex_file }}'
+        working_directory: '${{ inputs.working_directory }}'
