@@ -26,6 +26,10 @@ Match is the indispensable tool designed to simplify and automate log validation
 - Multithreading Automation
     - Boost your CI times with Match's automatic multithreading capability.
 
+## TODO
+
+- [ ] Abillity to use without adding as a submodule
+
 ## Usage
 ```
 match <LOG_FILE> <REGEX_FILE>
