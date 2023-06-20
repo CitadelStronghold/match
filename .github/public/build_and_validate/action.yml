@@ -1,19 +1,17 @@
 inputs:
+  working_directory:
+    type: string
+    required: true
+
   do_cache:
     type: boolean
     default: false
     required: false
-  working_directory:
-    type: string
-    required: true
 
   log_file:
     required: true
     type: string
   regex_file:
-    required: true
-    type: string
-  working_directory:
     required: true
     type: string
 runs:
