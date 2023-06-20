@@ -16,7 +16,7 @@
             "cwd": "${workspaceRoot}",
             "windows": {
                 "preLaunchTask": "build_debug",
-                "program": "${workspaceRoot}/build/Debug/match.exe",
+                "program": "${workspaceRoot}/build/Debug/match.exe"
             },
             "requireExactSource": false
         },

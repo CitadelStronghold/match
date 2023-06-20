@@ -15,7 +15,7 @@
             "type": "shell",
             "presentation": {
                 "reveal": "always"
-            },
+            }
         },
     ]
 }
