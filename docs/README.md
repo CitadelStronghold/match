@@ -51,15 +51,11 @@ Lines in the regex file starting with the <kbd>#</kbd> character are considered 
 Add Match as a Git submodule, then use it in CI:
 
 ```
-- name: Build Match
-  uses: ./lib/match/.github/public/build
-  with:
-    do_cache: true
-    working_directory: 'lib/match'
 - name: Match
-  uses: ./lib/match/.github/public/validate
+  uses: ./lib/match/.github/public/build_and_validate
   with:
-    log_file: log.txt
-    regex_file: src/${{ inputs.project }}/tests/regex/Log.regex
-    working_directory: lib/match
+    working_directory: lib/match (Path to root of match)
+    do_cache: <Should we cache builds between CI actions if possible?>
+    log_file: <Log File>
+    regex_file: <Regex File>
 ```
