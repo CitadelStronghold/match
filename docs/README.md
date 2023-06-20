@@ -36,8 +36,7 @@ Match is a command-line tool designed to analyze log files by matching them agai
 
 The tool requires two input files: a log file and a text file containing regex patterns. The parser operates in two modes: inclusive regex and exclusive regex, which can be determined by the presence of an empty line in the regex file.
 
-### Comments
-- Lines in the regex file starting with the '#' character are considered as comments and are ignored by the parser.
+Lines in the regex file starting with the '#' character are considered as comments and are ignored by the parser.
 
 ### [Examples](https://github.com/Eshnek/match/tree/main/tests)
 
