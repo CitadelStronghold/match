@@ -15,7 +15,7 @@ Match is the indispensable tool designed to simplify and automate log validation
 - Rock-Solid Reliability
     - Trust is paramount, and Match delivers. Rigorously tested for stability and robustness, it leaves no room for errors or surprises in your code. Rely on Match to ensure the integrity of your log data.
 - Lightning-Fast Performance
-    - Experience the unmatched speed of LogMatch, fine-tuned to handle massive datasets with lightning efficiency. Through smart data buffering and optimal utilization of `std::string_view`, LogMatch delivers unparalleled performance gains, empowering you to process logs swiftly and cost effectively.
+    - Experience the unmatched speed of Match, fine-tuned to handle massive datasets with lightning efficiency. Through smart data buffering and optimal utilization of `std::string_view`, Match delivers unparalleled performance gains, empowering you to process logs swiftly and cost effectively.
 - Comprehensive Output
     - Get an in-depth understanding of your data validation process with Match's comprehensive output. Track crucial metrics, including total data read, time taken for each validation step, and detailed failure information.
     - Match's output is not only informative but also visually enhanced with vibrant colors, making analysis a breeze.
