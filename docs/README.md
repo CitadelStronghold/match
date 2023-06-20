@@ -1,6 +1,7 @@
 # Match
 
 ![Tests](https://github.com/GeodeGames/match/actions/workflows/Test.yml/badge.svg)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/19cb91429d5841b38d72c0026f6b1cfc)](https://app.codacy.com/gh/CitadelStronghold/match/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 **Introducing Match: The Simple Log Validation Tool**
 
