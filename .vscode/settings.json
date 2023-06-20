@@ -1,7 +1,4 @@
 {
-    "command-runner.commands": {
-
-    },
     "files.associations": {
         "atomic": "cpp",
         "bit": "cpp",
